@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fermo, eppur si muove - Collaborazione</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-archive-warm: #FDFBF7;
+            --text-color: #111111;
+            --accent-green: #00E676;
+            --border-gray: #E5E5E5;
+            --text-muted: #646866;
+            --text-dark-muted: #777777;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-archive-warm);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER - IDENTICO ALLA INDEX */
+        header {
+            padding: 24px 0;
+            background: transparent;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav ul a {
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        /* STRUTTURA ARTICOLO */
+        .article-layout {
+            max-width: 800px;
+            margin: 60px auto;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-gray);
+            padding-bottom: 32px;
+        }
+
+        .category {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-style: italic;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .meta-info {
+            font-size: 1.1rem;
+            color: var(--text-dark-muted);
+            font-style: italic;
+        }
+
+        .accent-green-text {
+            color: var(--accent-green);
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        /* CONTENUTO EDITORIALE */
+        .lead-paragraph {
+            font-size: 1.35rem;
+            color: #222524;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .article-body p {
+            font-size: 1.1rem;
+            color: #333333;
+            margin-bottom: 24px;
+            text-align: justify;
+        }
+
+        /* FOTO 1: ORIZZONTALE (DISEGNO A CHINA) */
+        .image-landscape-container {
+            margin: 48px 0;
+        }
+
+        .image-landscape-box {
+            width: 100%;
+            height: 400px;
+            background-color: #EAE7E2;
+            border: 1px solid #D1CDC5;
+            position: relative;
+        }
+
+        /* BLOCCO PROFILO: TESTO + FOTO QUADRATA */
+        .profile-block {
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+            margin: 48px 0;
+        }
+
+        .profile-text {
+            flex: 1;
+        }
+
+        .profile-image-side {
+            flex: 0 0 280px;
+        }
+
+        .image-square-box {
+            width: 100%;
+            height: 280px;
+            background-color: #EAE7E2;
+            border: 1px solid #D1CDC5;
+            position: relative;
+        }
+
+        /* GALLERIA FINALE: FOTO VERTICALI */
+        .gallery-section {
+            margin-top: 60px;
+            border-top: 1px solid var(--border-gray);
+            padding-top: 40px;
+        }
+
+        .gallery-section h2 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-vertical-box {
+            width: 100%;
+            height: 320px;
+            background-color: #EAE7E2;
+            border: 1px solid #D1CDC5;
+            position: relative;
+        }
+
+        /* SERVIZI E SEGNAPOSTO */
+        .placeholder-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-align: center;
+            width: 90%;
+            font-weight: 500;
+        }
+
+        .image-caption {
+            font-size: 0.85rem;
+            color: var(--text-dark-muted);
+            font-style: italic;
+            margin-top: 8px;
+            line-height: 1.3;
+        }
+
+        /* RESPONSIVE SMARTPHONE */
+        @media (max-width: 768px) {
+            nav { display: none; } /* Coerente con la index, nasconde il menu desktop su mobile */
+            
+            header .container {
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo-block {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+            }
+
+            .profile-block {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .profile-image-side {
+                width: 100%;
+                flex: none;
+            }
+
+            .image-square-box {
+                height: 300px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .image-vertical-box {
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo-block">
+                <img src="logo-scacchi-bicolor.svg" alt="ASD Scacchi Fermo" class="logo-icon">
+                <div class="logo-text">Scacchi Fermo</div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html#chi-siamo">Chi Siamo</a></li>
+                    <li><a href="index.html#eventi">Eventi</a></li>
+                    <li><a href="index.html#contatti">Contatti</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-layout">
+
+            <div class="article-header">
+                <span class="category">Reportage & Sinergie Culturali</span>
+                <h1>“Fermo, eppur si muove”</h1>
+                <div class="meta-info">
+                    Cronaca di un'alleanza strategica tra la community del pub e la mente di <span class="accent-green-text">ASD Scacchi Fermo</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <div class="lead-paragraph">
+                    Inserisci qui un paragrafo introduttivo forte (la cosiddetta "lead"). Racconta come l'atmosfera del pub si sia fusa con la concentrazione geometrica degli scacchi, creando un punto di riferimento inedito per la movida e la cultura della città.
+                </div>
+
+                <p>
+                    [Primo Blocco di Testo: Il Contesto]. Descrivi la genesi dell'idea. Puoi spiegare cosa ha spinto il tuo pub ad aprire le porte alle scacchiere e come la risposta del pubblico sia andata oltre laspettative. Usa questo spazio per gettare le basi del reportage, delineando l'unione tra l'estetica industriale/underground del locale e il rigore formale del gioco.
+                </p>
+
+                <div class="image-landscape-container">
+        <div class="image-landscape-box">
+            <img src="logo-bozza-disegno-tecnico.png" alt="Disegno a china scacchi" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="image-caption">
+            Fig. 1: Lo studio visivo originale che ha dato vita all'identità cyber-scacchistica del club, tracciato a china e rifinito con contrasti neon.
+        </div>
+    </div>
+                    </div>
+                    <div class="image-caption">
+                        Fig. 1: Lo studio visivo originale che ha dato vita all'identità cyber-scacchistica del club, tracciato a china e rifinito con contrasti neon.
+                    </div>
+                </div>
+
+                <div class="profile-block">
+                    <div class="profile-text">
+                        <p>
+                            [Secondo Blocco di Testo: L'Incontro delle Persone]. Qui il focus si sposta sulle figure chiave. Parla della collaborazione diretta tra te (il pub) e il responsabile dell'associazione. Racconta gli aneddoti, le sfide organizzative per far coesistere i tornei ufficiali FIDE con la vita notturna e la visione comune per il futuro dei giovani nel territorio fermano.
+                        </p>
+                        <p>
+                            Questo testo deve scorrere a fianco della vostra immagine istituzionale, creando un forte aggancio tra le parole e i volti dei protagonisti del progetto. Potete inserire dichiarazioni o citazioni dirette.
+                        </p>
+                    </div>
+                    
+                    <div class="profile-image-side">
+                        <div class="image-square-box">
+                            <div class="placeholder-label">
+                                <strong>Foto 2: I Volti (Quadrata)</strong><br>
+                                Foto di te e del responsabile del club.<br>
+                                Proporzione: 1:1 (Quadrata)
+                            </div>
+                        </div>
+                        <div class="image-caption" style="text-align: center;">
+                            Fig. 2: I fondatori dell'iniziativa negli spazi del pub.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-section">
+                    <h2>Cronistoria degli Eventi & Prospettive</h2>
+                    <p style="text-align: left;">
+                        [Terzo Blocco di Testo: Il Futuro del Network]. Concludi l'articolo parlando dei prossimi passi. Il successo delle scorse edizioni getta le basi per appuntamenti fissi, tornei estivi e una rete sempre più fitta di collaborazioni sul territorio marchigiano. Lo spazio sottostante è dedicato alla galleria verticale delle serate passate.
+                    </p>
+                    
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <div class="image-vertical-box">
+                                <div class="placeholder-label">Galleria 1<br>(Verticale)</div>
+                            </div>
+                            <div class="image-caption">Serata d'apertura: focus sui tavoli.</div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-vertical-box">
+                                <div class="placeholder-label">Galleria 2<br>(Verticale)</div>
+                            </div>
+                            <div class="image-caption">Le fasi calde del torneo lampo.</div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-vertical-box">
+                                <div class="placeholder-label">Galleria 3<br>(Verticale)</div>
+                            </div>
+                            <div class="image-caption">Premiazione e brindisi finale.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+    </main>
+
+</body>
+</html>
