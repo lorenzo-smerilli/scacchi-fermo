@@ -18,10 +18,9 @@
         }
 
         :root {
-            --bg-color: #FAFAFA;
+            --bg-color: #FAFAFA; /* Sfondo chiaro uniforme del sito */
             --text-color: #111111;
-            --accent-green: #008744; /* Verde istituzionale */
-            --glow-green: #00E676;   /* Verde acido per il claim con glow */
+            --accent-green: #008744;
             --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
             --text-muted: #646866;
@@ -111,44 +110,56 @@
             letter-spacing: 0.2px;
         }
 
-        /* HERO SECTION - ANIMATION LOOP SCHEME */
+        /* HERO SECTION - INTEGRAZIONE CHIARA, PROPORZIONATA E PARALLAX 3D */
         .hero {
             position: relative;
-            height: 85vh;
-            min-height: 600px;
+            height: 75vh;
+            min-height: 550px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000000;
+            background-color: var(--bg-color); /* Niente più nero, sfondo chiaro nativo */
+            perspective: 1000px; /* Abilita lo spazio 3D per l'effetto parallax */
+        }
+
+        /* Contenitore Scatola Centrata proporzionata (evita l'effetto troppo zoommato) */
+        .hero-sticker-wrapper {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; /* Ammortizzatore movimento mouse */
         }
 
         /* Layer 1: Sfondo Testi (svg 1) */
         .hero-bg-texti {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             background-image: url('1-sfondo-testi.svg');
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
             z-index: 1;
-            /* Ritorno rapido allo stato iniziale (Sticker mode) */
-            transition: opacity 0.8s ease; 
+            transform: translateZ(-20px); /* Distanza 3D per parallax */
+            transition: opacity 0.6s ease;
             opacity: 1;
         }
 
-        /* Layer 2: Contenitore della Scacchiera Dinamica */
+        /* Layer 2: Contenitore Matrice Quadrati HTML */
         .hero-qr-animated {
             position: absolute;
-            width: 320px;
-            height: 320px;
+            width: 100%;
+            height: 100%;
             z-index: 2;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             gap: 0;
+            transform: translateZ(0px);
+            opacity: 0; /* Invisibili all'inizio (Fase 1) */
+            transition: opacity 0.4s ease;
         }
 
         /* I singoli blocchi geometrici HTML */
@@ -156,114 +167,93 @@
             width: 100%;
             height: 100%;
             background-color: var(--accent-green);
-            /* Transizione di ritorno rapida di default */
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+            transition: transform 0.6s ease, opacity 0.4s ease;
             transform-origin: center;
         }
 
-        /* STATO INIZIALE: Disposizione disordinata/asimmetrica che simula il QR Code (2-qr-code) */
-        .qr-block:nth-child(odd) { transform: translate(18px, -24px) scale(0.92); }
-        .qr-block:nth-child(3n) { transform: translate(-35px, 12px) scale(1.08); }
-        .qr-block:nth-child(5n) { transform: translate(8px, 28px) scale(0.85); }
-        .qr-block:nth-child(7n) { transform: translate(-18px, -18px) scale(1.02); }
+        /* Configurazione Caotica Iniziale (Disposizione "QR Code") */
+        .qr-block:nth-child(odd) { transform: translate(14px, -20px) scale(0.9); }
+        .qr-block:nth-child(3n) { transform: translate(-25px, 10px) scale(1.05); }
+        .qr-block:nth-child(5n) { transform: translate(6px, 20px) scale(0.88); }
+        .qr-block:nth-child(7n) { transform: translate(-14px, -14px) scale(1); }
 
-        /* I blocchi contrassegnati come 'empty' svaniranno per simulare le caselle bianche libere */
-        .qr-block.empty {
-            opacity: 1;
-        }
+        .qr-block.empty { opacity: 1; }
 
         /* Layer 3: Grafica Cavallo (svg 3) */
         .hero-cavallo {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             background-image: url('3-cavallo.svg');
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
             z-index: 3;
+            transform: translateZ(30px); /* Più vicino all'osservatore per il parallax */
             pointer-events: none;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.6s ease;
             opacity: 1;
         }
 
-        /* Layer Finale: Il Claim Umanistico */
+        /* Layer Finale: Il Claim con Glow Chiaro/Grigio Soft */
         .hero-claim-final {
             position: absolute;
             z-index: 5;
-            color: var(--glow-green);
+            color: var(--text-color);
             font-family: 'EB Garamond', serif;
             font-style: italic;
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
             text-align: center;
             width: 100%;
-            padding: 0 24px;
+            max-width: 600px;
             opacity: 0;
-            transform: translateY(15px);
-            /* Leggero e pulito effetto glow acido richiesto */
-            text-shadow: 0 0 10px rgba(0, 230, 118, 0.4), 0 0 20px rgba(0, 230, 118, 0.2);
+            transform: scale(0.95);
+            /* Glow elegante e raffinato grigio/bianco */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(0, 0, 0, 0.05);
             transition: opacity 0.6s ease, transform 0.6s ease;
             pointer-events: none;
         }
 
 
         /* ==========================================================================
-           FASE DI SPOSTAMENTO (Attivata via JS: andata fluida e controllata)
+           STATI DI ANIMAZIONE PILOTATI DA JAVASCRIPT
            ========================================================================== */
-        .hero.moving .qr-block {
-            /* Motion curata, fluida ed elegante per l'andata */
-            transition: transform 2.2s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.5s ease;
+        
+        /* Appaiono i quadrati HTML sopra al tutto */
+        .hero.show-html-squares .hero-qr-animated {
+            opacity: 1;
+        }
+
+        /* Scompaiono il logo, il cavallo e lo sfondo testi */
+        .hero.hide-svg-layers .hero-bg-texti,
+        .hero.hide-svg-layers .hero-cavallo {
+            opacity: 0;
+        }
+
+        /* I quadrati eseguono la motion geometrica pura verso la scacchiera */
+        .hero.assemble-board .qr-block {
+            transition: transform 2s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.4s ease;
             transform: translate(0, 0) scale(1) !important;
         }
-        
-        /* I blocchi non necessari scompaiono per rivelare la scacchiera corretta */
-        .hero.moving .qr-block.empty {
-            opacity: 0; 
+        .hero.assemble-board .qr-block.empty {
+            opacity: 0; /* Lascia i campi chiari trasparenti sul fondo del sito */
         }
 
-        /* Durante il movimento lo sfondo testi e il cavallo sfumano via */
-        .hero.moving .hero-bg-texti {
-            transition: opacity 1.8s ease;
-            opacity: 0;
-        }
-
-        .hero.moving .hero-cavallo {
-            transition: opacity 1.6s ease;
-            opacity: 0;
-        }
-
-        /* MOSTRA IL CLAIM FINALE AD ANIMAZIONE COMPLETATA */
-        .hero.show-claim .hero-claim-final {
+        /* Comparsa finale del claim */
+        .hero.display-claim .hero-claim-final {
             opacity: 1;
-            transform: translateY(0);
-            transition: opacity 1.2s ease, transform 1.2s ease;
+            transform: scale(1);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Se il claim è attivo, nascondiamo temporaneamente la scacchiera per far leggere la frase pulita */
+        .hero.display-claim .hero-qr-animated {
+            opacity: 0.15; /* Resta accennata in sottofondo con eleganza */
+            transition: opacity 1s ease;
         }
 
 
-        /* DISTURBO VISIVO DI SFONDO (MICRO NOISE OVERLAY) */
-        .hero-noise {
-            position: absolute;
-            top: -50%; left: -50%; right: -50%; bottom: -50%;
-            width: 200%; height: 200%;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.02;
-            mix-blend-mode: overlay;
-            animation: noise-animation 0.2s infinite steps(4);
-            pointer-events: none;
-            z-index: 4;
-        }
-
-        @keyframes noise-animation {
-            0% { transform: translate(0,0); }
-            10% { transform: translate(-1%, -1%); }
-            20% { transform: translate(-2%, 1%); }
-            30% { transform: translate(1%, -2%); }
-            40% { transform: translate(-1%, 3%); }
-            100% { transform: translate(1%, 2%); }
-        }
-
-        /* INTRO BLOCKS */
+        /* LAYOUT NOTIZIE / CHI SIAMO */
         .intro-block {
             max-width: 800px;
             margin-bottom: 60px;
@@ -280,7 +270,6 @@
             color: var(--text-muted);
         }
 
-        /* LAYOUT STAMPA / CHI SIAMO */
         .press-layout {
             display: flex;
             flex-direction: column;
@@ -293,9 +282,6 @@
             gap: 48px;
             align-items: center;
         }
-
-        .press-item.reverse { direction: rtl; }
-        .press-item.reverse .press-text-box { direction: ltr; }
 
         .press-img-container { width: 100%; height: 380px; overflow: hidden; }
         .press-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: filter 0.3s ease; }
@@ -331,10 +317,9 @@
         @media (max-width: 768px) {
             nav { display: none; }
             .press-item { grid-template-columns: 1fr; gap: 24px; }
-            .press-item.reverse { direction: ltr; }
             .footer-grid { grid-template-columns: 1fr; }
             .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
-            .hero-qr-animated { width: 260px; height: 260px; }
+            .hero-sticker-wrapper { width: 260px; height: 260px; }
         }
     </style>
 </head>
@@ -356,33 +341,35 @@
         </div>
     </header>
 
-    <section class="hero" id="heroField">
-        <div class="hero-bg-texti"></div>
+    <section class="hero" id="heroSection">
         
-        <div class="hero-qr-animated">
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-            <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block empty"></div>
+        <div class="hero-sticker-wrapper" id="parallaxBox">
+            
+            <div class="hero-bg-texti"></div>
+            
+            <div class="hero-qr-animated">
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block empty"></div>
+            </div>
+
+            <div class="hero-cavallo"></div>
         </div>
 
-        <div class="hero-cavallo"></div>
-
         <div class="hero-claim-final">“Fermo, eppur si muove”</div>
-
-        <div class="hero-noise"></div>
     </section>
 
     <main class="container">
@@ -455,36 +442,66 @@
     </footer>
 
     <script>
-        // DIRETTORE D'ORCHESTRA DELL'ANIMAZIONE (CICLO INFINITO INTEGRATO)
-        const hero = document.getElementById('heroField');
+        const hero = document.getElementById('heroSection');
+        const parallaxBox = document.getElementById('parallaxBox');
 
-        function runAnimationLoop() {
-            // FASE 1: Il QR code iniziale è fermo e leggibile per 3 secondi.
+        // GESTIONE PARALLAX 3D CON IL MOUSE (Solo durante la Fase 1 dello sticker)
+        let isParallaxActive = true;
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isParallaxActive) return;
             
-            // FASE 2: Al secondo 3 parte il movimento geometrico fluido verso la scacchiera reale
-            setTimeout(() => {
-                hero.classList.add('moving');
-            }, 3000);
-
-            // FASE 3: Al secondo 5.2 (movimento ultimato), appare il Claim con il bagliore verde acido
-            setTimeout(() => {
-                hero.classList.add('show-claim');
-            }, 5200);
-
-            // FASE 4: Il claim resta visibile per circa 3 secondi. Al secondo 8.5 si torna indietro velocemente ("Sticker Mode")
-            setTimeout(() => {
-                hero.classList.remove('show-claim');
-                hero.classList.remove('moving');
-            }, 8500);
-        }
-
-        // Avvio immediato al caricamento e impostazione del Loop continuo ogni 9.8 secondi complessivi
-        window.addEventListener('DOMContentLoaded', () => {
-            runAnimationLoop();
-            setInterval(runAnimationLoop, 9800);
+            const enterpriseWidth = window.innerWidth;
+            const enterpriseHeight = window.innerHeight;
+            
+            // Calcola la posizione del cursore rispetto al centro dello schermo (-0.5 a 0.5)
+            const xAxis = (enterpriseWidth / 2 - e.pageX) / 25;
+            const yAxis = (enterpriseHeight / 2 - e.pageY) / 25;
+            
+            // Applica l'inclinazione 3D controllata
+            parallaxBox.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
-        // Gestione scorrimento orizzontale del carosello manifesti
+        // REGISTA DEI TEMPI DELL'ANIMAZIONE (LOOP CONTINUO)
+        function startLoopSequence() {
+            // Stato Iniziale: Solo i 3 SVG visibili e fermi con parallax attivo per 3.5 secondi.
+            isParallaxActive = true;
+
+            // 1. Compaiono i quadrati HTML sopra il QR code
+            setTimeout(() => {
+                hero.classList.add('show-html-squares');
+            }, 3500);
+
+            // 2. Scompaiono contemporaneamente i vecchi layer SVG e inizia il moto dei quadratini verso la scacchiera
+            setTimeout(() => {
+                isParallaxActive = false; // Disattiva l'inclinazione mouse durante la transizione per pulizia geometrica
+                parallaxBox.style.transform = `rotateY(0deg) rotateX(0deg)`; // Resetta l'asse dritto
+                
+                hero.classList.add('hide-svg-layers');
+                hero.classList.add('assemble-board');
+            }, 4000);
+
+            // 3. Il movimento si conclude e si accende il claim con il glow chiaro
+            setTimeout(() => {
+                hero.classList.add('display-claim');
+            }, 6000);
+
+            // 4. RESET VELOCE ("Sticker mode") dopo 3.5 secondi di lettura stazionaria del claim
+            setTimeout(() => {
+                hero.classList.remove('display-claim');
+                hero.classList.remove('assemble-board');
+                hero.classList.remove('hide-svg-layers');
+                hero.classList.remove('show-html-squares');
+            }, 9500);
+        }
+
+        // Avvio e ripetizione ciclica ad anello aperto
+        window.addEventListener('DOMContentLoaded', () => {
+            startLoopSequence();
+            setInterval(startLoopSequence, 10500); // Durata totale di un intero ciclo di vita del loop
+        });
+
+        // Carosello Manifesti Gestione Scroll
         const track = document.getElementById('carouselTrack');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
