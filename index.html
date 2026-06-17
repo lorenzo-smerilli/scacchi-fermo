@@ -122,7 +122,211 @@
          * .hero-sticker-wrapper, .hero-qr-html-grid, .q-dot, ecc.)
          ******************************************************************************/
          
-         /* Incolla qui il CSS dell'animazione... */
+        /* HERO & CONTENITORE 3D */
+        .hero {
+            position: relative;
+            height: 75vh;
+            min-height: 580px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+        }
+
+        .hero-sticker-wrapper {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            transform-style: preserve-3d;
+            animation: automatic-parallax 7s infinite ease-in-out alternate;
+        }
+
+        @keyframes automatic-parallax {
+            0% { transform: rotateY(-6deg) rotateX(-4deg); }
+            100% { transform: rotateY(6deg) rotateX(4deg); }
+        }
+
+        /* Layer 1: Sfondo Testi */
+        .hero-bg-texti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('1-sfondo-testi.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            transform: translateZ(-15px);
+            transition: opacity 0.5s ease;
+        }
+
+        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
+        .hero-qr-html-grid {
+            position: absolute;
+            width: 71%; 
+            height: 71%;
+            top: 14.5%;
+            left: 14.5%;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(21, 1fr);
+            grid-template-rows: repeat(21, 1fr);
+            transform: translateZ(0px);
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Singolo quadratino del QR code originale */
+        .q-dot {
+            background-color: var(--accent-green);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .q-dot.e {
+            background-color: transparent; 
+        }
+
+        /* ==========================================================
+           NUOVA FASE 2: SCOMPOSIZIONE GUIDA VERSO LA SCACCHIERA
+           ========================================================== */
+        
+        /* I 3 grandi occhielli d'angolo (identificabili visivamente nelle prime e ultime righe della matrice) 
+           e alcuni blocchi strutturali rimangono completamente fermi per dare stabilità */
+        .hero.frenetic-chaos .q-dot:nth-child(-n+7),
+        .hero.frenetic-chaos .q-dot:nth-child(21n+1),
+        .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
+            transform: translate(0, 0) scale(1) !important;
+            animation: none !important;
+        }
+
+        /* Solo i quadratini in posizione alternata (pari/dispari incrociati) si muovono,
+           suggerendo la disposizione modulare della scacchiera */
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(2n) {
+            animation: suggest-chessboard-pari 2s infinite ease-in-out alternate;
+            background-color: #006b35; /* Variazione minima di tono per dare profondità */
+        }
+
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(3n+1) {
+            animation: suggest-chessboard-dispari 2s infinite ease-in-out alternate;
+        }
+
+        /* I quadratini rimasti che non partecipano alla scomposizione iniziano a sfumare leggermente */
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(5n) {
+            opacity: 0.4;
+            transform: scale(0.85);
+        }
+
+        /* Animazioni direzionali che simulano l'allineamento alternato della scacchiera */
+        @keyframes suggest-chessboard-pari {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(6px, -6px) scale(1.1); }
+        }
+
+        @keyframes suggest-chessboard-dispari {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-6px, 6px) scale(0.9); }
+        }
+
+        /* Dissolvenza totale programmata per il subentro del layer successivo */
+        .hero.hide-qr-completely .hero-qr-html-grid {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.92) translateZ(-10px);
+        }
+
+        /* Layer Coordinate Lettere/Numeri */
+        .board-labels {
+            position: absolute;
+            width: 106%;
+            height: 106%;
+            top: -3%;
+            left: -3%;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            font-size: 0.75rem;
+            color: var(--text-dark-muted);
+            transition: opacity 0.6s ease;
+        }
+        .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
+        .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
+
+        /* Layer 4: Grafica Cavallo */
+        .hero-cavallo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('3-cavallo.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 5;
+            transform: translateZ(25px);
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Layer 5: Matrice Grandi Quadrati Scacchiera */
+        .hero-qr-animated {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            opacity: 0;
+            transform: translateZ(10px) scale(0.92);
+            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .qr-block {
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent-green);
+            transform: scale(0);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .qr-block.empty { opacity: 0; }
+
+        .hero.hide-all-svg-layers .hero-bg-texti,
+        .hero.hide-all-svg-layers .hero-cavallo {
+            opacity: 0;
+        }
+
+        .hero.assemble-board .hero-qr-animated {
+            opacity: 1;
+            transform: translateZ(10px) scale(1) rotate(90deg);
+        }
+        .hero.assemble-board .qr-block { transform: scale(1); }
+        .hero.assemble-board .board-labels { opacity: 1; }
+
+        /* Il Claim Finale */
+        .hero-claim-final {
+            position: absolute;
+            z-index: 6;
+            color: var(--text-color);
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            text-align: center;
+            width: 100%;
+            opacity: 0;
+            transform: scale(0.96);
+            text-shadow: 0 0 20px #FFF;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .hero.display-claim .hero-claim-final {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .hero.display-claim .hero-qr-animated,
+        .hero.display-claim .board-labels { opacity: 0.12; }
+
+        @media (max-width: 768px) {
+            .hero-sticker-wrapper { width: 290px; height: 290px; }
+            .board-labels { display: none; }
+        }
 
         /*******************************************************************************
          * FINE PUNTO CSS ANIMAZIONE
@@ -273,13 +477,64 @@
     </header>
 
 
-    /*******************************************************************************
+/*******************************************************************************
      * 2. INIZIO PUNTO CORPO DELLA SEZIONE HERO (HTML)
      * * CANCELLA QUESTO COMMENTO E INCOLLA QUI L'INTERA <section class="hero" id="heroSection">
      * CHE TROVI DENTRO IL FILE animaz-solo.html CON TUTTA LA GRIGLIA 21x21 DI QUADRATINI.
      ******************************************************************************/
      
-     /*******************************************************************************
+    <section class="hero" id="heroSection">
+        <div class="hero-sticker-wrapper">
+            
+            <div class="hero-bg-texti"></div>
+            
+            <div class="hero-qr-html-grid">
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+            </div>
+            
+            <div class="board-labels">
+                <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+                <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+            </div>
+
+            <div class="hero-qr-animated">
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+            </div>
+
+            <div class="hero-cavallo"></div>
+        </div>
+
+        <div class="hero-claim-final">“Fermo, eppur si muove”</div>
+    </section>
+
+    /*******************************************************************************
      * FINE PUNTO CORPO DELLA SEZIONE HERO (HTML)
      ******************************************************************************/
 
@@ -451,7 +706,42 @@
          * dei setTimeout e l'event listener DOMContentLoaded) PRESI DA animaz-solo.html.
          ******************************************************************************/
          
-         // Incolla qui le funzioni JavaScript dell'animazione...
+        const hero = document.getElementById('heroSection');
+
+        function runStickerSequence() {
+            // Momento 0: Il QR code HTML è perfettamente unito, denso, solido ed originale.
+
+            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
+            setTimeout(() => {
+                hero.classList.add('frenetic-chaos');
+            }, 3000);
+
+            // FASE 3: Transizione fluida alla scacchiera grande reale
+            setTimeout(() => {
+                hero.classList.add('hide-qr-completely');
+                hero.classList.add('hide-all-svg-layers');
+                hero.classList.add('assemble-board');
+            }, 6500);
+
+            // FASE 4: Claim finale
+            setTimeout(() => {
+                hero.classList.add('display-claim');
+            }, 8800);
+
+            // RESET COMPLETO DEL LOOP
+            setTimeout(() => {
+                hero.classList.remove('display-claim');
+                hero.classList.remove('assemble-board');
+                hero.classList.remove('hide-all-svg-layers');
+                hero.classList.remove('hide-qr-completely');
+                hero.classList.remove('frenetic-chaos');
+            }, 13500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            runStickerSequence();
+            setInterval(runStickerSequence, 14500);
+        });
 
         /*******************************************************************************
          * FINE PUNTO JAVASCRIPT ANIMAZIONE
