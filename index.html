@@ -171,7 +171,6 @@
         /* Singolo quadratino del QR code */
         .q-dot {
             background-color: var(--accent-green);
-            /* Transizione fluida quando cambiano gli stili */
             transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, background-color 0.8s ease;
         }
         .q-dot.e {
@@ -182,45 +181,74 @@
         .hero.frenetic-chaos .q-dot:nth-child(-n+7),
         .hero.frenetic-chaos .q-dot:nth-child(21n+1),
         .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
-            transform: translate(0, 0) scale(1) rotate(0deg) !important;
+            transform: translate(0, 0) scale(1) !important;
             animation: none !important;
             opacity: 1 !important;
         }
 
-        /* NUOVA FLUTTUAZIONE ORGANICA: Effetto magnetico fluido e rotatorio */
-        .hero.frenetic-chaos .q-dot:nth-child(2n):not(.e) {
-            animation: fluid-float-pari 3.5s infinite ease-in-out alternate;
-            background-color: #006b35; /* Sfumatura di verde scuro scacchiera */
+        /* ATTIVAZIONE ANIMAZIONE ORDINATA CON SPOSTAMENTI CONTENUTI (NO SOVRAPOSIZIONI) */
+        .hero.frenetic-chaos .q-dot:not(.e) {
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
         }
 
-        .hero.frenetic-chaos .q-dot:nth-child(2n+1):not(.e) {
-            animation: fluid-float-dispari 3.8s infinite ease-in-out alternate;
+        /* Divisione in gruppi asincroni per l'effetto sparso nel tempo */
+        .hero.frenetic-chaos .q-dot:nth-child(4n):not(.e) {
+            animation-name: clean-float-a;
+            animation-delay: 0s;
+            background-color: #006b35; 
         }
 
-        /* I quadratini di contorno sfumano dolcemente creando profondità */
+        .hero.frenetic-chaos .q-dot:nth-child(4n+1):not(.e) {
+            animation-name: clean-float-b;
+            animation-delay: 0.5s;
+        }
+
+        .hero.frenetic-chaos .q-dot:nth-child(4n+2):not(.e) {
+            animation-name: clean-float-c;
+            animation-delay: 1s;
+            background-color: #006b35;
+        }
+
+        .hero.frenetic-chaos .q-dot:nth-child(4n+3):not(.e) {
+            animation-name: clean-float-d;
+            animation-delay: 1.5s;
+        }
+
+        /* I quadratini di contorno sfumano ma senza muoversi in modo disordinato */
         .hero.frenetic-chaos .q-dot:nth-child(5n):not(.e) {
-            opacity: 0.25;
-            transform: scale(0.7) rotate(-15deg);
+            opacity: 0.4;
+            transform: scale(0.85);
         }
 
-        /* Keyframes Fluidi: simulano un galleggiamento liquido (Spostamento + Rotazione + Scala) */
-        @keyframes fluid-float-pari {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            50% { transform: translate(6px, -4px) scale(1.08) rotate(12deg); }
-            100% { transform: translate(12px, -10px) scale(0.95) rotate(25deg); }
+        /* KEYFRAMES PULITI: Movimenti millimetrici ordinati, zero rotazioni, zero accavallamenti */
+        @keyframes clean-float-a {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(3px, -3px) scale(0.95); }
         }
 
-        @keyframes fluid-float-dispari {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            50% { transform: translate(-4px, 6px) scale(0.92) rotate(-10deg); }
-            100% { transform: translate(-10px, 12px) scale(1.05) rotate(-20deg); }
+        @keyframes clean-float-b {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-3px, 3px) scale(1.02); }
         }
 
-        /* Dissolvenza controllata del QR che si allontana nello spazio 3D */
+        @keyframes clean-float-c {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(2px, 2px) scale(0.97); }
+        }
+
+        @keyframes clean-float-d {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-2px, -2px) scale(1.03); }
+        }
+
+        /* Dissolvenza controllata del QR che si allontana nello spazio 3D senza ruotare */
         .hero.hide-qr-completely .hero-qr-html-grid {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.85) translateZ(-40px) rotate(30deg);
+            transform: scale(0.88) translateZ(-30px);
         }
 
         /* Layer Coordinate Lettere/Numeri */
@@ -253,7 +281,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 5: MATRICE SCACCHIERA (Girata di 90 gradi per impostazione corretta) */
+        /* Layer 5: MATRICE SCACCHIERA (Ruotata nativamente di 90° per orientamento perfetto) */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -263,12 +291,10 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             opacity: 0;
-            /* La scacchiera nasce nativamente ruotata di 90deg e leggermente rimpicciolita */
             transform: translateZ(10px) scale(0.9) rotate(90deg);
             transition: opacity 0.8s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* I blocchi della scacchiera compaiono scalando morbidamente */
         .qr-block {
             width: 100%;
             height: 100%;
@@ -278,16 +304,14 @@
         }
         .qr-block.empty { opacity: 0; }
 
-        /* Dissolvenza sfondi vecchi */
         .hero.hide-all-svg-layers .hero-bg-texti,
         .hero.hide-all-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
-        /* FASE DI MONTAGGIO: Mantiene i 90° richiesti, stabilizzandosi e mostrando l'angolo chiaro corretto */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
-            transform: translateZ(10px) scale(1) rotate(90deg); /* Bloccata a 90° con orientamento perfetto */
+            transform: translateZ(10px) scale(1) rotate(90deg);
         }
         .hero.assemble-board .qr-block { 
             transform: scale(1); 
@@ -311,6 +335,31 @@
             text-shadow: 0 0 25px rgba(255, 255, 255, 0.95);
             transition: opacity 0.8s ease, transform 0.8s ease;
             pointer-events: none;
+        }
+
+        .hero.display-claim .hero-claim-final {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .hero.display-claim .hero-qr-animated,
+        .hero.display-claim .board-labels { 
+            opacity: 0.08; 
+        }
+
+        /* ADATTAMENTO RESPONSIVE MOBILE RIGOROSO */
+        @media (max-width: 768px) {
+            .hero-sticker-wrapper { 
+                width: 280px; 
+                height: 280px; 
+            }
+            /* Mostra lettere e numeri riducendo leggermente il font per non farli uscire dallo schermo dello smartphone */
+            .board-labels { 
+                display: block; 
+                opacity: 0; 
+                font-size: 0.65rem; 
+            }
+            .board-labels .letters { bottom: -16px; }
+            .board-labels .numbers { left: -16px; }
         }
 
         .hero.display-claim .hero-claim-final {
