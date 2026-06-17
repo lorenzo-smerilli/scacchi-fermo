@@ -131,12 +131,12 @@
             width: 360px;
             height: 360px;
             transform-style: preserve-3d;
-            animation: automatic-parallax 7s infinite ease-in-out alternate;
+            animation: automatic-parallax 8s infinite ease-in-out alternate;
         }
 
         @keyframes automatic-parallax {
-            0% { transform: rotateY(-6deg) rotateX(-4deg); }
-            100% { transform: rotateY(6deg) rotateX(4deg); }
+            0% { transform: rotateY(-5deg) rotateX(-3deg); }
+            100% { transform: rotateY(5deg) rotateX(3deg); }
         }
 
         /* Layer 1: Sfondo Testi */
@@ -150,7 +150,7 @@
             background-position: center;
             z-index: 1;
             transform: translateZ(-15px);
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
         /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
@@ -165,58 +165,62 @@
             grid-template-columns: repeat(21, 1fr);
             grid-template-rows: repeat(21, 1fr);
             transform: translateZ(0px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Singolo quadratino del QR code originale */
+        /* Singolo quadratino del QR code */
         .q-dot {
             background-color: var(--accent-green);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            /* Transizione fluida quando cambiano gli stili */
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, background-color 0.8s ease;
         }
         .q-dot.e {
             background-color: transparent !important; 
         }
 
-        /* Blocca gli occhielli d'angolo per dare stabilità */
+        /* Blocca gli occhielli di controllo negli angoli per ancorare la struttura */
         .hero.frenetic-chaos .q-dot:nth-child(-n+7),
         .hero.frenetic-chaos .q-dot:nth-child(21n+1),
         .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
-            transform: translate(0, 0) scale(1) !important;
+            transform: translate(0, 0) scale(1) rotate(0deg) !important;
             animation: none !important;
             opacity: 1 !important;
         }
 
-        /* Solo i quadratini in posizione alternata si muovono */
+        /* NUOVA FLUTTUAZIONE ORGANICA: Effetto magnetico fluido e rotatorio */
         .hero.frenetic-chaos .q-dot:nth-child(2n):not(.e) {
-            animation: suggest-chessboard-pari 2.5s infinite ease-in-out alternate;
-            background-color: #006b35; 
+            animation: fluid-float-pari 3.5s infinite ease-in-out alternate;
+            background-color: #006b35; /* Sfumatura di verde scuro scacchiera */
         }
 
         .hero.frenetic-chaos .q-dot:nth-child(2n+1):not(.e) {
-            animation: suggest-chessboard-dispari 2.5s infinite ease-in-out alternate;
+            animation: fluid-float-dispari 3.8s infinite ease-in-out alternate;
         }
 
-        /* I quadratini rimasti sfumano leggermente */
+        /* I quadratini di contorno sfumano dolcemente creando profondità */
         .hero.frenetic-chaos .q-dot:nth-child(5n):not(.e) {
-            opacity: 0.35;
-            transform: scale(0.8);
+            opacity: 0.25;
+            transform: scale(0.7) rotate(-15deg);
         }
 
-        @keyframes suggest-chessboard-pari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(8px, -8px) scale(1.05); }
+        /* Keyframes Fluidi: simulano un galleggiamento liquido (Spostamento + Rotazione + Scala) */
+        @keyframes fluid-float-pari {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(6px, -4px) scale(1.08) rotate(12deg); }
+            100% { transform: translate(12px, -10px) scale(0.95) rotate(25deg); }
         }
 
-        @keyframes suggest-chessboard-dispari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-8px, 8px) scale(0.95); }
+        @keyframes fluid-float-dispari {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(-4px, 6px) scale(0.92) rotate(-10deg); }
+            100% { transform: translate(-10px, 12px) scale(1.05) rotate(-20deg); }
         }
 
-        /* Dissolvenza totale programmata */
+        /* Dissolvenza controllata del QR che si allontana nello spazio 3D */
         .hero.hide-qr-completely .hero-qr-html-grid {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.9) translateZ(-10px);
+            transform: scale(0.85) translateZ(-40px) rotate(30deg);
         }
 
         /* Layer Coordinate Lettere/Numeri */
@@ -229,7 +233,7 @@
             opacity: 0;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s ease;
         }
         .board-labels .letters { position: absolute; bottom: -20px; left: 0; width: 100%; display: flex; justify-content: space-around; }
         .board-labels .numbers { position: absolute; left: -20px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; }
@@ -246,10 +250,10 @@
             z-index: 5;
             transform: translateZ(25px);
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
-        /* Layer 5: Matrice Grandi Quadrati Scacchiera */
+        /* Layer 5: MATRICE SCACCHIERA (Girata di 90 gradi per impostazione corretta) */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -259,30 +263,38 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             opacity: 0;
-            transform: translateZ(10px) scale(0.92);
-            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            /* La scacchiera nasce nativamente ruotata di 90deg e leggermente rimpicciolita */
+            transform: translateZ(10px) scale(0.9) rotate(90deg);
+            transition: opacity 0.8s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* I blocchi della scacchiera compaiono scalando morbidamente */
         .qr-block {
             width: 100%;
             height: 100%;
             background-color: var(--accent-green);
             transform: scale(0);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .qr-block.empty { opacity: 0; }
 
+        /* Dissolvenza sfondi vecchi */
         .hero.hide-all-svg-layers .hero-bg-texti,
         .hero.hide-all-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
+        /* FASE DI MONTAGGIO: Mantiene i 90° richiesti, stabilizzandosi e mostrando l'angolo chiaro corretto */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
-            transform: translateZ(10px) scale(1) rotate(0deg);
+            transform: translateZ(10px) scale(1) rotate(90deg); /* Bloccata a 90° con orientamento perfetto */
         }
-        .hero.assemble-board .qr-block { transform: scale(1); }
-        .hero.assemble-board .board-labels { opacity: 1; }
+        .hero.assemble-board .qr-block { 
+            transform: scale(1); 
+        }
+        .hero.assemble-board .board-labels { 
+            opacity: 1; 
+        }
 
         /* Il Claim Finale */
         .hero-claim-final {
@@ -297,7 +309,7 @@
             opacity: 0;
             transform: scale(0.96);
             text-shadow: 0 0 25px rgba(255, 255, 255, 0.95);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity 0.8s ease, transform 0.8s ease;
             pointer-events: none;
         }
 
@@ -306,7 +318,9 @@
             transform: scale(1);
         }
         .hero.display-claim .hero-qr-animated,
-        .hero.display-claim .board-labels { opacity: 0.08; }
+        .hero.display-claim .board-labels { 
+            opacity: 0.08; 
+        }
 
         @media (max-width: 768px) {
             .hero-sticker-wrapper { width: 290px; height: 290px; }
