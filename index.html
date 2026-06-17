@@ -10,9 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================================
-           1. RESET E VARIABILI DI STRUTTURA LIMPIDI
-           ========================================================== */
+        /* RESET & VARIABILI PRESI DIRETTAMENTE DA INDEX2.HTML */
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +21,10 @@
             --bg-color: #FAFAFA;
             --text-color: #111111;
             --accent-green: #00E676;
+            
+            /* Sfumature Tecnologiche & Toni d'Archivio */
             --bg-card-dark: #222524;
+            --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
             --text-muted: #646866;
             --text-dark-muted: #777777;
@@ -34,7 +35,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             overflow-x: hidden;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .container {
@@ -44,12 +45,10 @@
             padding: 0 24px;
         }
 
-        /* ==========================================================
-           2. HEADER E NAVIGAZIONE
-           ========================================================== */
+        /* HEADER EDITORIALE NATIVO */
         .editorial-header {
             width: 100%;
-            border-bottom: 1px solid var(--text-color);
+            border-bottom: 2px solid var(--text-color);
             background-color: var(--bg-color);
             position: sticky;
             top: 0;
@@ -105,22 +104,19 @@
             opacity: 0.6;
         }
 
-        /* ==========================================================
-           3. STRUTTURA IFRAME PER L'ANIMAZIONE ESTERNA
-           ========================================================== */
-        .hero-animation-container {
+        /* INTEGRAZIONE IFRAME SCACCHIERA (PROPORZIONATO E SQUARE-FRIENDLY) */
+        .hero-iframe-container {
             width: 100%;
-            background-color: var(--bg-color);
-            border-bottom: 1px solid var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: var(--bg-color);
             padding: 40px 0;
         }
 
         .hero-iframe {
             width: 100%;
-            max-width: 600px; /* Layout quadrato controllato e centrato */
+            max-width: 600px;
             height: 600px;
             border: none;
             overflow: hidden;
@@ -128,62 +124,67 @@
 
         @media (max-width: 640px) {
             .hero-iframe {
-                height: 90vw; /* Si adatta perfettamente sui telefoni */
+                height: 90vw;
             }
         }
 
-        /* ==========================================================
-           4. SEZIONI INFORMATIVE E LAYOUT EDITORIALE
-           ========================================================== */
+        /* STRUTTURA CONTENUTI DA INDEX2.HTML */
         .intro-block {
-            padding: 60px 0 30px 0;
+            padding: 100px 0 60px 0;
             max-width: 760px;
         }
 
         .intro-block h2 {
             font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             text-transform: uppercase;
             font-weight: 900;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-            line-height: 1;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+            line-height: 0.95;
         }
 
         .intro-block p {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             color: var(--text-muted);
+            font-weight: 400;
         }
 
-        /* Sezione Articolo Rassegna Stampa */
+        /* PRESS LAYOUT */
         .press-layout {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
-            margin-bottom: 60px;
+            gap: 48px;
+            margin-bottom: 120px;
         }
 
         .press-item {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            border: 1px solid var(--text-color);
-            background: #fff;
+            grid-template-columns: 1.1fr 0.9fr;
+            border: 2px solid var(--text-color);
+            background: #ffffff;
         }
 
         @media (max-width: 768px) {
-            .press-item { grid-template-columns: 1fr; }
+            .press-item {
+                grid-template-columns: 1fr;
+            }
         }
 
         .press-img-container {
             width: 100%;
             height: 100%;
-            min-height: 320px;
+            min-height: 380px;
+            background-color: #eee;
             overflow: hidden;
-            border-right: 1px solid var(--text-color);
+            border-right: 2px solid var(--text-color);
         }
 
         @media (max-width: 768px) {
-            .press-img-container { border-right: none; border-bottom: 1px solid var(--text-color); }
+            .press-img-container {
+                border-right: none;
+                border-bottom: 2px solid var(--text-color);
+            }
         }
 
         .press-img {
@@ -193,7 +194,7 @@
         }
 
         .press-text-box {
-            padding: 40px;
+            padding: 48px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -205,23 +206,23 @@
             font-weight: 600;
             letter-spacing: 1px;
             color: var(--text-dark-muted);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .press-text-box h3 {
             font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 900;
             text-transform: uppercase;
-            line-height: 1.1;
-            margin-bottom: 16px;
+            line-height: 1.05;
+            margin-bottom: 20px;
             letter-spacing: -0.5px;
         }
 
         .press-text-box p {
             color: var(--text-muted);
             font-size: 1.05rem;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .read-more {
@@ -237,30 +238,19 @@
             opacity: 0.7;
         }
 
-        /* Sezione Citazione */
-        .quote-section {
-            width: 100%;
-            border-top: 1px solid var(--text-color);
-            border-bottom: 1px solid var(--text-color);
-            padding: 50px 0;
-            background-color: var(--bg-color);
-            margin: 40px 0;
+        /* RASSEGNA MANIFESTI (CAROSELLO) */
+        .archive-strip {
+            background-color: var(--bg-archive-warm);
+            border-top: 2px solid var(--text-color);
+            border-bottom: 2px solid var(--text-color);
+            padding: 100px 0;
         }
 
-        .quote-text {
-            font-family: 'EB Garamond', serif;
-            font-size: 2.2rem;
-            text-align: center;
-            line-height: 1.2;
-            color: var(--text-color);
-        }
-
-        /* Carosello Manifesti */
         .carousel-wrapper {
             position: relative;
             width: 100%;
             overflow: hidden;
-            margin-bottom: 60px;
+            margin-top: 48px;
         }
 
         .carousel-track {
@@ -268,24 +258,24 @@
             gap: 24px;
             overflow-x: auto;
             scroll-behavior: smooth;
-            scrollbar-width: none; 
-            padding-bottom: 10px;
+            scrollbar-width: none;
         }
 
         .carousel-track::-webkit-scrollbar {
-            display: none; 
+            display: none;
         }
 
         .manifesto-card {
             flex: 0 0 310px;
-            border: 1px solid var(--text-color);
-            background: #fff;
+            border: 2px solid var(--text-color);
+            background: #ffffff;
             padding: 16px;
         }
 
         .manifesto-img-box {
             width: 100%;
             height: 380px;
+            background-color: #eee;
             margin-bottom: 16px;
             overflow: hidden;
         }
@@ -311,14 +301,14 @@
         .carousel-nav {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 32px;
         }
 
         .carousel-btn {
-            background: #fff;
-            border: 1px solid var(--text-color);
-            width: 44px;
-            height: 44px;
+            background: #ffffff;
+            border: 2px solid var(--text-color);
+            width: 48px;
+            height: 48px;
             font-size: 1.2rem;
             cursor: pointer;
             display: flex;
@@ -328,24 +318,25 @@
 
         .carousel-btn:hover {
             background: var(--text-color);
-            color: #fff;
+            color: #ffffff;
         }
 
-        /* Sezione Sponsor/Enti */
+        /* NETWORK & SPONSOR SECTION */
         .network-section {
-            border-top: 1px solid var(--text-color);
-            padding: 60px 0;
-            margin-top: 40px;
+            padding: 100px 0;
         }
 
         .network-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
         }
 
         @media (max-width: 768px) {
-            .network-grid { grid-template-columns: 1fr; gap: 40px; }
+            .network-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
         }
 
         .network-block h4, .sponsor-block h4 {
@@ -354,58 +345,55 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .logos-row {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 48px;
             flex-wrap: wrap;
         }
 
         .logo-link img {
-            height: 45px;
+            height: 44px;
             width: auto;
-            filter: grayscale(1);
-            transition: filter 0.2s;
         }
 
-        .logo-link img:hover {
-            filter: grayscale(0);
-        }
-
-        /* ==========================================================
-           5. FOOTER CHIUSURA CONTATTI
-           ========================================================== */
+        /* FOOTER CONTATTI */
         footer {
             background-color: var(--bg-card-dark);
-            color: #fff;
-            border-top: 1px solid var(--text-color);
-            padding: 80px 0;
+            color: #ffffff;
+            border-top: 2px solid var(--text-color);
+            padding: 100px 0;
         }
 
         .footer-grid h2 {
             font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             text-transform: uppercase;
             font-weight: 900;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
         }
 
         .footer-contacts {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
+            gap: 40px;
             font-style: normal;
         }
 
         @media (max-width: 992px) {
-            .footer-contacts { grid-template-columns: 1fr 1fr; }
+            .footer-contacts {
+                grid-template-columns: 1fr 1fr;
+            }
         }
+
         @media (max-width: 576px) {
-            .footer-contacts { grid-template-columns: 1fr; }
+            .footer-contacts {
+                grid-template-columns: 1fr;
+            }
         }
 
         .footer-link-block span {
@@ -413,7 +401,7 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             color: var(--text-dark-muted);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             letter-spacing: 0.5px;
         }
 
@@ -447,7 +435,7 @@
         </div>
     </header>
 
-    <section class="hero-animation-container">
+    <section class="hero-iframe-container">
         <iframe src="animazione.html" class="hero-iframe" scrolling="no"></iframe>
     </section>
 
@@ -455,7 +443,7 @@
         
         <section id="chi-siamo">
             <div class="intro-block">
-                <h2>Pedoni e Alfieri: chi siamo</h2>
+                <h2>Pedoni e Alfieri:<br>chi siamo</h2>
                 <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
             </div>
 
@@ -474,16 +462,11 @@
             </div>
         </section>
 
-        <section class="quote-section">
-            <div class="container">
-                <blockquote class="quote-text">
-                    "I pedoni sono l'anima degli scacchi."
-                </blockquote>
-            </div>
-        </section>
+    </main>
 
-        <section id="eventi">
-            <div class="intro-block" style="padding-top: 20px;">
+    <section id="eventi" class="archive-strip">
+        <div class="container">
+            <div class="intro-block" style="padding: 0;">
                 <h2>Manifesti & Appuntamenti</h2>
                 <p>La nostra rassegna di eventi culturali, mostre e competizioni attive sul territorio.</p>
             </div>
@@ -492,28 +475,28 @@
                 <div class="carousel-track" id="carouselTrack">
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Torneo d'Autunno">
+                            <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Torneo d'Autunno 2026" class="manifesto-img">
                         </div>
                         <h3>Torneo d'Autunno 2026</h3>
                         <span>Ottobre 2026 &middot; Open Internazionale</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Scacchi in Piazza">
+                            <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Scacchi in Piazza" class="manifesto-img">
                         </div>
                         <h3>Scacchi in Piazza</h3>
                         <span>Luglio 2026 &middot; Rassegna Estiva</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Campionato Giovanile">
+                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Campionato Giovanile" class="manifesto-img">
                         </div>
                         <h3>Campionato Giovanile</h3>
                         <span>Maggio 2026 &middot; Under 18</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Seminario Tattico">
+                            <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Seminario Tattico" class="manifesto-img">
                         </div>
                         <h3>Seminario Tattico</h3>
                         <span>Novembre 2026 &middot; Masterclass</span>
@@ -525,10 +508,13 @@
                     <button class="carousel-btn" onclick="scrollCarousel(334)">&rarr;</button>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <main class="container">
         <section class="network-section">
             <div class="network-grid">
+                
                 <div class="network-block">
                     <h4>Patrocini & Istituzioni</h4>
                     <div class="logos-row">
@@ -537,15 +523,16 @@
                         <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Logo_Comune_di_Fermo.svg" alt="Comune Fermo" style="height: 60px;"></a>
                     </div>
                 </div>
+
                 <div class="sponsor-block">
                     <h4>Sostenitori Locali & Partner</h4>
-                    <div class="logos-row">
+                    <div class="logos-row" style="gap: 24px;">
                         <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">Si ringraziano la Cassa di Risparmio di Fermo, il nostro Pub partner e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
                     </div>
                 </div>
+
             </div>
         </section>
-
     </main>
 
     <footer id="contatti">
@@ -580,5 +567,6 @@
             }
         }
     </script>
+
 </body>
 </html>
