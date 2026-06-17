@@ -64,9 +64,9 @@
             padding: 80px 0;
         }
 
-        /* HEADER & CONFIGURAZIONE LOGO */
+        /* HEADER & CONFIGURAZIONE LOGO (AUMENTATO & COORDINATO) */
         header {
-            padding: 24px 0;
+            padding: 46px 0; /* Aumentata l'altezza complessiva della riga */
             background: transparent;
         }
 
@@ -79,12 +79,12 @@
         .logo-block {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px; /* Spazio leggermente aumentato tra cavallo e testo */
         }
 
         .logo-icon {
-            width: 42px;
-            height: 42px;
+            width: 52px;  /* Icona ingrandita (era 42px) */
+            height: 52px; /* Icona ingrandita (era 42px) */
             display: block;
             object-fit: contain;
             transition: all 0.3s ease;
@@ -100,23 +100,23 @@
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            font-size: 1.3rem; /* Testo "SCACCHI FERMO" ingrandito (era 1.1rem) */
             line-height: 1;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 32px;
+            gap: 36px; /* Più spazio tra i link del menu */
         }
 
         nav ul a {
             font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1rem; /* Voci menu ingrandite (era 0.9rem) */
             text-transform: uppercase;
             font-weight: 700;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.5px;
         }
 
         /* NUOVA HERO AGGIORNATA PER IFRAME ANIMAZIONE */
@@ -192,11 +192,11 @@
         .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
 
         /* BIG QUOTE - CONTROPUNTO UMANISTA */
-.quote-section { 
-    text-align: center; 
-    padding: 60px 0; /* Ridotto leggermente il padding verticale visto che non ci sono più barriere visive */
-    margin: 20px 0;
-}
+        .quote-section { 
+            text-align: center; 
+            padding: 60px 0; 
+            margin: 20px 0;
+        }
         .quote-text { font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; line-height: 1.2; color: var(--text-color); }
 
         /* CAROSELLO MANIFESTI */
@@ -281,6 +281,10 @@
         @media (max-width: 768px) {
             nav { display: none; }
             
+            header {
+                padding: 24px 0; /* Su mobile l'header torna compatto per non rubare spazio allo schermo */
+            }
+
             header .container {
                 display: flex;
                 width: 100%;
@@ -296,6 +300,15 @@
                 gap: 0;
             }
 
+            .logo-icon {
+                width: 42px;  /* Dimensioni smartphone tradizionali */
+                height: 42px;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
             .hero { height: auto; min-height: auto; padding: 40px 0; }
             .hero-iframe-container { max-width: 320px; padding: 0; }
             .press-item { grid-template-columns: 1fr; gap: 24px; }
@@ -308,7 +321,7 @@
             .footer-grid { grid-template-columns: 1fr; }
             .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
         }
-    </style>
+</style>
 </head>
 <body>
 
