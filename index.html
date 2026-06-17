@@ -7,10 +7,12 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* RESET & VARIABILI */
+        /* ==========================================================
+           1. RESET, VARIABILI E STILI BASE (da index.html originale)
+           ========================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -20,10 +22,7 @@
         :root {
             --bg-color: #FAFAFA;
             --text-color: #111111;
-            --accent-green: #008744; /* Verde istituzionale coordinato al QR */
-            --bright-green: #00E676; /* Verde acido per interazioni ed elementi attivi */
-            
-            /* Sfumature Tecnologiche & Toni d'Archivio */
+            --accent-green: #008744; /* Verde coordinato tra QR e sito */
             --bg-card-dark: #222524;
             --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
@@ -65,10 +64,14 @@
             padding: 80px 0;
         }
 
-        /* HEADER & CONFIGURAZIONE LOGO */
+        /* ==========================================================
+           2. HEADER & LOGO (da index.html originale)
+           ========================================================== */
         header {
             padding: 24px 0;
             background: transparent;
+            position: relative;
+            z-index: 100; /* Sopra l'animazione hero */
         }
 
         header .container {
@@ -120,170 +123,220 @@
             letter-spacing: 0.2px;
         }
 
-        /* NUOVA HERO SEZIONATA CON SCACCHIERA INTERATTIVA INTEGRATA */
-        .hero-split-section {
-            padding: 40px 0 60px 0;
-            background-color: var(--bg-color);
-        }
-
-        .hero-split-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 64px;
-            align-items: center;
-        }
-
-        /* Colonna Sinistra: Claim e Legenda Attività */
-        .hero-left-content {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .hero-title-area h1 {
-            font-size: clamp(3rem, 5vw, 4.8rem);
-            line-height: 1.1;
-            margin-bottom: 16px;
-            color: var(--text-color);
-            letter-spacing: -1px;
-        }
-
-        .hero-title-area h1 span {
-            font-style: italic;
-            color: var(--accent-green);
-        }
-
-        /* Scatola Legenda Attività Club */
-        .interactive-legend {
-            background-color: var(--bg-archive-warm);
-            border: 1px solid var(--border-gray);
-            padding: 28px;
-            border-radius: 2px;
-        }
-
-        .legend-title {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dark-muted);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .legend-title::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--bright-green);
-            border-radius: 50%;
-        }
-
-        .legend-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .legend-item {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 16px;
-            align-items: start;
-            cursor: pointer;
-        }
-
-        .legend-marker {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            width: 24px;
-            height: 24px;
+        /* ==========================================================
+           3. NUOVA HERO SECTION ANIMATA (integrata da animaz-solo.html)
+           ========================================================== */
+        .hero {
+            position: relative;
+            height: 80vh; /* Leggermente più alta per dare respiro all'adesivo */
+            min-height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 2px;
-            transition: background-color 0.2s ease;
+            perspective: 1200px;
+            background-color: var(--bg-color);
+            overflow: visible; /* Per permettere ai bordi dello sticker di uscire nel 3D */
+            margin-top: -90px; /* Recupera lo spazio dell'header trasparente */
+            z-index: 1;
         }
 
-        .legend-item:hover .legend-marker {
-            background-color: var(--accent-green);
-        }
-
-        .legend-text strong {
-            display: block;
-            font-size: 1.05rem;
-            font-weight: 600;
+        /* Il Claim Finale spostato dentro la section per posizionamento assoluto */
+        .hero-claim-final {
+            position: absolute;
+            z-index: 6;
             color: var(--text-color);
-            margin-bottom: 2px;
-        }
-
-        .legend-text p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Colonna Destra: Scacchiera Geometrica con QR Code */
-        .board-wrapper {
-            position: relative;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            /* Font size responsive bilanciato */
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            text-align: center;
             width: 100%;
-            max-width: 440px;
-            margin: 0 auto;
-            aspect-ratio: 1 / 1;
-            background-color: var(--text-color);
-            padding: 4px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            bottom: 10%; /* Posizionato in basso nella sezione hero */
+            opacity: 0;
+            transform: scale(0.96);
+            /* Alone bianco per leggibilità se tocca elementi scuri */
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 10px rgba(255,255,255,0.5);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
         }
 
-        .chess-grid-bg {
+        /* CONTENITORE 3D DELLO STICKER */
+        .hero-sticker-wrapper {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            transform-style: preserve-3d;
+            /* Animazione automatica di parallasse 3D */
+            animation: automatic-parallax 7s infinite ease-in-out alternate;
+            margin-top: 60px; /* Centratura visiva considerando il claim sotto */
+        }
+
+        @keyframes automatic-parallax {
+            0% { transform: rotateY(-6deg) rotateX(-4deg); }
+            100% { transform: rotateY(6deg) rotateX(4deg); }
+        }
+
+        /* Layer 1: Sfondo Grafico dello Sticker (Bianco con ombra morbida) */
+        .hero-bg-texti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFFFF;
+            border: 2px solid var(--border-gray);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            z-index: 1;
+            transform: translateZ(-15px);
+            transition: opacity 0.5s ease;
+        }
+
+        /* Layer 2: LA GRIGLIA UNICA DEI QUADRATINI (MOMENTO 0: FORMA IL QR CODE) */
+        .hero-qr-html-grid {
+            position: absolute;
+            width: 71%; /* Centraggio millimetrico nella cornice dello sticker */
+            height: 71%;
+            top: 14.5%;
+            left: 14.5%;
+            z-index: 2;
+            display: grid;
+            /* Matrice 21x21 standard QR versione 1 */
+            grid-template-columns: repeat(21, 1fr);
+            grid-template-rows: repeat(21, 1fr);
+            gap: 0; /* Nessun gap per la massima densità iniziale */
+            transform: translateZ(0px);
+            transition: opacity 0.5s ease;
+        }
+
+        /* Il singolo cubetto del QR */
+        .q-dot {
+            background-color: var(--accent-green);
+            /* Transizione fluida per lo scorrimento e la scomposizione */
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        
+        /* I moduli vuoti (spazi bianchi) del QR code */
+        .q-dot.e {
+            background-color: transparent;
+        }
+
+        /* ==========================================================
+           FASE 2: SCOMPOSIZIONE CONTROLLATA VERSO SCACCHIERA
+           ========================================================== */
+        
+        /* I 3 grandi occhielli d'angolo (Finder Patterns) rimangono stabili 
+           per mantenere l'identità del QR fino all'ultimo */
+        .hero.frenetic-chaos .q-dot.merge-group {
+            transform: scale(1.02); /* Leggera enfasi stazionaria */
+        }
+
+        /* Alcuni quadratini svaniscono per "pulire" la griglia */
+        .hero.frenetic-chaos .q-dot.fade-out {
+            opacity: 0;
+            transform: scale(0.2);
+        }
+
+        /* Gruppi di quadratini che scorrono/slittano orizzontalmente e verticalmente 
+           suggerendo la disposizione modulare della scacchiera */
+        .hero.frenetic-chaos .q-dot.slide-up {
+            transform: translateY(-25px) scale(1.1);
+        }
+        .hero.frenetic-chaos .q-dot.slide-down {
+            transform: translateY(25px) scale(1.1);
+        }
+        .hero.frenetic-chaos .q-dot.slide-left {
+            transform: translateX(-25px) scale(1.1);
+        }
+        .hero.frenetic-chaos .q-dot.slide-right {
+            transform: translateX(25px) scale(1.1);
+        }
+
+        /* Nascondiamo tutto il blocco QR quando la scacchiera finale prende il sopravvento */
+        .hero.hide-qr-completely .hero-qr-html-grid {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Layer Coordinate Lettere/Numeri della Scacchiera (appaiono alla fine) */
+        .board-labels {
+            position: absolute;
+            width: 106%;
+            height: 106%;
+            top: -3%;
+            left: -3%;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            font-size: 0.75rem;
+            color: var(--text-dark-muted);
+            transition: opacity 0.6s ease;
+        }
+        .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
+        .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
+
+        /* Layer 5: LA MATRICE SCACCHIERA 8x8 REALE (Compare fluida) */
+        .hero-qr-animated {
+            position: absolute;
+            width: 71%; 
+            height: 71%;
+            top: 14.5%;
+            left: 14.5%;
+            z-index: 4;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
+            opacity: 0;
+            /* Leggero offset 3D per staccarla dallo sfondo dello sticker */
+            transform: translateZ(10px) scale(0.92);
+            transition: opacity 0.4s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .qr-block {
             width: 100%;
             height: 100%;
+            background-color: var(--accent-green);
+            transform: scale(0);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .qr-block.empty {
+            opacity: 0;
         }
 
-        .cell {
-            width: 100%;
-            height: 100%;
-            transition: background-color 0.3s ease;
-        }
-        .cell.light { background-color: #FFFFFF; }
-        .cell.dark { background-color: #E5E5E5; }
+        /* ==========================================================
+           GESTIONE STATI ANIMAZIONE (TRIGGERATI VIA JS)
+           ========================================================== */
 
-        /* QR Code Sovrapposto al Centro (copre 6x6 caselle interne per perfetto allineamento) */
-        .qr-overlay-container {
-            position: absolute;
-            top: 12.5%;  
-            left: 12.5%; 
-            width: 75%;
-            height: 75%;
-            background-color: #FFFFFF;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+        /* Nasconde lo sfondo dello sticker per far risaltare il claim finale */
+        .hero.hide-all-svg-layers .hero-bg-texti {
+            opacity: 0;
         }
 
-        .qr-svg-embed {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        /* Attivazione della Scacchiera Grande 8x8 */
+        .hero.assemble-board .hero-qr-animated {
+            opacity: 1;
+            /* Rotazione finale coordinata all'apparizione dei blocchi */
+            transform: translateZ(10px) scale(1) rotate(90deg);
+        }
+        .hero.assemble-board .qr-block {
+            transform: scale(1);
+        }
+        .hero.assemble-board .board-labels {
+            opacity: 1;
         }
 
-        /* Classi JavaScript di Evidenziazione sulla Scacchiera */
-        .cell.highlight-1 { background-color: rgba(0, 135, 68, 0.25) !important; }
-        .cell.highlight-2 { background-color: rgba(0, 230, 118, 0.3) !important; }
-        .cell.highlight-3 { background-color: rgba(17, 17, 17, 0.2) !important; }
+        /* Attivazione del Claim Finale "Fermo, eppur si muove" */
+        .hero.display-claim .hero-claim-final {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* La scacchiera rimane in filigrana sullo sfondo */
+        .hero.display-claim .hero-qr-animated,
+        .hero.display-claim .board-labels {
+            opacity: 0.12;
+        }
+
+        /* ==========================================================
+           4. ALTRE SEZIONI (da index.html originale)
+           ========================================================== */
 
         /* INTRO BLOCKS */
         .intro-block {
@@ -316,6 +369,7 @@
             align-items: center;
         }
 
+        /* Layout invertito per alternanza visiva */
         .press-item.reverse { direction: rtl; }
         .press-item.reverse .press-text-box { direction: ltr; }
 
@@ -328,7 +382,7 @@
         .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
         .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
 
-        /* BIG QUOTE */
+        /* BIG QUOTE - CONTROPUNTO UMANISTA */
         .quote-section { 
             text-align: center; 
             padding: 100px 0; 
@@ -342,13 +396,16 @@
         /* CAROSELLO MANIFESTI */
         .carousel-wrapper { position: relative; width: 100%; }
         .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
+        /* Nasconde scrollbar standard */
         .carousel-track::-webkit-scrollbar { display: none; }
+        
         .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
         .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
         .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: all 0.3s ease; }
         .manifesto-card:hover .manifesto-img { filter: grayscale(0%) contrast(1); }
         .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.2; }
         .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
+
         .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
         .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s ease; }
         .carousel-btn:hover { background-color: var(--text-color); color: var(--bg-color); }
@@ -404,23 +461,26 @@
         }
 
         /* FOOTER */
-        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
+        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; position: relative; z-index: 10; }
         .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
         .footer-grid h2 { font-size: 3rem; font-style: italic; }
         .footer-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; align-items: flex-start; }
         .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.5px; }
         .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; line-height: 1.2; }
-        .footer-link-block a:hover { color: var(--bright-green); opacity: 1; }
+        .footer-link-block a:hover { color: var(--accent-green); opacity: 1; }
 
-        /* RESPONSIVE */
+        /* ==========================================================
+           5. RESPONSIVE ADAPTATIONS
+           ========================================================== */
         @media (max-width: 992px) {
-            .hero-split-grid { grid-template-columns: 1fr; gap: 48px; }
             .network-grid { grid-template-columns: 1fr; gap: 48px; }
             .sponsor-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border-gray); padding-top: 48px; }
+            .hero { height: 70vh; min-height: 550px; margin-top: 0; }
+            .hero-sticker-wrapper { width: 320px; height: 320px; }
         }
 
         @media (max-width: 768px) {
-            nav { display: none; }
+            nav { display: none; } /* Nasconde menù desktop */
             
             header .container {
                 display: flex;
@@ -436,6 +496,10 @@
                 align-items: center;
                 gap: 0;
             }
+
+            .hero { height: 60vh; min-height: 480px; }
+            .hero-sticker-wrapper { width: 280px; height: 280px; }
+            .board-labels { display: none; } /* Nasconde coordinate su mobile */
 
             .press-item { grid-template-columns: 1fr; gap: 24px; }
             .press-item.reverse { direction: ltr; }
@@ -467,51 +531,56 @@
         </div>
     </header>
 
-    <section class="hero-split-section">
-        <div class="container hero-split-grid">
+    <section class="hero" id="heroSection">
+        <div class="hero-sticker-wrapper">
             
-            <div class="hero-left-content">
-                <div class="hero-title-area">
-                    <h1>Una mossa per il <span>futuro</span></h1>
-                </div>
-
-                <div class="interactive-legend">
-                    <div class="legend-title">Le attività della nostra associazione</div>
-                    <ul class="legend-list">
-                        <li class="legend-item" onmouseenter="highlightCells(1)" onmouseleave="clearCells()">
-                            <div class="legend-marker">1</div>
-                            <div class="legend-text">
-                                <strong>Scuola & Settore Giovanile</strong>
-                                <p>Corsi didattici negli istituti del Fermano per sviluppare logica, concentrazione e fair play fin da piccoli.</p>
-                            </div>
-                        </li>
-                        <li class="legend-item" onmouseenter="highlightCells(2)" onmouseleave="clearCells()">
-                            <div class="legend-marker">2</div>
-                            <div class="legend-text">
-                                <strong>Agonismo & Campionati FFS</strong>
-                                <p>Allenamenti mirati e partecipazione attiva ai campionati regionali e nazionali italiani a squadre.</p>
-                            </div>
-                        </li>
-                        <li class="legend-item" onmouseenter="highlightCells(3)" onmouseleave="clearCells()">
-                            <div class="legend-marker">3</div>
-                            <div class="legend-text">
-                                <strong>Tornei Federali ed Eventi Estivi</strong>
-                                <p>Organizzazione sul territorio di competizioni ufficiali omologate FIDE e manifestazioni storiche locali.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div class="hero-bg-texti"></div>
+            
+            <div class="hero-qr-html-grid">
+                <div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot fade-out"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div>
+                
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot fade-out"></div><div class="q-dot e"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot slide-right"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-left"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-left"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div>
+                <div class="q-dot slide-down"></div><div class="q-dot slide-down"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div>
+                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                
+                <div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot fade-out"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot fade-out"></div><div class="q-dot slide-left"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div>
+                <div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot merge-group"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-up"></div><div class="q-dot slide-down"></div><div class="q-dot e"></div><div class="q-dot slide-left"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot slide-right"></div><div class="q-dot slide-up"></div><div class="q-dot e"></div><div class="q-dot slide-down"></div><div class="q-dot slide-left"></div><div class="q-dot slide-right"></div>
+            </div>
+            
+            <div class="board-labels">
+                <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+                <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
             </div>
 
-            <div class="board-wrapper">
-                <div class="chess-grid-bg" id="chessBoard">
-                    </div>
-                <div class="qr-overlay-container">
-                    <img src="2-qr-code-da-lettura.txt" alt="QR Code ASD Scacchi Fermo" class="qr-svg-embed">
-                </div>
+            <div class="hero-qr-animated">
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
+                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
             </div>
 
         </div>
+
+        <div class="hero-claim-final">“Fermo, eppur si muove”</div>
     </section>
 
     <main class="container">
@@ -551,7 +620,7 @@
 
         <section class="quote-section">
             <a href="sotto_pagina_reportage.html" style="text-decoration: none;">
-                <div class="quote-text" style="color: var(--accent-green); transition: opacity 0.2s ease;">
+                <div class="quote-text" style="color: rgba(0, 230, 118, 0.85); transition: opacity 0.2s ease;">
                     “Fermo, eppur si muove”
                 </div>
             </a>
@@ -667,63 +736,51 @@
     </footer>
 
     <script>
-        // Logica di rendering dinamico delle celle della scacchiera
-        const chessBoard = document.getElementById('chessBoard');
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                if ((row + col) % 2 === 0) {
-                    cell.classList.add('light');
-                } else {
-                    cell.classList.add('dark');
-                }
-                cell.dataset.row = row;
-                cell.dataset.col = col;
-                chessBoard.appendChild(cell);
-            }
-        }
-
-        // Funzione per animare le caselle della scacchiera al passaggio del mouse sulla legenda
-        function highlightCells(type) {
-            clearCells();
-            const cells = document.querySelectorAll('.cell');
-            
-            cells.forEach(cell => {
-                const r = parseInt(cell.dataset.row);
-                const c = parseInt(cell.dataset.col);
-                
-                if (type === 1) {
-                    // Scuola/Giovanili: Illumina il perimetro esterno (la cornice del vivaio)
-                    if (r === 0 || r === 7 || c === 0 || c === 7) {
-                        cell.classList.add('highlight-1');
-                    }
-                } else if (type === 2) {
-                    // Agonismo: Illumina il centro strategico della scacchiera (sotto il QR)
-                    if (r >= 2 && r <= 5 && c >= 2 && c <= 5) {
-                        cell.classList.add('highlight-2');
-                    }
-                } else if (type === 3) {
-                    // Tornei/Eventi: Illumina le diagonali geometriche di attacco e movimento
-                    if (r === c || (r + c) === 7) {
-                        cell.classList.add('highlight-3');
-                    }
-                }
-            });
-        }
-
-        function clearCells() {
-            const cells = document.querySelectorAll('.cell');
-            cells.forEach(cell => {
-                cell.classList.remove('highlight-1', 'highlight-2', 'highlight-3');
-            });
-        }
-
-        // Script carosello eventi
+        // --- Script Carosello Eventi (da index.html) ---
         function scrollCarousel(distance) {
             const track = document.getElementById('carouselTrack');
             track.scrollBy({ left: distance, behavior: 'smooth' });
         }
+
+        // --- Script Animazione Hero (da animaz-solo.html) ---
+        const hero = document.getElementById('heroSection');
+
+        function runStickerSequence() {
+            // Stato 0: QR Code compatto e unito.
+
+            // FASE 2: Inizia la scomposizione/scorrimento (dopo 3 secondi)
+            setTimeout(() => {
+                hero.classList.add('frenetic-chaos');
+            }, 3000);
+
+            // FASE 3: Transizione alla scacchiera 8x8 reale (dopo 6.5 secondi)
+            setTimeout(() => {
+                hero.classList.add('hide-qr-completely');
+                hero.classList.add('assemble-board');
+            }, 6500);
+
+            // FASE 4: Comparsa Claim Finale (dopo 8.8 secondi)
+            setTimeout(() => {
+                hero.classList.add('display-claim');
+                // Opzionale: nasconde del tutto sticker layer se tocca claim
+                hero.classList.add('hide-all-svg-layers'); 
+            }, 8800);
+
+            // RESET DEL LOOP (ritorno allo stato iniziale dopo 13.5 secondi)
+            setTimeout(() => {
+                hero.classList.remove('display-claim');
+                hero.classList.remove('assemble-board');
+                hero.classList.remove('hide-all-svg-layers');
+                hero.classList.remove('hide-qr-completely');
+                hero.classList.remove('frenetic-chaos');
+            }, 13500);
+        }
+
+        // Esegui la sequenza al caricamento e impostala in loop
+        window.addEventListener('DOMContentLoaded', () => {
+            runStickerSequence(); // Avvio immediato
+            setInterval(runStickerSequence, 14500); // Loop continuo (con piccolo gap)
+        });
     </script>
 
 </body>
