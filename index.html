@@ -151,52 +151,56 @@
             transition: opacity 0.6s ease;
         }
 
-        /* NUOVA GRIGLIA QR EVOLUTIVA: Sostituisce l'SVG statico. 
-           Inizialmente i quadratini formano il QR Code reale sul posto. */
-        .hero-qr-hardware-matrix {
+        /* Layer 2: IL VOSTRO QR CODE REALE INLINE (Dal file sorgente .txt) */
+        .hero-qr-inline-svg {
             position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
             z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(12, 1fr);
-            gap: 2px; /* Simula la separazione dei pixel del QR */
-            transform: translateZ(0px);
-            transition: opacity 0.4s ease;
+            transform: translateZ(0px) scale(1);
+            transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .hardware-pixel {
-            width: 100%;
-            height: 100%;
-            background-color: var(--text-color); /* Colore scuro del QR code iniziale */
-            transition: background-color 0.5s ease, transform 0.5s ease;
+        /* Tutti i singoli atomi/quadrati del QR code presi dal vettoriale */
+        .qr-atom {
+            fill: var(--accent-green);
+            transform-origin: center center;
+            transition: fill 0.4s ease, opacity 0.4s ease;
         }
 
-        /* I pixel vuoti del QR originario sono trasparenti */
-        .hardware-pixel.empty {
-            background-color: transparent;
+        /* FASE 2: RIDUZIONE VOLUME & ATOMIZZAZIONE FRENETICA */
+        /* Il QR si contrae e riduce leggermente di volume */
+        .hero.shrink-qr .hero-qr-inline-svg {
+            transform: translateZ(0px) scale(0.86);
         }
 
-        /* ATTIVAZIONE DEL CAOS DIRETTAMENTE SUI VECCHI PIXEL */
-        .hero.frenetic-chaos .hardware-pixel:not(.empty) {
-            background-color: var(--accent-green); /* Virano al verde mentre si staccano */
-            animation: frenetic-explosion 2.2s infinite ease-in-out alternate;
+        /* I singoli quadratini si sganciano freneticamente partendo dalle loro coordinate native */
+        .hero.frenetic-chaos .qr-atom {
+            animation: atom-chaos-burst 2.3s infinite ease-in-out alternate;
         }
 
-        /* Sfasamenti e traiettorie differenziate partendo dai punti nativi del QR */
-        .hardware-pixel:nth-child(3n) { animation-delay: -0.3s; --mx: 110px; --my: -140px; }
-        .hardware-pixel:nth-child(4n) { animation-delay: -0.6s; --mx: -150px; --my: 90px; }
-        .hardware-pixel:nth-child(5n) { animation-delay: -0.9s; --mx: 130px; --my: 130px; }
-        .hardware-pixel:nth-child(7n) { animation-delay: -1.2s; --mx: -90px; --my: -100px; }
+        /* Disorientamento sfasato asimmetrico per rompere la griglia in modo iper-caotico */
+        .qr-atom:nth-child(3n) { animation-delay: -0.3s; --tx: 120px; --ty: -140px; }
+        .qr-atom:nth-child(4n) { animation-delay: -0.6s; --tx: -130px; --ty: 100px; }
+        .qr-atom:nth-child(5n) { animation-delay: -0.9s; --tx: 150px; --ty: 120px; }
+        .qr-atom:nth-child(7n) { animation-delay: -1.2s; --tx: -100px; --ty: -110px; }
+        .qr-atom:nth-child(11n) { animation-delay: -1.5s; --tx: 60px; --ty: -160px; }
 
-        @keyframes frenetic-explosion {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(var(--mx, 50px), var(--my, -60px)) scale(0.85); }
-            100% { transform: translate(calc(var(--mx, 50px) * -0.6), calc(var(--my, -60px) * -0.7)) scale(0.9); }
+        @keyframes atom-chaos-burst {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(var(--tx, 45px), var(--ty, -55px)); }
+            100% { transform: translate(calc(var(--tx, 45px) * -0.5), calc(var(--ty, -55px) * -0.7)); }
         }
 
-        /* Layer Coordinate Bordi Scacchiera (Grotesk Light) */
+        /* Dissolvenza controllata del QR quando si passa alla scacchiera finale */
+        .hero.hide-qr-completely .hero-qr-inline-svg {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Layer Coordinate Bordi Scacchiera (Space Grotesk Light) */
         .board-labels {
             position: absolute;
             width: 106%;
@@ -210,7 +214,7 @@
             font-weight: 300;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.8s ease 1.2s;
+            transition: opacity 0.8s ease 1s;
         }
 
         .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
@@ -231,7 +235,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 5: Matrice Grandi Quadrati HTML Scacchiera */
+        /* Layer 5: Matrice Grandi Quadrati Scacchiera Finale */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -256,6 +260,21 @@
 
         .qr-block.empty { opacity: 1; }
 
+        /* Quando si passa ai grandi blocchi, gli altri vecchi SVG svaniscono */
+        .hero.hide-all-svg-layers .hero-bg-texti,
+        .hero.hide-all-svg-layers .hero-cavallo {
+            opacity: 0;
+        }
+
+        /* Aggregazione Scacchiera Grande e Rotazione di 90 gradi */
+        .hero.assemble-board .hero-qr-animated {
+            opacity: 1;
+            transform: translateZ(10px) scale(1) rotate(90deg);
+        }
+        .hero.assemble-board .qr-block { transform: scale(1); }
+        .hero.assemble-board .qr-block.empty { opacity: 0; }
+        .hero.assemble-board .board-labels { opacity: 1; }
+
         /* Epilogo: Il Claim */
         .hero-claim-final {
             position: absolute;
@@ -274,39 +293,6 @@
             pointer-events: none;
         }
 
-
-        /* ==========================================================================
-           TIMELINE EVOLUTIVA DELLE CLASSI (JS DRIVEN)
-           ========================================================================== */
-        
-        /* 1. Fase Caotica: La griglia QR originale impazzisce. Cavallo e sfondo restano intatti */
-        /* Gestito direttamente via classe .frenetic-chaos sul parent */
-
-        /* 2. Passaggio alla Scacchiera Grande: Scompare la vecchia matrice QR e si spengono gli altri SVG */
-        .hero.hide-old-matrix .hero-qr-hardware-matrix {
-            opacity: 0;
-        }
-        .hero.hide-all-svg-layers .hero-bg-texti,
-        .hero.hide-all-svg-layers .hero-cavallo {
-            opacity: 0;
-        }
-
-        /* 3. Aggregazione Scacchiera Grande e Rotazione di 90 gradi */
-        .hero.assemble-board .hero-qr-animated {
-            opacity: 1;
-            transform: translateZ(10px) scale(1) rotate(90deg);
-        }
-        .hero.assemble-board .qr-block {
-            transform: scale(1);
-        }
-        .hero.assemble-board .qr-block.empty {
-            opacity: 0; 
-        }
-        .hero.assemble-board .board-labels {
-            opacity: 1;
-        }
-
-        /* 4. Epilogo Scritta */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
@@ -318,7 +304,7 @@
             transition: opacity 1s ease;
         }
 
-        /* TRATTI SORGENTI SITO COMPLETO */
+        /* STRUTTURA CONTENUTI EDITORIALI INTEGRALE */
         .intro-block { max-width: 800px; margin-bottom: 60px; }
         .intro-block h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; line-height: 1.1; }
         .intro-block p { font-size: 1.2rem; color: var(--text-muted); }
@@ -391,19 +377,40 @@
     <section class="hero" id="heroSection">
         <div class="hero-sticker-wrapper" id="parallaxBox">
             
-            <!-- Layer 1: Sfondo Testi (svg 1) -->
             <div class="hero-bg-texti"></div>
             
-            <!-- NUOVO LAYER: Ricostruzione geometrica reale del QR Code (Niente immagini slegate!) -->
-            <div class="hero-qr-hardware-matrix" id="hardwareMatrix"></div>
+            <svg class="hero-qr-inline-svg" viewBox="3702.9 1280 288.32 288.32" xmlns="http://www.w3.org/2000/svg">
+                <g id="blocco-qr-code">
+                    <path class="qr-atom" d="m3940.8 1528h-0.01v-5.0647h5.0647v5.0647h-5.0569"/>
+                    <path class="qr-atom" d="m3930.7 1528h-0.016v-5.0647h0.015"/>
+                    <path class="qr-atom" d="m3930.7 1522.9h5.0493v5.0647h-5.0492"/>
+                    <path class="qr-atom" d="m3925.6 1528h-0.019v-5.0647h0.019"/>
+                    <path class="qr-atom" d="m3925.6 1522.9h5.0456v5.0647h-5.0455"/>
+                    <path class="qr-atom" d="m3824.4 1325.4h-0.097v-5.0647h0.097"/>
+                    <path class="qr-atom" d="m3824.4 1320.3h4.9681v5.0647h-4.9681"/>
+                    <path class="qr-atom" d="m3814.3 1325.4h-0.1044v-5.0647h0.1043"/>
+                    <path class="qr-atom" d="m3814.3 1320.3h4.9604v5.0647h-4.9603"/>
+                    <path class="qr-atom" d="m3809.2 1325.4h-0.1085v-5.0647h0.1085"/>
+                    <path class="qr-atom" d="m3809.2 1320.3h4.9561v5.0647h-4.9561"/>
+                    <path class="qr-atom" d="m3789 1325.4h-0.124v-5.0647h0.124"/>
+                    <path class="qr-atom" d="m3789 1320.3h4.9407v5.0647h-4.9407"/>
+                    <path class="qr-atom" d="m3723.2 1325.4h-0.1651v-5.0647h0.1651"/>
+                    <path class="qr-atom" d="m3723.2 1320.3h4.8996v5.0647h-4.8996"/>
+                    <path class="qr-atom" d="m3718.1 1325.4h-0.1684v-5.0647h0.1684"/>
+                    <path class="qr-atom" d="m3718.1 1320.3h4.8963v5.0647h-4.8963"/>
+                    <path class="qr-atom" d="m3713 1325.4h-0.1717v-5.0647h0.1717"/>
+                    <path class="qr-atom" d="m3713 1320.3h4.893v5.0647h-4.893"/>
+                    <path class="qr-atom" d="m3708 1325.4h-0.1749v-5.0647h0.1749"/>
+                    <path class="qr-atom" d="m3708 1320.3h4.8898v5.0647h-4.8898"/>
+                    <path class="qr-atom" d="m3702.9 1325.4v-5.0647h4.8865v5.0647z"/>
+                </g>
+            </svg>
             
-            <!-- Layer Coordinate Lettere e Numeri della Scacchiera -->
             <div class="board-labels">
                 <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
                 <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
             </div>
 
-            <!-- Layer 5: Matrice Grandi Quadrati HTML Scacchiera (Configurazione FIDE) -->
             <div class="hero-qr-animated">
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
@@ -415,7 +422,6 @@
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
             </div>
 
-            <!-- Layer 4: Grafica Cavallo (svg 3) -->
             <div class="hero-cavallo"></div>
         </div>
 
@@ -423,11 +429,10 @@
     </section>
 
     <main class="container">
-        <!-- I restanti blocchi di contenuto sono integrati al 100% senza alcuna alterazione -->
         <section id="chi-siamo">
             <div class="intro-block">
                 <h2>Pedoni e Alfieri: chi siamo</h2>
-                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
+                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, ordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
             </div>
 
             <div class="press-layout">
@@ -526,70 +531,49 @@
     </footer>
 
     <script>
-        // MAPPATURA DI UN QR CODE REALE (1 = Pixel Nero, 0 = Spazio Vuoto Trasparente)
-        // Disposto su una matrice 12x12 simmetrica per combaciare perfettamente con il look dello sticker originale
-        const qrPattern = [
-            1,1,1,1,1,1,0,1,1,1,1,1,
-            1,0,0,0,0,1,0,1,0,0,0,1,
-            1,0,1,1,0,1,0,1,0,1,0,1,
-            1,0,1,1,0,1,0,1,0,1,0,1,
-            1,0,0,0,0,1,0,1,0,0,0,1,
-            1,1,1,1,1,1,0,1,1,1,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,
-            1,1,0,1,0,1,1,0,1,1,0,1,
-            1,0,1,0,1,0,0,1,0,0,1,0,
-            1,1,0,0,1,1,0,1,1,0,1,1,
-            1,0,1,1,0,1,0,0,1,0,1,0,
-            1,1,1,1,1,1,0,1,0,1,1,1
-        ];
-
-        const matrixContainer = document.getElementById('hardwareMatrix');
-        
-        // Generazione della struttura fisica atomica del QR
-        qrPattern.forEach(bit => {
-            const block = document.createElement('div');
-            block.classList.add('hardware-pixel');
-            if (bit === 0) block.classList.add('empty');
-            matrixContainer.appendChild(block);
-        });
-
         const hero = document.getElementById('heroSection');
 
-        // REGISTA DELLA TIME-LINE EVOLUTIVA SCOMPOSITIVA
+        // REGISTA DELLA TIME-LINE EVOLUTIVA REALE SU BASE VETTORIALE
         function runStickerSequence() {
             
-            // FASE 1: I pixel del QR partono dalle loro posizioni native e impazziscono (Caos Frenetico)
-            // Sfondo testi e Cavallo restano ancora visibili al loro posto!
+            // FASE 1: Il QR Code si contrae leggermente di volume riducendo la scala del contenitore SVG
+            setTimeout(() => {
+                hero.classList.add('shrink-qr');
+            }, 3200);
+
+            // FASE 2: I cubetti nativi interni del vostro QR si sganciano ed iniziano a fluttuare in modo caotico.
+            // Lo sfondo testi e il cavallo rimangono visibili al 100%!
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
-            }, 3500);
+            }, 3900);
 
-            // FASE 2: Passaggio alla scacchiera grande. Svanisce la vecchia matrice QR esplosa
-            // e contestualmente si spengono anche lo Sfondo e la figura del Cavallo.
+            // FASE 3: Transizione. I cubetti del QR si dissolvono del tutto, compaiono i grandi blocchi
+            // della scacchiera che ruotano di 90° e, in questo preciso istante, si spengono anche Cavallo e Sfondo testi.
             setTimeout(() => {
-                hero.classList.add('hide-old-matrix');
+                hero.classList.add('hide-qr-completely');
                 hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
-            }, 7000); /* Tempo del caos prolungato per dare enfasi dinamica */
+            }, 7400); /* Fase caotica mantenuta volutamente molto lunga */
 
-            // FASE 3: Comparsa finale stabile del Claim
+            // FASE 4: Apparizione poetica del Claim
             setTimeout(() => {
                 hero.classList.add('display-claim');
-            }, 9400);
+            }, 9800);
 
-            // FASE 4: RESET COMPLETO AD ANELLO CONTINUO
+            // FASE 5: RESET DEL LOOP AD ANELLO CONTINUO
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
                 hero.classList.remove('hide-all-svg-layers');
-                hero.classList.remove('hide-old-matrix');
+                hero.classList.remove('hide-qr-completely');
                 hero.classList.remove('frenetic-chaos');
-            }, 13500);
+                hero.classList.remove('shrink-qr');
+            }, 14000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             runStickerSequence();
-            setInterval(runStickerSequence, 14500);
+            setInterval(runStickerSequence, 15000);
         });
 
         // Gestione carosello manifesti
