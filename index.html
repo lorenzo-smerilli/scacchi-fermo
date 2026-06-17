@@ -18,9 +18,10 @@
         }
 
         :root {
-            --bg-color: #FAFAFA; 
+            --bg-color: #FAFAFA;
             --text-color: #111111;
             --accent-green: #008744;
+            --bg-card-dark: #222524;
             --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
             --text-muted: #646866;
@@ -110,7 +111,7 @@
             letter-spacing: 0.2px;
         }
 
-        /* HERO SECTION - PARALLAX ED SPOSTAMENTO OTTIMIZZATO */
+        /* HERO SECTION */
         .hero {
             position: relative;
             height: 75vh;
@@ -123,20 +124,18 @@
             perspective: 1200px;
         }
 
-        /* Wrapper centrale leggermente zoommato per dare risalto ai dettagli */
+        /* Wrapper 3D con oscillazione automatica fluida slegata dal mouse */
         .hero-sticker-wrapper {
             position: relative;
             width: 360px;
             height: 360px;
             transform-style: preserve-3d;
-            transition: transform 0.2s ease-out;
-            animation: automatic-rotation 8s infinite ease-in-out alternate; /* Oscillazione automatica di base */
+            animation: automatic-parallax 9s infinite ease-in-out alternate;
         }
 
-        /* Animazione automatica 3D utile per Mobile e Desktop senza interazione */
-        @keyframes automatic-rotation {
-            0% { transform: rotateY(-6deg) rotateX(-4deg); }
-            100% { transform: rotateY(6deg) rotateX(4deg); }
+        @keyframes automatic-parallax {
+            0% { transform: rotateY(-7deg) rotateX(-4deg); }
+            100% { transform: rotateY(7deg) rotateX(4deg); }
         }
 
         /* Layer 1: Sfondo Testi (svg 1) */
@@ -153,7 +152,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: QR Code Centrale Originale (svg 2) */
+        /* Layer 2: QR Code Originale (svg 2) */
         .hero-qr-image {
             position: absolute;
             width: 100%;
@@ -167,7 +166,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 3: Matrice dei Quadrati HTML Animati */
+        /* Layer 3: Matrice Quadrati HTML per Morphing */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -179,43 +178,43 @@
             gap: 0;
             transform: translateZ(10px);
             opacity: 0;
-            transition: opacity 0.4s ease, transform 2s cubic-bezier(0.76, 0, 0.24, 1);
+            transition: opacity 0.4s ease, transform 2.2s cubic-bezier(0.76, 0, 0.24, 1);
         }
 
         .qr-block {
             width: 100%;
             height: 100%;
             background-color: var(--accent-green);
-            transition: transform 0.6s ease, opacity 0.4s ease;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
             transform-origin: center;
         }
 
-        /* Disposizione caotica iniziale (Sticker/QR) */
-        .qr-block:nth-child(odd) { transform: translate(16px, -24px) scale(0.9); }
-        .qr-block:nth-child(3n) { transform: translate(-28px, 12px) scale(1.05); }
-        .qr-block:nth-child(5n) { transform: translate(8px, 22px) scale(0.85); }
-        .qr-block:nth-child(7n) { transform: translate(-16px, -16px) scale(1); }
+        /* STATO INIZIALE SUGGESTIVO: Frammentazione in quadratini piccoli asimmetrici */
+        .qr-block:nth-child(odd) { transform: translate(25px, -30px) scale(0.3); }
+        .qr-block:nth-child(3n) { transform: translate(-40px, 20px) scale(0.4); }
+        .qr-block:nth-child(5n) { transform: translate(15px, 35px) scale(0.25); }
+        .qr-block:nth-child(7n) { transform: translate(-25px, -25px) scale(0.35); }
 
         .qr-block.empty { opacity: 1; }
 
-        /* Layer INTERNO: Coordinate Scacchiera (Lettere e Numeri in Grotesk Light) */
+        /* Layer Coordinate Bordi Scacchiera (Grotesk Light) */
         .board-labels {
             position: absolute;
-            width: 105%;
-            height: 105%;
-            top: -2.5%;
-            left: -2.5%;
+            width: 106%;
+            height: 106%;
+            top: -3%;
+            left: -3%;
             z-index: 3;
             pointer-events: none;
             opacity: 0;
             font-family: 'Space Grotesk', sans-serif;
-            font-weight: 300; /* Light */
+            font-weight: 300;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.8s ease 1.2s;
+            transition: opacity 0.8s ease 1.4s;
         }
 
-        /* Disposizione delle coordinate lungo i bordi */
+        /* Allineamento coordinate per il punto di vista del Bianco */
         .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
         .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
 
@@ -234,7 +233,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer Epilogo: Il Claim Minimal con Glow Neutro */
+        /* Epilogo: Il Claim con Glow Soft Neutro */
         .hero-claim-final {
             position: absolute;
             z-index: 6;
@@ -252,93 +251,296 @@
             pointer-events: none;
         }
 
-
-        /* ==========================================================================
-           STATI DI ANIMAZIONE PILOTATI DA JAVASCRIPT
-           ========================================================================== */
-        
-        /* Fase A: Compaiono i quadrati HTML sopra l'immagine del QR */
+        /* STAGES DI ANIMAZIONE */
         .hero.show-html-squares .hero-qr-animated {
             opacity: 1;
         }
 
-        /* Fase B: Scompaiono i vecchi layer SVG */
         .hero.hide-svg-layers .hero-bg-texti,
         .hero.hide-svg-layers .hero-qr-image,
         .hero.hide-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
-        /* Fase C: La griglia si compatta e RUOTA DI 90° per avere il campo chiaro in h1 */
+        /* Unione e rotazione a 90° per l'orientamento regolamentare della scacchiera */
         .hero.assemble-board .hero-qr-animated {
-            transform: translateZ(10px) rotate(90deg); /* Rotazione ufficiale regolamentare */
+            transform: translateZ(10px) rotate(90deg);
         }
         .hero.assemble-board .qr-block {
-            transition: transform 2s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.4s ease;
             transform: translate(0, 0) scale(1) !important;
         }
         .hero.assemble-board .qr-block.empty {
             opacity: 0; 
         }
-        
-        /* Apparizione dei numeri e lettere coordinati */
         .hero.assemble-board .board-labels {
             opacity: 1;
         }
 
-        /* Fase D: Comparsa finale del claim */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
             transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
         .hero.display-claim .hero-qr-animated,
         .hero.display-claim .board-labels {
-            opacity: 0.12; /* Sbiadisce la scacchiera sullo sfondo del claim */
+            opacity: 0.12;
             transition: opacity 1s ease;
         }
 
+        /* INTRO BLOCKS */
+        .intro-block {
+            max-width: 800px;
+            margin-bottom: 60px;
+        }
 
-        /* SEZIONI SITO INFERIORI */
-        .intro-block { max-width: 800px; margin-bottom: 60px; }
-        .intro-block h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; line-height: 1.1; }
-        .intro-block p { font-size: 1.2rem; color: var(--text-muted); }
-        .press-layout { display: flex; flex-direction: column; gap: 80px; }
-        .press-item { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-        .press-img-container { width: 100%; height: 380px; overflow: hidden; }
-        .press-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); }
-        .press-text-box span { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dark-muted); display: block; margin-bottom: 12px; }
-        .press-text-box h3 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px; }
-        .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
-        .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
+        .intro-block h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
 
-        /* CAROSELLO */
-        .carousel-wrapper { position: relative; width: 100%; }
-        .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
-        .carousel-track::-webkit-scrollbar { display: none; }
-        .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
-        .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
-        .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); }
-        .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
-        .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
-        .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
-        .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .intro-block p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
 
-        /* FOOTER */
-        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
-        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
-        .footer-grid h2 { font-size: 3rem; font-style: italic; }
-        .footer-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; }
-        .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-        .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; }
+        /* LAYOUT STAMPA */
+        .press-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .press-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .press-item.reverse {
+            direction: rtl;
+        }
+
+        .press-item.reverse .press-text-box {
+            direction: ltr;
+        }
+
+        .press-img-container {
+            width: 100%;
+            height: 380px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .press-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .press-item:hover .press-img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        .press-text-box span {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dark-muted);
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .press-text-box h3 {
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .press-text-box p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .read-more {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .read-more::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* BIG QUOTE SECTION */
+        .quote-section {
+            text-align: center;
+            padding: 100px 0;
+            background-color: var(--bg-archive-warm);
+            border-top: 1px solid var(--border-gray);
+            border-bottom: 1px solid var(--border-gray);
+            margin: 40px 0;
+        }
+
+        .quote-text {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-style: italic;
+            line-height: 1.2;
+            color: var(--text-color);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* CAROSELLO MANIFESTI */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .manifesto-card {
+            flex: 0 0 310px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .manifesto-img-box {
+            width: 100%;
+            height: 460px;
+            background-color: var(--text-color);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .manifesto-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            transition: all 0.4s ease;
+        }
+
+        .manifesto-card:hover .manifesto-img {
+            filter: grayscale(0%) contrast(1);
+            transform: scale(1.02);
+        }
+
+        .manifesto-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 4px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .manifesto-card span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .carousel-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .carousel-btn {
+            background: none;
+            border: 1px solid var(--text-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .carousel-btn:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        /* FOOTER REALE INTEGRALE */
+        footer {
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 80px 0;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        .footer-grid h2 {
+            font-size: 3rem;
+            font-style: italic;
+        }
+
+        .footer-contacts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 24px;
+        }
+
+        .footer-link-block span {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .footer-link-block a, .footer-link-block p {
+            color: var(--bg-color);
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
 
         @media (max-width: 768px) {
             nav { display: none; }
             .press-item { grid-template-columns: 1fr; gap: 24px; }
+            .press-item.reverse { direction: ltr; }
             .footer-grid { grid-template-columns: 1fr; }
+            .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
             .hero-sticker-wrapper { width: 290px; height: 290px; }
-            .board-labels { display: none; } /* Rimosse le coordinate su mobile per preservare lo spazio pulito */
+            .board-labels { display: none; }
         }
     </style>
 </head>
@@ -363,21 +565,16 @@
     <section class="hero" id="heroSection">
         <div class="hero-sticker-wrapper" id="parallaxBox">
             
-            <!-- Layer 1: Sfondo Testi (svg 1) -->
             <div class="hero-bg-texti"></div>
             
-            <!-- Layer 2: QR Code Centrale Ripristinato (svg 2) -->
             <div class="hero-qr-image"></div>
             
-            <!-- Layer INLINE: Coordinate Lettere e Numeri Regolamentari -->
             <div class="board-labels">
                 <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
                 <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
             </div>
 
-            <!-- Layer 3: Matrice Quadrati HTML (Configurazione Classica) -->
             <div class="hero-qr-animated">
-                <!-- Righe Alternate Standard FIDE -->
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
@@ -388,99 +585,160 @@
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
             </div>
 
-            <!-- Layer 4: Grafica Cavallo (svg 3) -->
             <div class="hero-cavallo"></div>
         </div>
 
         <div class="hero-claim-final">“Fermo, eppur si muove”</div>
     </section>
 
-    <!-- IL RESTO DEL SITO CONTINUA QUI SENZA INTERRUZIONI -->
     <main class="container">
         <section id="chi-siamo">
             <div class="intro-block">
                 <h2>Pedoni e Alfieri: chi siamo</h2>
-                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano.</p>
+                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
+            </div>
+
+            <div class="press-layout">
+                <div class="press-item">
+                    <div class="press-img-container">
+                        <img src="https://www.cronachefermane.it/wp-content/uploads/2026/04/295f968f-d307-4156-b6f0-1e5edcd8d44b.jpg" alt="Trofeo Scacchi Scuola" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Cronache Fermane · 19 Aprile 2026</span>
+                        <h3>Gli studenti del Fermano brillano al Trofeo Scacchi Scuola</h3>
+                        <p>Resoconto dei grandi risultati conquistati e delle menti giovani del nostro distretto che si sono distinte nel circuito dei campionati studenteschi scolastici.</p>
+                        <a href="https://www.cronachefermane.it/2026/04/19/gli-studenti-del-fermano-brillano-al-trofeo-scacchi-scuola/753790/" target="_blank" rel="noopener noreferrer" class="read-more">Leggi l'articolo originale &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="press-item reverse">
+                    <div class="press-img-container">
+                        <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80" alt="Scacchiera Storica" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Il Resto del Carlino · 10 Febbraio 2026</span>
+                        <h3>Fermo si candida ad ospitare i campionati regionali assoluti</h3>
+                        <p>Un traguardo ambizioso per l'associazione sportiva dilettantistica locale, pronta ad accogliere i migliori talenti delle Marche nelle prestigiose sale storiche della città.</p>
+                        <p style="font-size: 0.95rem; font-style: italic; color: var(--text-dark-muted);">Articolo cartaceo disponibile presso l'archivio storico del club.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quote-section">
+            <blockquote class="quote-text">
+                “Gli scacchi sono lo specchio dell'anima. Richiedono silenzio, rigore geopolitico e una mente sempre tesa al movimento dinamico.”
+            </blockquote>
+        </section>
+
+        <section id="eventi">
+            <div class="intro-block">
+                <h2>I nostri appuntamenti</h2>
+                <p>I bandi e le locandine reali delle competizioni e delle manifestazioni storiche e correnti coordinate sul nostro territorio.</p>
+            </div>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="carouselTrack">
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="Bando Fermo d'Estate" class="manifesto-img">
+                        </div>
+                        <h3>I Torneo FIDE "Fermo d'Estate"</h3>
+                        <span>01 — 06 Agosto 2026</span>
+                    </article>
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=600&q=80" alt="Torneo Giovanile Qualificazioni" class="manifesto-img">
+                        </div>
+                        <h3>Torneo di Qualificazione C.I.G. U18</h3>
+                        <span>Fasi regionali ufficiali</span>
+                    </article>
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?auto=format&fit=crop&w=600&q=80" alt="Corsi di Scacchi Autunno" class="manifesto-img">
+                        </div>
+                        <h3>Corsi Autunnali per Principianti e Avanzati</h3>
+                        <span>Ottobre — Dicembre 2026</span>
+                    </article>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="prevBtn" aria-label="Precedente">&larr;</button>
+                    <button class="carousel-btn" id="nextBtn" aria-label="Successivo">&rarr;</button>
+                </div>
             </div>
         </section>
     </main>
 
+    <footer id="contatti">
+        <div class="container footer-grid">
+            <h2>Contatti</h2>
+            <address class="footer-contacts">
+                <div class="footer-link-block">
+                    <span>Sede Ufficiale</span>
+                    <p>Via Giovanni Agnelli, 22<br>63900 Fermo (FM)</p>
+                </div>
+                <div class="footer-link-block">
+                    <span>Telefono Responsabile</span>
+                    <a href="tel:+393392023700">+39 339 2023700</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Email Istruttore/Club</span>
+                    <a href="mailto:istruttoredonati@gmail.com">istruttoredonati@gmail.com</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Canale Digitale</span>
+                    <a href="https://www.instagram.com/scacchifermo/" target="_blank" rel="noopener noreferrer">@scacchifermo</a>
+                </div>
+            </address>
+        </div>
+    </footer>
+
     <script>
         const hero = document.getElementById('heroSection');
-        const parallaxBox = document.getElementById('parallaxBox');
-        let useDeviceOrientation = false;
 
-        // ACCELEROMETRO / GIROSCOPIO PER MOBILE (Se supportato e concesso)
-        if (window.DeviceOrientationEvent) {
-            // Richiesta permessi espliciti per dispositivi iOS 13+
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                hero.addEventListener('click', () => {
-                    DeviceOrientationEvent.requestPermission()
-                        .then(permissionState => {
-                            if (permissionState === 'granted') { useDeviceOrientation = true; }
-                        });
-                }, { once: true });
-            } else {
-                useDeviceOrientation = true;
-            }
-        }
-
-        window.addEventListener('deviceorientation', (e) => {
-            if (!useDeviceOrientation || hero.classList.contains('assemble-board')) return;
-            // Intercetta l'inclinazione del telefono (gamma = roll / beta = pitch)
-            const tiltX = Math.min(Math.max(e.gamma, -15), 15) / 1.5;
-            const tiltY = Math.min(Math.max(e.beta - 45, -15), 15) / 1.5; // Tarato su inclinazione lettura comoda 45°
-            
-            parallaxBox.style.animation = 'none'; // Spegne l'auto-oscillazione se risponde al sensore
-            parallaxBox.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-        });
-
-        // INTERAZIONE MOUSE TRADIZIONALE (Desktop)
-        window.addEventListener('mousemove', (e) => {
-            if (useDeviceOrientation || hero.classList.contains('assemble-board')) return;
-            const x = (window.innerWidth / 2 - e.pageX) / 30;
-            const y = (window.innerHeight / 2 - e.pageY) / 30;
-            parallaxBox.style.animation = 'none';
-            parallaxBox.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-        });
-
-        // TIME REGULATOR - LOOP PRINCIPALE
+        // REGISTA DELLA TIME SEQUENCE (LOOP GEOMETRICO CONTINUO)
         function runStickerSequence() {
-            // Fase iniziale statica ("Sticker") con oscillazione 3D attiva per 3.5 secondi.
+            // Stato Iniziale: Solo i 3 livelli SVG visibili con oscillazione 3D per 3.5 secondi.
 
-            // 1. Sovrapposizione istantanea dei quadrati HTML sopra al QR code
+            // 1. I quadrati HTML compaiono in modalità frammentata (quadratini piccoli fluttuanti) suggerendo la scomposizione del QR
             setTimeout(() => {
                 hero.classList.add('show-html-squares');
             }, 3500);
 
-            // 2. Movimento fluido: I vecchi SVG spariscono e la griglia si muove ruotando di 90 gradi
+            // 2. I vecchi livelli SVG si spengono, e i quadrati si aggregano ruotando a 90° verso la scacchiera regolamentare
             setTimeout(() => {
-                parallaxBox.style.animation = 'none';
-                parallaxBox.style.transform = `rotateY(0deg) rotateX(0deg)`; // Centralizzazione d'asse
                 hero.classList.add('hide-svg-layers');
                 hero.classList.add('assemble-board');
-            }, 4000);
+            }, 4100);
 
-            // 3. Apparizione del Claim
+            // 3. Apparizione finale e stabile del Claim col suo glow chiaro morbido
             setTimeout(() => {
                 hero.classList.add('display-claim');
-            }, 6200);
+            }, 6400);
 
-            // 4. RESET VELOCE: Ritorno istantaneo allo stato iniziale dei 3 SVG
+            // 4. RESET "STICKER": Ritorno istantaneo e secco allo stato iniziale ad anello
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
                 hero.classList.remove('hide-svg-layers');
                 hero.classList.remove('show-html-squares');
-                // Ripristina l'animazione automatica di default
-                parallaxBox.style.animation = 'automatic-rotation 8s infinite ease-in-out alternate';
-            }, 9800);
+            }, 10000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             runStickerSequence();
-            setInterval(runStickerSequence, 10800);
+            setInterval(runStickerSequence, 11000); // Sincronizzazione perfetta del timer complessivo
         });
+
+        // Gestione carosello manifesti
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        if (track && prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => { track.scrollBy({ left: -334, behavior: 'smooth' }); });
+            nextBtn.addEventListener('click', () => { track.scrollBy({ left: 334, behavior: 'smooth' }); });
+        }
     </script>
 </body>
 </html>
