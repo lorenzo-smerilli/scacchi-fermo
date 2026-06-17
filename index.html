@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* RESET & VARIABILI */
+        /* ==========================================================
+           1. RESET GENERALE E VARIABILI DI STILE
+           ========================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -20,8 +22,8 @@
         :root {
             --bg-color: #FAFAFA;
             --text-color: #111111;
-            --accent-green: #008744; 
-            --bright-green: #00E676; 
+            --accent-green: #008744;  /* Verde principale del brand */
+            --bright-green: #00E676;  
             --bg-card-dark: #222524;
             --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
@@ -63,7 +65,9 @@
             padding: 80px 0;
         }
 
-        /* HEADER & LOGO */
+        /* ==========================================================
+           2. HEADER & NAVIGAZIONE
+           ========================================================== */
         header {
             padding: 24px 0;
             background: transparent;
@@ -114,58 +118,50 @@
             letter-spacing: 0.2px;
         }
 
-
-/*******************************************************************************
-         * 1. INIZIO PUNTO CSS ANIMAZIONE
-         * * CANCELLA QUESTO COMMENTO E INCOLLA QUI TUTTI GLI STILI DEL CSS 
-         * DELLA NUOVA HERO PRESI DA animaz-solo.html
-         ******************************************************************************/
-         
-        /* Estensioni variabili per l'animazione */
-        :root {
-            --space-grotesk: 'Space Grotesk', sans-serif;
-        }
-
-        /* HERO & CONTENITORE 3D PRINCIPALE */
+        /* ==========================================================
+           3. AREA SEZIONE HERO ANIMATA (STRUTTURA & SPAZI)
+           ========================================================== */
         .hero {
             position: relative;
-            height: 75vh;
-            min-height: 580px;
+            height: 65vh;             /* Ridotto dal 75vh iniziale per sgonfiare il vuoto su desktop */
+            min-height: 520px;        /* Altezza minima di sicurezza per monitor bassi */
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1200px;
-            overflow: hidden;
-            background-color: var(--bg-color);
+            perspective: 1200px;       /* Profondità 3D per l'effetto parallasse */
+            padding: 40px 0;
         }
 
+        /* Il quadrato centrale che racchiude tutti i layer grafici dell'animazione */
         .hero-sticker-wrapper {
             position: relative;
-            width: 360px;
-            height: 360px;
+            width: 380px;             /* Dimensione ideale per il layout desktop */
+            height: 380px;
             transform-style: preserve-3d;
-            animation: automatic-parallax 7s infinite ease-in-out alternate;
+            animation: automatic-parallax 8s infinite ease-in-out alternate; /* Oscillazione automatica in loop */
         }
 
+        /* Effetto di oscillazione 3D della scacchiera/QR all'infinito */
         @keyframes automatic-parallax {
-            0% { transform: rotateY(-6deg) rotateX(-4deg); }
-            100% { transform: rotateY(6deg) rotateX(4deg); }
+            0% { transform: rotateY(-5deg) rotateX(-3deg); }
+            100% { transform: rotateY(5deg) rotateX(3deg); }
         }
 
-        /* Layer 1: Sfondo Grafico Opzionale / Testi */
+        /* Layer 1: Grafica di Sfondo (Ombra e Testi decorativi) */
         .hero-bg-texti {
             position: absolute;
             width: 100%;
             height: 100%;
+            background-image: url('1-sfondo-testi.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             z-index: 1;
-            transform: translateZ(-15px);
-            transition: opacity 0.5s ease;
+            transform: translateZ(-15px); /* Spinto leggermente sul retro nello spazio 3D */
+            transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
+        /* Layer 2: Il QR Code iniziale generato dinamicamente via griglia CSS 21x21 */
         .hero-qr-html-grid {
             position: absolute;
             width: 71%; 
@@ -177,96 +173,119 @@
             grid-template-columns: repeat(21, 1fr);
             grid-template-rows: repeat(21, 1fr);
             transform: translateZ(0px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Singolo quadratino del QR code */
+        /* Stile di base del singolo quadratino verde del QR code */
         .q-dot {
             background-color: var(--accent-green);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
         }
         
-        /* Quadratino vuoto (trasparente) */
+        /* Classe applicata ai quadratini trasparenti (spazi vuoti del QR) */
         .q-dot.e {
             background-color: transparent !important; 
         }
 
-        /* FASE 2: EFFETTO SCOMPOSIZIONE GUIDA VERSO LA SCACCHIERA */
-        /* I 3 grandi occhielli d'angolo e alcuni blocchi strutturali rimangono fermi per dare stabilità */
+        /* Fissa gli occhielli di controllo negli angoli in modo che non si scompongano mai */
         .hero.frenetic-chaos .q-dot:nth-child(-n+7),
         .hero.frenetic-chaos .q-dot:nth-child(21n+1),
         .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
             transform: translate(0, 0) scale(1) !important;
             animation: none !important;
+            opacity: 1 !important;
         }
 
-        /* Solo i quadratini in posizione alternata si muovono, suggerendo la scacchiera */
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(2n) {
-            animation: suggest-chessboard-pari 2s infinite ease-in-out alternate;
-            background-color: #006b35; /* Variazione minima di tono per dare profondità */
+        /* Attivazione temporale della scomposizione ordinata (senza rotazioni o sovrapposizioni) */
+        .hero.frenetic-chaos .q-dot:not(.e) {
+            animation-duration: 3.5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
         }
 
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(3n+1) {
-            animation: suggest-chessboard-dispari 2s infinite ease-in-out alternate;
+        /* DIVISIONE DEI QUADRATINI IN 4 GRUPPI ASINCRONI (Crea l'effetto a impulsi sparsi) */
+        .hero.frenetic-chaos .q-dot:nth-child(4n):not(.e) {
+            animation-name: clean-float-a;
+            animation-delay: 0s;
+            background-color: #006b35; /* Introduce il verde scuro tipico della futura scacchiera */
+        }
+        .hero.frenetic-chaos .q-dot:nth-child(4n+1):not(.e) {
+            animation-name: clean-float-b;
+            animation-delay: 0.4s;
+        }
+        .hero.frenetic-chaos .q-dot:nth-child(4n+2):not(.e) {
+            animation-name: clean-float-c;
+            animation-delay: 0.8s;
+            background-color: #006b35;
+        }
+        .hero.frenetic-chaos .q-dot:nth-child(4n+3):not(.e) {
+            animation-name: clean-float-d;
+            animation-delay: 1.2s;
         }
 
-        /* I quadratini rimasti che non partecipano iniziano a sfumare leggermente */
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(5n) {
+        /* I moduli rimanenti riducono solo la scala per dare profondità di campo */
+        .hero.frenetic-chaos .q-dot:nth-child(5n):not(.e) {
             opacity: 0.4;
-            transform: scale(0.85);
+            transform: scale(0.9);
         }
 
-        /* Animazioni direzionali (simulazione allineamento scacchiera) */
-        @keyframes suggest-chessboard-pari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(6px, -6px) scale(1.1); }
+        /* MOVIMENTI MILLIMETRICI: Rimangono dentro i confini del proprio blocco per evitare grovigli visivi */
+        @keyframes clean-float-a {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(3px, -3px) scale(0.96); }
+        }
+        @keyframes clean-float-b {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-3px, 3px) scale(1.02); }
+        }
+        @keyframes clean-float-c {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(2px, 2px) scale(0.95); }
+        }
+        @keyframes clean-float-d {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-2px, -2px) scale(1.04); }
         }
 
-        @keyframes suggest-chessboard-dispari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-6px, 6px) scale(0.9); }
-        }
-
-        /* Dissolvenza totale del QR code */
+        /* Quando il JS ordina di nascondere il QR, questo retrocede in dissolvenza lineare pulita */
         .hero.hide-qr-completely .hero-qr-html-grid {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.92) translateZ(-10px);
+            transform: scale(0.9) translateZ(-20px);
         }
 
-        /* Layer Coordinate Lettere/Numeri della scacchiera */
+        /* Layer 3: Coordinate Alfanumeriche della Scacchiera (Lettere a-h, Numeri 1-8) */
         .board-labels {
             position: absolute;
-            width: 106%;
-            height: 106%;
-            top: -3%;
-            left: -3%;
+            width: 100%;
+            height: 100%;
             z-index: 3;
             pointer-events: none;
             opacity: 0;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.6s ease;
-            font-family: var(--space-grotesk);
+            transition: opacity 0.8s ease;
         }
-        .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
-        .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
+        .board-labels .letters { position: absolute; bottom: -22px; left: 0; width: 100%; display: flex; justify-content: space-around; }
+        .board-labels .numbers { position: absolute; left: -22px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; }
 
-        /* Layer 4: Grafica Cavallo */
+        /* Layer 4: Grafica Vettoriale del Cavallo */
         .hero-cavallo {
             position: absolute;
             width: 100%;
             height: 100%;
+            background-image: url('3-cavallo.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             z-index: 5;
-            transform: translateZ(25px);
+            transform: translateZ(25px); /* Molto spinto in avanti rispetto alla scacchiera (effetto 3D pop) */
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
-        /* Layer 5: Matrice Grandi Quadrati Scacchiera Finale (8x8) */
+        /* Layer 5: La Scacchiera Reale 8x8 (Nativamente ruotata di 90° per avere gli angoli chiari corretti) */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -276,26 +295,29 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             opacity: 0;
-            transform: translateZ(10px) scale(0.92);
-            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(10px) scale(0.92) rotate(90deg); /* Mantiene i 90° regolamentari */
+            transition: opacity 0.8s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* I singoli quadrati verdi della scacchiera finale che si aprono scalando dal centro */
         .qr-block {
             width: 100%;
             height: 100%;
             background-color: var(--accent-green);
             transform: scale(0);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .qr-block.empty { 
-            background-color: transparent !important;
+            opacity: 0; 
         }
 
+        /* Dissolvenza totale dei layer del QR code e del cavallo */
         .hero.hide-all-svg-layers .hero-bg-texti,
         .hero.hide-all-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
+        /* Comando JavaScript di attivazione del tabellone */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
             transform: translateZ(10px) scale(1) rotate(90deg);
@@ -303,10 +325,10 @@
         .hero.assemble-board .qr-block { transform: scale(1); }
         .hero.assemble-board .board-labels { opacity: 1; }
 
-        /* Il Claim Finale Testuale */
+        /* Layer 6: Testo del Claim di Chiusura ("Fermo, eppur si muove") */
         .hero-claim-final {
             position: absolute;
-            z-index: 6;
+            z-index: 10;
             color: var(--text-color);
             font-family: 'EB Garamond', serif;
             font-style: italic;
@@ -315,27 +337,47 @@
             width: 100%;
             opacity: 0;
             transform: scale(0.96);
-            text-shadow: 0 0 20px #FFF;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
             pointer-events: none;
         }
 
+        /* Comando JavaScript di attivazione del claim di chiusura */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
         }
+        
+        /* Quando compare il testo, la scacchiera sullo sfondo si dissolve all'8% di opacità per farlo leggere bene */
         .hero.display-claim .hero-qr-animated,
-        .hero.display-claim .board-labels { opacity: 0.12; }
-
-        @media (max-width: 768px) {
-            .hero-sticker-wrapper { width: 290px; height: 290px; }
-            .board-labels { display: none; }
+        .hero.display-claim .board-labels { 
+            opacity: 0.08; 
         }
 
-        /*******************************************************************************
-         * FINE PUNTO CSS ANIMAZIONE
-         ******************************************************************************/
+        /* ==========================================================
+           4. ADATTAMENTO RESPONSIVE MOBILE RIGOROSO (RISOLUZIONE VUOTI)
+           ========================================================== */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;           /* Elimina i vincoli verticali rigidi basati sullo schermo intero */
+                min-height: auto;        /* Cancella l'altezza di 580px che generava i grandi vuoti d'aria */
+                padding: 60px 0 80px 0;  /* Gestione dello spazio negativo controllata tramite padding preciso */
+            }
 
+            .hero-sticker-wrapper { 
+                width: 275px;            /* Ridimensionamento perfetto per la larghezza degli smartphone */
+                height: 275px; 
+            }
+
+            /* COORDINATE COMPATTE E ATTIVE SU MOBILE: Rimpicciolite per non debordare dallo schermo */
+            .board-labels { 
+                display: block; 
+                opacity: 0; 
+                font-size: 0.65rem; 
+            }
+            .board-labels .letters { bottom: -18px; }
+            .board-labels .numbers { left: -18px; }
+        }
 
         /* INTRO BLOCKS */
         .intro-block {
@@ -480,13 +522,6 @@
         </div>
     </header>
 
-
-/*******************************************************************************
-     * 2. INIZIO PUNTO CORPO DELLA SEZIONE HERO (HTML)
-     * * CANCELLA QUESTO COMMENTO E INCOLLA QUI L'INTERA <section class="hero" id="heroSection">
-     * CHE TROVI DENTRO IL FILE animaz-solo.html CON TUTTA LA GRIGLIA 21x21 DI QUADRATINI.
-     ******************************************************************************/
-     
     <section class="hero" id="heroSection">
         <div class="hero-sticker-wrapper">
             
@@ -513,16 +548,17 @@
                 <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
                 <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
                 <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
             </div>
-            
+
             <div class="board-labels">
                 <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
                 <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
             </div>
 
+            <div class="hero-cavallo"></div>
+
             <div class="hero-qr-animated">
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
@@ -530,211 +566,140 @@
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
             </div>
 
-            <div class="hero-cavallo"></div>
+            <div class="hero-claim-final">“Fermo, eppur si muove”</div>
         </div>
-
-        <div class="hero-claim-final">“Fermo, eppur si muove”</div>
     </section>
 
-    /*******************************************************************************
-     * FINE PUNTO CORPO DELLA SEZIONE HERO (HTML)
-     ******************************************************************************/
-
-
-    <main class="container">
-        
-        <section id="chi-siamo">
-            <div class="intro-block">
-                <h2>Pedoni e Alfieri: chi siamo</h2>
-                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
-            </div>
-
-            <div class="press-layout">
-                <div class="press-item">
-                    <div class="press-img-container">
-                        <img src="https://www.cronachefermane.it/wp-content/uploads/2026/04/295f968f-d307-4156-b6f0-1e5edcd8d44b.jpg" alt="Trofeo Scacchi Scuola" class="press-img">
-                    </div>
-                    <div class="press-text-box">
-                        <span>Cronache Fermane · 19 Aprile 2026</span>
-                        <h3>Gli studenti del Fermano brillano al Trofeo Scacchi Scuola</h3>
-                        <p>Resoconto dei grandi risultati conquistati e delle menti giovani del nostro distretto che si sono distinte nel circuito dei campionati studenteschi scolastici.</p>
-                        <a href="https://www.cronachefermane.it/2026/04/19/gli-studenti-del-fermano-brillano-al-trofeo-scacchi-scuola/753790/" target="_blank" rel="noopener noreferrer" class="read-more">Leggi l'articolo originale &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="press-item reverse">
-                    <div class="press-img-container">
-                        <img src="https://images.unsplash.com/photo-1604948501466-4e9c339b9c24?auto=format&fit=crop&w=1200&q=80" alt="Attività e scatti agonistici" class="press-img">
-                    </div>
-                    <div class="press-text-box">
-                        <span>Instagram · Archivio Agonismo</span>
-                        <h3>Cronache dai campionati a squadre</h3>
-                        <p>Segui i resoconti visivi e i passaggi di turno delle nostre formazioni nei campionati italiani e regionali direttamente sul canale social dedicato.</p>
-                        <a href="https://www.instagram.com/p/DWa43-QDW9p/?img_index=1" target="_blank" rel="noopener noreferrer" class="read-more">Apri il post di riferimento &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="quote-section">
-            <a href="sotto_pagina_reportage.html" style="text-decoration: none;">
-                <div class="quote-text" style="color: rgba(0, 230, 118, 0.85); transition: opacity 0.2s ease;">
-                    “Fermo, eppur si muove”
-                </div>
-            </a>
-        </section>
-
-        <section id="eventi">
-            <div class="intro-block">
-                <h2>I nostri appuntamenti</h2>
-                <p>I bandi e le locandine reali delle competizioni e delle manifestazioni storiche e correnti coordinate sul nostro territorio.</p>
-            </div>
-
-            <div class="carousel-wrapper">
-                <div class="carousel-track" id="carouselTrack">
-                    
-                    <article class="manifesto-card">
-                        <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="Bando Fermo d'Estate" class="manifesto-img">
-                        </div>
-                        <h3>I Torneo FIDE "Fermo d'Estate"</h3>
-                        <span>01 — 06 Agosto 2026</span>
-                    </article>
-
-                    <article class="manifesto-card">
-                        <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=600&q=80" alt="Torneo Giovanile Qualificazioni" class="manifesto-img">
-                        </div>
-                        <h3>Torneo di Qualificazione C.I.G. U18</h3>
-                        <span>Fasi regionali ufficiali</span>
-                    </article>
-
-                    <article class="manifesto-card">
-                        <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano Scuola" class="manifesto-img">
-                        </div>
-                        <h3>Trofeo Scacchi Scuola</h3>
-                        <span>Fasi selettive istituti</span>
-                    </article>
-
-                    <article class="manifesto-card">
-                        <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1528819622765-d6bbf0379933?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano a Squadre" class="manifesto-img">
-                        </div>
-                        <h3>Campionato Italiano a Squadre CIS</h3>
-                        <span>Raggruppamenti Club Marchigiani</span>
-                    </article>
-
-                </div>
-
-                <div class="carousel-nav">
-                    <button class="carousel-btn" onclick="scrollCarousel(-334)" aria-label="Precedente">&larr;</button>
-                    <button class="carousel-btn" onclick="scrollCarousel(334)" aria-label="Successivo">&rarr;</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="network-section">
-            <div class="network-grid">
-                
-                <div class="network-block">
-                    <h4>Collegamenti Utili</h4>
-                    <div class="logos-row">
-                        <a href="https://www.federscacchi.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FSI - Federazione Scacchistica Italiana">
-                            <img src="logo-fsi.svg" alt="Federazione Scacchistica Italiana">
-                        </a>
-                        <a href="https://www.fide.com/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FIDE - International Chess Federation">
-                            <img src="logo-fide.svg" alt="FIDE">
-                        </a>
-                        <a href="https://www.marchesport.milone.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="Comitato Regionale Marche Scacchi">
-                            <img src="logo-comitato-marche.svg" alt="Comitato Regionale Marche">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="sponsor-block">
-                    <h4>Sponsor & Partner</h4>
-                    <div class="logos-row">
-                        <div class="logo-link" title="Sponsor Principale">
-                            <img src="logo-sponsor-uno.svg" alt="Sponsor Ufficiale 1">
-                        </div>
-                        <div class="logo-link" title="Partner Tecnico / Locale">
-                            <img src="logo-sponsor-due.svg" alt="Sponsor Ufficiale 2">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <footer id="contatti">
-        <div class="container footer-grid">
-            <h2>Contatti</h2>
-            <address class="footer-contacts">
-                <div class="footer-link-block">
-                    <span>Sede Ufficiale</span>
-                    <p>Via Giovanni Agnelli, 22<br>63900 Fermo (FM)</p>
-                </div>
-                <div class="footer-link-block">
-                    <span>Telefono Responsabile</span>
-                    <a href="tel:+393392023700">+39 339 2023700</a>
-                </div>
-                <div class="footer-link-block">
-                    <span>Email Istruttore/Club</span>
-                    <a href="mailto:istruttoredonati@gmail.com">istruttoredonati@gmail.com</a>
-                </div>
-                <div class="footer-link-block">
-                    <span>Canale Digitale</span>
-                    <a href="https://www.instagram.com/scacchifermo/" target="_blank" rel="noopener noreferrer">@scacchifermo</a>
-                </div>
-            </address>
+    <div class="container" id="chi-siamo">
+        <div class="intro-block">
+            <h2>Un archivio visivo di incontri, tornei e manifesti.</h2>
+            <p>Dal 1975, l'Associazione Dilettantistica Scacchi Fermo promuove il gioco degli scacchi come cultura, arte e confronto generazionale nel territorio marchigiano.</p>
         </div>
-    </footer>
+
+        <div class="press-layout">
+            <div class="press-item">
+                <div class="press-img-container">
+                    <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80" alt="Torneo storico" class="press-img">
+                </div>
+                <div class="press-text-box">
+                    <span>Storia</span>
+                    <h3>Oltre quarant'anni di passione verticale</h3>
+                    <p>Fondata sulla tradizione dei circoli storici, l'associazione ha attraversato le epoche mantenendo inalterato il fascino dello studio sulla scacchiera e l'apertura verso i giovani talenti.</p>
+                    <a href="#" class="read-more">Leggi la nostra storia &rarr;</a>
+                </div>
+            </div>
+
+            <div class="press-item reverse">
+                <div class="press-img-container">
+                    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=800&q=80" alt="Sede sociale" class="press-img">
+                </div>
+                <div class="press-text-box">
+                    <span>La Sede</span>
+                    <h3>Uno spazio per pensare e condividere</h3>
+                    <p>La nostra sede nel cuore di Fermo ospita incontri settimanali, corsi propedeutici per scuole e tornei a variazione Elo validi per le qualificazioni nazionali.</p>
+                    <a href="#" class="read-more">Scopri i nostri orari &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="quote-section">
+        <div class="container">
+            <div class="quote-text">“Gli scacchi sono lo specchio dell'anima.”</div>
+        </div>
+    </section>
+
+    <div class="container" id="eventi">
+        <div class="intro-block" style="margin-bottom: 40px;">
+            <h2>Manifesti & Appuntamenti</h2>
+            <p>La nostra rassegna di eventi culturali, mostre e competizioni attive sul territorio.</p>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="manifesto-card">
+                    <div class="manifesto-img-box">
+                        <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Manifesto 1" class="manifesto-img">
+                    </div>
+                    <h3>Torneo d'Autunno 2026</h3>
+                    <span>Ottobre 2026 &middot; Open Internazionale</span>
+                </div>
+                <div class="manifesto-card">
+                    <div class="manifesto-img-box">
+                        <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Manifesto 2" class="manifesto-img">
+                    </div>
+                    <h3>Scacchi in Piazza</h3>
+                    <span>Luglio 2026 &middot; Rassegna Estiva</span>
+                </div>
+                <div class="manifesto-card">
+                    <div class="manifesto-img-box">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Manifesto 3" class="manifesto-img">
+                    </div>
+                    <h3>Campionato Giovanile</h3>
+                    <span>Maggio 2026 &middot; Under 18</span>
+                </div>
+                <div class="manifesto-card">
+                    <div class="manifesto-img-box">
+                        <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Manifesto 4" class="manifesto-img">
+                    </div>
+                    <h3>Seminario Tattico</h3>
+                    <span>Novembre 2026 &middot; Masterclass</span>
+                </div>
+            </div>
+
+            <div class="carousel-nav">
+                <button class="carousel-btn" onclick="scrollCarousel(-334)">&larr;</button>
+                <button class="carousel-btn" onclick="scrollCarousel(334)">&rarr;</button>
+            </div>
+        </div>
+
+        <div class="network-section" id="contatti">
+            <div class="network-grid">
+                <div class="network-block">
+                    <h4>Patrocini & Istituzioni</h4>
+                    <div class="logos-row">
+                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Federazione_Scacchistica_Italiana_Logo.svg" alt="FSI"></a>
+                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/it/c/cd/Logo_CONI_2014.svg" alt="CONI"></a>
+                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Logo_Comune_di_Fermo.svg" alt="Comune Fermo" style="height: 60px;"></a>
+                    </div>
+                </div>
+                <div class="sponsor-block">
+                    <h4>Sostenitori Locali</h4>
+                    <div class="logos-row" style="gap: 24px;">
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">Si ringraziano la Cassa di Risparmio di Fermo e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Funzione scorrimento carosello eventi
-        function scrollCarousel(distance) {
-            const track = document.getElementById('carouselTrack');
-            track.scrollBy({ left: distance, behavior: 'smooth' });
-        }
-
-
-        /*******************************************************************************
-         * 3. INIZIO PUNTO JAVASCRIPT ANIMAZIONE (IN FONDO ALLA PAGINA)
-         * * CANCELLA QUESTO COMMENTO E INCOLLA QUI TUTTA LA LOGICA DI ATTIVAZIONE 
-         * SEQUENZIALE E IL LOOP (La funzione runStickerSequence, le temporizzazioni 
-         * dei setTimeout e l'event listener DOMContentLoaded) PRESI DA animaz-solo.html.
-         ******************************************************************************/
-         
         const hero = document.getElementById('heroSection');
 
         function runStickerSequence() {
-            if (!hero) return; // Protezione contro errori di caricamento del nodo DOM
+            // Momento 0: Il QR code HTML è perfettamente unito, denso, solido ed originale.
 
-            // Momento 0: Il QR code HTML è perfettamente unito, denso e solido.
-
-            // FASE 2: Scomposizione controllata (suggerisce la scacchiera)
+            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
             }, 3000);
 
-            // FASE 3: Transizione netta alla scacchiera reale 8x8
+            // FASE 3: Transizione fluida alla scacchiera grande reale
             setTimeout(() => {
                 hero.classList.add('hide-qr-completely');
                 hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
             }, 6500);
 
-            // FASE 4: Comparsa del claim testuale
+            // FASE 4: Claim finale
             setTimeout(() => {
                 hero.classList.add('display-claim');
             }, 8800);
 
-            // RESET DEFINITIVO PER FARE RIPARTIRE IL LOOP CONTINUO
+            // RESET COMPLETO DEL LOOP
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
@@ -745,16 +710,15 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (hero) {
-                runStickerSequence();
-                setInterval(runStickerSequence, 14500);
-            }
+            runStickerSequence();
+            setInterval(runStickerSequence, 14500);
         });
 
-        /*******************************************************************************
-         * FINE PUNTO JAVASCRIPT ANIMAZIONE
-         ******************************************************************************/
+        // Funzione scorrimento carosello eventi
+        function scrollCarousel(distance) {
+            const track = document.getElementById('carouselTrack');
+            track.scrollBy({ left: distance, behavior: 'smooth' });
+        }
     </script>
-
 </body>
 </html>
