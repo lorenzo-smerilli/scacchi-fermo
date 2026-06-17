@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* RESET & VARIABILI */
+        /* ==========================================================
+           1. RESET GENERALE E VARIABILI DI STILE
+           ========================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -20,8 +22,8 @@
         :root {
             --bg-color: #FAFAFA;
             --text-color: #111111;
-            --accent-green: #008744; 
-            --bright-green: #00E676; 
+            --accent-green: #008744;  /* Verde principale del brand */
+            --bright-green: #00E676;  
             --bg-card-dark: #222524;
             --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
@@ -63,7 +65,9 @@
             padding: 80px 0;
         }
 
-        /* HEADER & LOGO */
+        /* ==========================================================
+           2. HEADER & NAVIGAZIONE
+           ========================================================== */
         header {
             padding: 24px 0;
             background: transparent;
@@ -114,32 +118,36 @@
             letter-spacing: 0.2px;
         }
 
-
-/* HERO & CONTENITORE 3D */
+        /* ==========================================================
+           3. AREA SEZIONE HERO ANIMATA (STRUTTURA & SPAZI)
+           ========================================================== */
         .hero {
             position: relative;
-            height: 75vh;
-            min-height: 580px;
+            height: 65vh;             /* Ridotto dal 75vh iniziale per sgonfiare il vuoto su desktop */
+            min-height: 520px;        /* Altezza minima di sicurezza per monitor bassi */
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1200px;
+            perspective: 1200px;       /* Profondità 3D per l'effetto parallasse */
+            padding: 40px 0;
         }
 
+        /* Il quadrato centrale che racchiude tutti i layer grafici dell'animazione */
         .hero-sticker-wrapper {
             position: relative;
-            width: 360px;
-            height: 360px;
+            width: 380px;             /* Dimensione ideale per il layout desktop */
+            height: 380px;
             transform-style: preserve-3d;
-            animation: automatic-parallax 8s infinite ease-in-out alternate;
+            animation: automatic-parallax 8s infinite ease-in-out alternate; /* Oscillazione automatica in loop */
         }
 
+        /* Effetto di oscillazione 3D della scacchiera/QR all'infinito */
         @keyframes automatic-parallax {
             0% { transform: rotateY(-5deg) rotateX(-3deg); }
             100% { transform: rotateY(5deg) rotateX(3deg); }
         }
 
-        /* Layer 1: Sfondo Testi */
+        /* Layer 1: Grafica di Sfondo (Ombra e Testi decorativi) */
         .hero-bg-texti {
             position: absolute;
             width: 100%;
@@ -149,11 +157,11 @@
             background-repeat: no-repeat;
             background-position: center;
             z-index: 1;
-            transform: translateZ(-15px);
+            transform: translateZ(-15px); /* Spinto leggermente sul retro nello spazio 3D */
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
+        /* Layer 2: Il QR Code iniziale generato dinamicamente via griglia CSS 21x21 */
         .hero-qr-html-grid {
             position: absolute;
             width: 71%; 
@@ -168,16 +176,18 @@
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Singolo quadratino del QR code */
+        /* Stile di base del singolo quadratino verde del QR code */
         .q-dot {
             background-color: var(--accent-green);
-            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, background-color 0.8s ease;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
         }
+        
+        /* Classe applicata ai quadratini trasparenti (spazi vuoti del QR) */
         .q-dot.e {
             background-color: transparent !important; 
         }
 
-        /* Blocca gli occhielli di controllo negli angoli per ancorare la struttura */
+        /* Fissa gli occhielli di controllo negli angoli in modo che non si scompongano mai */
         .hero.frenetic-chaos .q-dot:nth-child(-n+7),
         .hero.frenetic-chaos .q-dot:nth-child(21n+1),
         .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
@@ -186,72 +196,66 @@
             opacity: 1 !important;
         }
 
-        /* ATTIVAZIONE ANIMAZIONE ORDINATA CON SPOSTAMENTI CONTENUTI (NO SOVRAPOSIZIONI) */
+        /* Attivazione temporale della scomposizione ordinata (senza rotazioni o sovrapposizioni) */
         .hero.frenetic-chaos .q-dot:not(.e) {
-            animation-duration: 4s;
+            animation-duration: 3.5s;
             animation-iteration-count: infinite;
             animation-direction: alternate;
             animation-timing-function: ease-in-out;
         }
 
-        /* Divisione in gruppi asincroni per l'effetto sparso nel tempo */
+        /* DIVISIONE DEI QUADRATINI IN 4 GRUPPI ASINCRONI (Crea l'effetto a impulsi sparsi) */
         .hero.frenetic-chaos .q-dot:nth-child(4n):not(.e) {
             animation-name: clean-float-a;
             animation-delay: 0s;
-            background-color: #006b35; 
+            background-color: #006b35; /* Introduce il verde scuro tipico della futura scacchiera */
         }
-
         .hero.frenetic-chaos .q-dot:nth-child(4n+1):not(.e) {
             animation-name: clean-float-b;
-            animation-delay: 0.5s;
+            animation-delay: 0.4s;
         }
-
         .hero.frenetic-chaos .q-dot:nth-child(4n+2):not(.e) {
             animation-name: clean-float-c;
-            animation-delay: 1s;
+            animation-delay: 0.8s;
             background-color: #006b35;
         }
-
         .hero.frenetic-chaos .q-dot:nth-child(4n+3):not(.e) {
             animation-name: clean-float-d;
-            animation-delay: 1.5s;
+            animation-delay: 1.2s;
         }
 
-        /* I quadratini di contorno sfumano ma senza muoversi in modo disordinato */
+        /* I moduli rimanenti riducono solo la scala per dare profondità di campo */
         .hero.frenetic-chaos .q-dot:nth-child(5n):not(.e) {
             opacity: 0.4;
-            transform: scale(0.85);
+            transform: scale(0.9);
         }
 
-        /* KEYFRAMES PULITI: Movimenti millimetrici ordinati, zero rotazioni, zero accavallamenti */
+        /* MOVIMENTI MILLIMETRICI: Rimangono dentro i confini del proprio blocco per evitare grovigli visivi */
         @keyframes clean-float-a {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(3px, -3px) scale(0.95); }
+            100% { transform: translate(3px, -3px) scale(0.96); }
         }
-
         @keyframes clean-float-b {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(-3px, 3px) scale(1.02); }
         }
-
         @keyframes clean-float-c {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(2px, 2px) scale(0.97); }
+            100% { transform: translate(2px, 2px) scale(0.95); }
         }
-
         @keyframes clean-float-d {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-2px, -2px) scale(1.03); }
+            100% { transform: translate(-2px, -2px) scale(1.04); }
         }
 
-        /* Dissolvenza controllata del QR che si allontana nello spazio 3D senza ruotare */
+        /* Quando il JS ordina di nascondere il QR, questo retrocede in dissolvenza lineare pulita */
         .hero.hide-qr-completely .hero-qr-html-grid {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.88) translateZ(-30px);
+            transform: scale(0.9) translateZ(-20px);
         }
 
-        /* Layer Coordinate Lettere/Numeri */
+        /* Layer 3: Coordinate Alfanumeriche della Scacchiera (Lettere a-h, Numeri 1-8) */
         .board-labels {
             position: absolute;
             width: 100%;
@@ -263,10 +267,10 @@
             color: var(--text-dark-muted);
             transition: opacity 0.8s ease;
         }
-        .board-labels .letters { position: absolute; bottom: -20px; left: 0; width: 100%; display: flex; justify-content: space-around; }
-        .board-labels .numbers { position: absolute; left: -20px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; }
+        .board-labels .letters { position: absolute; bottom: -22px; left: 0; width: 100%; display: flex; justify-content: space-around; }
+        .board-labels .numbers { position: absolute; left: -22px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; }
 
-        /* Layer 4: Grafica Cavallo */
+        /* Layer 4: Grafica Vettoriale del Cavallo */
         .hero-cavallo {
             position: absolute;
             width: 100%;
@@ -276,12 +280,12 @@
             background-repeat: no-repeat;
             background-position: center;
             z-index: 5;
-            transform: translateZ(25px);
+            transform: translateZ(25px); /* Molto spinto in avanti rispetto alla scacchiera (effetto 3D pop) */
             pointer-events: none;
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 5: MATRICE SCACCHIERA (Ruotata nativamente di 90° per orientamento perfetto) */
+        /* Layer 5: La Scacchiera Reale 8x8 (Nativamente ruotata di 90° per avere gli angoli chiari corretti) */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -291,10 +295,11 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             opacity: 0;
-            transform: translateZ(10px) scale(0.9) rotate(90deg);
+            transform: translateZ(10px) scale(0.92) rotate(90deg); /* Mantiene i 90° regolamentari */
             transition: opacity 0.8s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* I singoli quadrati verdi della scacchiera finale che si aprono scalando dal centro */
         .qr-block {
             width: 100%;
             height: 100%;
@@ -302,25 +307,25 @@
             transform: scale(0);
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .qr-block.empty { opacity: 0; }
+        .qr-block.empty { 
+            opacity: 0; 
+        }
 
+        /* Dissolvenza totale dei layer del QR code e del cavallo */
         .hero.hide-all-svg-layers .hero-bg-texti,
         .hero.hide-all-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
+        /* Comando JavaScript di attivazione del tabellone */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
             transform: translateZ(10px) scale(1) rotate(90deg);
         }
-        .hero.assemble-board .qr-block { 
-            transform: scale(1); 
-        }
-        .hero.assemble-board .board-labels { 
-            opacity: 1; 
-        }
+        .hero.assemble-board .qr-block { transform: scale(1); }
+        .hero.assemble-board .board-labels { opacity: 1; }
 
-        /* Il Claim Finale */
+        /* Layer 6: Testo del Claim di Chiusura ("Fermo, eppur si muove") */
         .hero-claim-final {
             position: absolute;
             z-index: 10;
@@ -337,44 +342,43 @@
             pointer-events: none;
         }
 
+        /* Comando JavaScript di attivazione del claim di chiusura */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
         }
+        
+        /* Quando compare il testo, la scacchiera sullo sfondo si dissolve all'8% di opacità per farlo leggere bene */
         .hero.display-claim .hero-qr-animated,
         .hero.display-claim .board-labels { 
             opacity: 0.08; 
         }
 
-        /* ADATTAMENTO RESPONSIVE MOBILE RIGOROSO */
+        /* ==========================================================
+           4. ADATTAMENTO RESPONSIVE MOBILE RIGOROSO (RISOLUZIONE VUOTI)
+           ========================================================== */
         @media (max-width: 768px) {
-            .hero-sticker-wrapper { 
-                width: 280px; 
-                height: 280px; 
+            .hero {
+                height: auto;           /* Elimina i vincoli verticali rigidi basati sullo schermo intero */
+                min-height: auto;        /* Cancella l'altezza di 580px che generava i grandi vuoti d'aria */
+                padding: 60px 0 80px 0;  /* Gestione dello spazio negativo controllata tramite padding preciso */
             }
-            /* Mostra lettere e numeri riducendo leggermente il font per non farli uscire dallo schermo dello smartphone */
+
+            .hero-sticker-wrapper { 
+                width: 275px;            /* Ridimensionamento perfetto per la larghezza degli smartphone */
+                height: 275px; 
+            }
+
+            /* COORDINATE COMPATTE E ATTIVE SU MOBILE: Rimpicciolite per non debordare dallo schermo */
             .board-labels { 
                 display: block; 
                 opacity: 0; 
                 font-size: 0.65rem; 
             }
-            .board-labels .letters { bottom: -16px; }
-            .board-labels .numbers { left: -16px; }
+            .board-labels .letters { bottom: -18px; }
+            .board-labels .numbers { left: -18px; }
         }
-
-        .hero.display-claim .hero-claim-final {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .hero.display-claim .hero-qr-animated,
-        .hero.display-claim .board-labels { 
-            opacity: 0.08; 
-        }
-
-        @media (max-width: 768px) {
-            .hero-sticker-wrapper { width: 290px; height: 290px; }
-            .board-labels { display: none; }
-        }
+    </style>
 
 
         /* INTRO BLOCKS */
