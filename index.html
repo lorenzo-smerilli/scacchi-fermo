@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASD Scacchi Fermo</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* RESET & VARIABILI */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #FAFAFA;
+            --text-color: #111111;
+            --accent-green: #008744; /* Verde istituzionale QR coordinato */
+            --bright-green: #00E676; /* Verde acido per interazioni ed elementi cyber */
+            
+            /* Sfumature Tecnologiche & Toni d'Archivio */
+            --bg-card-dark: #222524;
+            --bg-archive-warm: #FDFBF7;
+            --border-gray: #E5E5E5;
+            --text-muted: #646866;
+            --text-dark-muted: #777777;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .quote-text {
+            font-family: 'EB Garamond', serif;
+            font-weight: 500;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* HEADER & CONFIGURAZIONE LOGO */
+        header {
+            padding: 24px 0;
+            background: transparent;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: block;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            filter: grayscale(100%) contrast(1.1); 
+        }
+
+        .logo-block:hover .logo-icon {
+            filter: none;
+            opacity: 1;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav ul a {
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        /* NUOVA HERO SECTION ARCHITETTONICA CON SCACCHIERA INTERATTIVA E QR CODE */
+        .hero-split-section {
+            padding: 40px 0 80px 0;
+            background-color: var(--bg-color);
+        }
+
+        .hero-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        /* Colonna Testo / Legenda */
+        .hero-left-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .hero-title-area h1 {
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: var(--text-color);
+        }
+
+        .hero-title-area h1 span {
+            font-style: italic;
+            color: var(--accent-green);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 520px;
+        }
+
+        /* Scatola Legenda Strutturata */
+        .interactive-legend {
+            background-color: var(--bg-archive-warm);
+            border: 1px solid var(--border-gray);
+            padding: 28px;
+            border-radius: 2px;
+        }
+
+        .legend-title {
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dark-muted);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--bright-green);
+            border-radius: 50%;
+        }
+
+        .legend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            list-style: none;
+        }
+
+        .legend-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .legend-marker {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+        }
+
+        .legend-text strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 2px;
+        }
+
+        .legend-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Colonna Destra: Scacchiera e QR Code */
+        .board-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
+            background-color: var(--text-color);
+            padding: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        }
+
+        .chess-grid-bg {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Quadranti Alternati */
+        .cell {
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .cell.light { background-color: #FFFFFF; }
+        .cell.dark { background-color: #E5E5E5; }
+
+        /* Contenitore QR Code Sovrapposto al Centro */
+        .qr-overlay-container {
+            position: absolute;
+            top: 12.5%;  /* Esattamente dalla seconda alla settima riga */
+            left: 12.5%; /* Esattamente dalla colonna B alla colonna G */
+            width: 75%;
+            height: 75%;
+            background-color: #FFFFFF;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Il tuo SVG nativo con logo coordinato */
+        .qr-svg-embed {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Effetti Interattivi JavaScript Trigger */
+        .cell.highlight-1 { background-color: rgba(0, 135, 68, 0.2) !important; }
+        .cell.highlight-2 { background-color: rgba(0, 230, 118, 0.25) !important; }
+        .cell.highlight-3 { background-color: rgba(17, 17, 17, 0.15) !important; }
+
+        /* INTRO BLOCKS */
+        .intro-block {
+            max-width: 800px;
+            margin-bottom: 60px;
+        }
+
+        .intro-block h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .intro-block p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* CHI SIAMO & STAMPA */
+        .press-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .press-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .press-item.reverse { direction: rtl; }
+        .press-item.reverse .press-text-box { direction: ltr; }
+
+        .press-img-container { width: 100%; height: 380px; overflow: hidden; }
+        .press-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: filter 0.3s ease; }
+        .press-item:hover .press-img { filter: grayscale(0%) contrast(1); }
+
+        .press-text-box span { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dark-muted); display: block; margin-bottom: 12px; }
+        .press-text-box h3 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px; }
+        .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
+        .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
+
+        /* BIG QUOTE - CONTROPUNTO UMANISTA */
+        .quote-section { 
+            text-align: center; 
+            padding: 100px 0; 
+            background-color: var(--bg-archive-warm);
+            border-top: 1px solid var(--border-gray);
+            border-bottom: 1px solid var(--border-gray);
+            margin: 40px 0;
+        }
+        .quote-text { font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; line-height: 1.2; color: var(--text-color); }
+
+        /* CAROSELLO MANIFESTI */
+        .carousel-wrapper { position: relative; width: 100%; }
+        .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
+        .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
+        .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: all 0.3s ease; }
+        .manifesto-card:hover .manifesto-img { filter: grayscale(0%) contrast(1); }
+        .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.2; }
+        .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
+        .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s ease; }
+        .carousel-btn:hover { background-color: var(--text-color); color: var(--bg-color); }
+
+        /* NETWORK & SPONSOR */
+        .network-section {
+            border-top: 1px solid var(--border-gray);
+            padding-top: 80px;
+            margin-top: 40px;
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 64px;
+        }
+
+        .network-block h4, .sponsor-block h4 {
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dark-muted);
+            margin-bottom: 32px;
+        }
+
+        .logos-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 48px;
+        }
+
+        .logo-link {
+            display: inline-block;
+        }
+
+        .logo-link img {
+            height: 48px; 
+            width: auto;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .logo-link:hover img {
+            filter: grayscale(0%) opacity(1);
+        }
+
+        .sponsor-block {
+            border-left: 1px solid var(--border-gray);
+            padding-left: 64px;
+        }
+
+        /* FOOTER */
+        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .footer-grid h2 { font-size: 3rem; font-style: italic; }
+        .footer-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; align-items: flex-start; }
+        .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.5px; }
+        .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; line-height: 1.2; }
+        .footer-link-block a:hover { color: var(--bright-green); opacity: 1; }
+
+        /* RESPONSIVE & GEO-SYMMETRY MOBILE */
+        @media (max-width: 992px) {
+            .hero-split-grid { grid-template-columns: 1fr; gap: 40px; }
+            .network-grid { grid-template-columns: 1fr; gap: 48px; }
+            .sponsor-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border-gray); padding-top: 48px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            
+            header .container {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo-block {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+            }
+
+            .press-item { grid-template-columns: 1fr; gap: 24px; }
+            .press-item.reverse { direction: ltr; }
+            .press-img-container { height: 260px; }
+            .manifesto-card { flex: 0 0 260px; }
+            .manifesto-img-box { height: 390px; }
+            .logos-row { gap: 32px; }
+            .logo-link img { height: 40px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo-block">
+                <img src="logo-scacchi-bicolor.svg" alt="ASD Scacchi Fermo" class="logo-icon">
+                <div class="logo-text">Scacchi Fermo</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#chi-siamo">Chi Siamo</a></li>
+                    <li><a href="#eventi">Eventi</a></li>
+                    <li><a href="#contatti">Contatti</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-split-section">
+        <div class="container hero-split-grid">
+            
+            <div class="hero-left-content">
+                <div class="hero-title-area">
+                    <h1>Un'interazione <span>quadrata</span></h1>
+                    <p class="hero-description">Inquadra il codice per sincronizzare i tuoi dispositivi o naviga la legenda interattiva per scoprire i dettagli tecnici.</p>
+                </div>
+
+                <div class="interactive-legend">
+                    <div class="legend-title">Guida all'interazione tecnica</div>
+                    <ul class="legend-list">
+                        <li class="legend-item" onmouseenter="highlightCells(1)" onmouseleave="clearCells()">
+                            <div class="legend-marker">1</div>
+                            <div class="legend-text">
+                                <strong>Struttura Perimetrale FSI</strong>
+                                <p>Passa il mouse qui per isolare i moduli di ancoraggio esterni, tarati sui regolamenti digitali della Federazione.</p>
+                            </div>
+                        </li>
+                        <li class="legend-item" onmouseenter="highlightCells(2)" onmouseleave="clearCells()">
+                            <div class="legend-marker">2</div>
+                            <div class="legend-text">
+                                <strong>Matrice di Allineamento</strong>
+                                <p>Passa il mouse qui per tracciare le coordinate centrali. Sincronizza l'ottica e stabilizza la scansione mobile.</p>
+                            </div>
+                        </li>
+                        <li class="legend-item" onmouseenter="highlightCells(3)" onmouseleave="clearCells()">
+                            <div class="legend-marker">3</div>
+                            <div class="legend-text">
+                                <strong>Bordi di Contrasto Geometrico</strong>
+                                <p>Passa il mouse qui per evidenziare le linee di demarcazione che separano la scacchiera analogica dai dati digitali.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="board-wrapper">
+                <div class="chess-grid-bg" id="chessBoard">
+                    </div>
+                <div class="qr-overlay-container">
+                    <img src="2-qr-code-da-lettura.txt" alt="QR Code di Connessione Tecnica" class="qr-svg-embed">
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <main class="container">
+        
+        <section id="chi-siamo">
+            <div class="intro-block">
+                <h2>Pedoni e Alfieri: chi siamo</h2>
+                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
+            </div>
+
+            <div class="press-layout">
+                <div class="press-item">
+                    <div class="press-img-container">
+                        <img src="https://www.cronachefermane.it/wp-content/uploads/2026/04/295f968f-d307-4156-b6f0-1e5edcd8d44b.jpg" alt="Trofeo Scacchi Scuola" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Cronache Fermane · 19 Aprile 2026</span>
+                        <h3>Gli studenti del Fermano brillano al Trofeo Scacchi Scuola</h3>
+                        <p>Resoconto dei grandi risultati conquistati e delle menti giovani del nostro distretto che si sono distinte nel circuito dei campionati studenteschi scolastici.</p>
+                        <a href="https://www.cronachefermane.it/2026/04/19/gli-studenti-del-fermano-brillano-al-trofeo-scacchi-scuola/753790/" target="_blank" rel="noopener noreferrer" class="read-more">Leggi l'articolo originale &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="press-item reverse">
+                    <div class="press-img-container">
+                        <img src="https://images.unsplash.com/photo-1604948501466-4e9c339b9c24?auto=format&fit=crop&w=1200&q=80" alt="Attività e scatti agonistici" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Instagram · Archivio Agonismo</span>
+                        <h3>Cronache dai campionati a squadre</h3>
+                        <p>Segui i resoconti visivi e i passaggi di turno delle nostre formazioni nei campionati italiani e regionali direttamente sul canale social dedicato.</p>
+                        <a href="https://www.instagram.com/p/DWa43-QDW9p/?img_index=1" target="_blank" rel="noopener noreferrer" class="read-more">Apri il post di riferimento &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quote-section">
+            <a href="sotto_pagina_reportage.html" style="text-decoration: none;">
+                <div class="quote-text" style="color: var(--accent-green); transition: opacity 0.2s ease;">
+                    “Fermo, eppur si muove”
+                </div>
+            </a>
+        </section>
+
+        <section id="eventi">
+            <div class="intro-block">
+                <h2>I nostri appuntamenti</h2>
+                <p>I bandi e le locandine reali delle competizioni e delle manifestazioni storiche e correnti coordinate sul nostro territorio.</p>
+            </div>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="carouselTrack">
+                    
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="Bando Fermo d'Estate" class="manifesto-img">
+                        </div>
+                        <h3>I Torneo FIDE "Fermo d'Estate"</h3>
+                        <span>01 — 06 Agosto 2026</span>
+                    </article>
+
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=600&q=80" alt="Torneo Giovanile Qualificazioni" class="manifesto-img">
+                        </div>
+                        <h3>Torneo di Qualificazione C.I.G. U18</h3>
+                        <span>Fasi regionali ufficiali</span>
+                    </article>
+
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano Scuola" class="manifesto-img">
+                        </div>
+                        <h3>Trofeo Scacchi Scuola</h3>
+                        <span>Fasi selettive istituti</span>
+                    </article>
+
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1528819622765-d6bbf0379933?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano a Squadre" class="manifesto-img">
+                        </div>
+                        <h3>Campionato Italiano a Squadre CIS</h3>
+                        <span>Raggruppamenti Club Marchigiani</span>
+                    </article>
+
+                </div>
+
+                <div class="carousel-nav">
+                    <button class="carousel-btn" onclick="scrollCarousel(-334)" aria-label="Precedente">&larr;</button>
+                    <button class="carousel-btn" onclick="scrollCarousel(334)" aria-label="Successivo">&rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="network-section">
+            <div class="network-grid">
+                
+                <div class="network-block">
+                    <h4>Collegamenti Utili</h4>
+                    <div class="logos-row">
+                        <a href="https://www.federscacchi.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FSI - Federazione Scacchistica Italiana">
+                            <img src="logo-fsi.svg" alt="Federazione Scacchistica Italiana">
+                        </a>
+                        <a href="https://www.fide.com/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FIDE - International Chess Federation">
+                            <img src="logo-fide.svg" alt="FIDE">
+                        </a>
+                        <a href="https://www.marchesport.milone.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="Comitato Regionale Marche Scacchi">
+                            <img src="logo-comitato-marche.svg" alt="Comitato Regionale Marche">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sponsor-block">
+                    <h4>Sponsor & Partner</h4>
+                    <div class="logos-row">
+                        <div class="logo-link" title="Sponsor Principale">
+                            <img src="logo-sponsor-uno.svg" alt="Sponsor Ufficiale 1">
+                        </div>
+                        <div class="logo-link" title="Partner Tecnico / Locale">
+                            <img src="logo-sponsor-due.svg" alt="Sponsor Ufficiale 2">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contatti">
+        <div class="container footer-grid">
+            <h2>Contatti</h2>
+            <address class="footer-contacts">
+                <div class="footer-link-block">
+                    <span>Sede Ufficiale</span>
+                    <p>Via Giovanni Agnelli, 22<br>63900 Fermo (FM)</p>
+                </div>
+                <div class="footer-link-block">
+                    <span>Telefono Responsabile</span>
+                    <a href="tel:+393392023700">+39 339 2023700</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Email Istruttore/Club</span>
+                    <a href="mailto:istruttoredonati@gmail.com">istruttoredonati@gmail.com</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Canale Digitale</span>
+                    <a href="https://www.instagram.com/scacchifermo/" target="_blank" rel="noopener noreferrer">@scacchifermo</a>
+                </div>
+            </address>
+        </div>
+    </footer>
+
+    <script>
+        // Inizializzazione Logica e Rendering Scacchiera Sottostante
+        const chessBoard = document.getElementById('chessBoard');
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                // Alternanza dei colori classici delle caselle
+                if ((row + col) % 2 === 0) {
+                    cell.classList.add('light');
+                } else {
+                    cell.classList.add('dark');
+                }
+                // Assegna indici di riga e colonna come attributi utili alle funzioni di tracciamento
+                cell.dataset.row = row;
+                cell.dataset.col = col;
+                chessBoard.appendChild(cell);
+            }
+        }
+
+        // Funzioni per gestire gli highlight della scacchiera al passaggio sulla legenda
+        function highlightCells(type) {
+            clearCells();
+            const cells = document.querySelectorAll('.cell');
+            
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+                
+                if (type === 1) {
+                    // Evidenzia perimetro esterno (Cornice esteriore del tabellone)
+                    if (r === 0 || r === 7 || c === 0 || c === 7) {
+                        cell.classList.add('highlight-1');
+                    }
+                } else if (type === 2) {
+                    // Evidenzia area centrale (Sotto il QR code)
+                    if (r >= 2 && r <= 5 && c >= 2 && c <= 5) {
+                        cell.classList.add('highlight-2');
+                    }
+                } else if (type === 3) {
+                    // Evidenzia linee simmetriche e bande diagonali selettive
+                    if (r === c || (r + c) === 7) {
+                        cell.classList.add('highlight-3');
+                    }
+                }
+            });
+        }
+
+        function clearCells() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.classList.remove('highlight-1', 'highlight-2', 'highlight-3');
+            });
+        }
+
+        // Funzione scorrimento carosello eventi
+        function scrollCarousel(distance) {
+            const track = document.getElementById('carouselTrack');
+            track.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
