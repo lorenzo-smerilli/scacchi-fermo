@@ -573,42 +573,51 @@
         </div>
     </section>
 
-    <div class="container" id="chi-siamo">
-        <div class="intro-block">
-            <h2>Un archivio visivo di incontri, tornei e manifesti.</h2>
-            <p>Dal 1975, l'Associazione Dilettantistica Scacchi Fermo promuove il gioco degli scacchi come cultura, arte e confronto generazionale nel territorio marchigiano.</p>
-        </div>
-
-        <div class="press-layout">
-            <div class="press-item">
-                <div class="press-img-container">
-                    <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80" alt="Torneo storico" class="press-img">
-                </div>
-                <div class="press-text-box">
-                    <span>Storia</span>
-                    <h3>Oltre quarant'anni di passione verticale</h3>
-                    <p>Fondata sulla tradizione dei circoli storici, l'associazione ha attraversato le epoche mantenendo inalterato il fascino dello studio sulla scacchiera e l'apertura verso i giovani talenti.</p>
-                    <a href="#" class="read-more">Leggi la nostra storia &rarr;</a>
+<section id="chi-siamo" class="story-section">
+        <div class="container story-layout">
+            
+            <div class="story-col-manifesto">
+                <div class="sticky-manifesto-title">
+                    <span class="section-badge">La Nostra Filosofia</span>
+                    <h2 class="editorial-title">Un gioco antico, un'attitudine contemporanea.</h2>
                 </div>
             </div>
 
-            <div class="press-item reverse">
-                <div class="press-img-container">
-                    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=800&q=80" alt="Sede sociale" class="press-img">
-                </div>
-                <div class="press-text-box">
-                    <span>La Sede</span>
-                    <h3>Uno spazio per pensare e condividere</h3>
-                    <p>La nostra sede nel cuore di Fermo ospita incontri settimanali, corsi propedeutici per scuole e tornei a variazione Elo validi per le qualificazioni nazionali.</p>
-                    <a href="#" class="read-more">Scopri i nostri orari &rarr;</a>
+            <div class="story-col-text">
+                <p class="story-lead">
+                    L'Associazione Dilettantistica Scacchi Fermo nasce per ridefinire lo spazio del circolo scacchistico tradicional. Non più solo un luogo di silenzio rigoroso, ma un hub dinamico dove la strategia si fonde con la cultura urbana, l'arte della comunicazione visiva e la convivialità.
+                </p>
+                <p class="story-body">
+                    Fondata da istruttori qualificati e appassionati, l'associazione trasforma la scacchiera in uno strumento di connessione sociale. Collaboriamo attivamente con realtà del territorio — come club, pub e spazi espositivi — per portare il gioco fuori dai contesti ordinari, organizzando serate underground, tornei lampo a tempo di musica e workshop dedicati all'analisi psicologica e geometrica del gioco.
+                </p>
+                <div class="story-meta">
+                    <div class="meta-item">
+                        <strong>Fermo (FM)</strong>
+                        <span>Marche, Italia</span>
+                    </div>
+                    <div class="meta-item">
+                        <strong>Istruttori FSI</strong>
+                        <span>Certificati e Attivi</span>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
+    </section>
 
     <section class="quote-section">
         <div class="container">
-            <div class="quote-text">“Gli scacchi sono lo specchio dell'anima.”</div>
+            <blockquote class="quote-text">
+                "I pedoni sono l'anima degli scacchi."
+            </blockquote>
+        </div>
+    </section>
+
+<section class="quote-section">
+        <div class="container">
+            <blockquote class="quote-text">
+                "I pedoni sono l'anima degli scacchi."
+            </blockquote>
         </div>
     </section>
 
@@ -656,7 +665,7 @@
             </div>
         </div>
 
-        <div class="network-section" id="contatti">
+        <div class="network-section">
             <div class="network-grid">
                 <div class="network-block">
                     <h4>Patrocini & Istituzioni</h4>
@@ -667,58 +676,38 @@
                     </div>
                 </div>
                 <div class="sponsor-block">
-                    <h4>Sostenitori Locali</h4>
+                    <h4>Sostenitori Locali & Partner</h4>
                     <div class="logos-row" style="gap: 24px;">
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">Si ringraziano la Cassa di Risparmio di Fermo e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">Si ringraziano la Cassa di Risparmio di Fermo, il nostro Pub partner e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        const hero = document.getElementById('heroSection');
-
-        function runStickerSequence() {
-            // Momento 0: Il QR code HTML è perfettamente unito, denso, solido ed originale.
-
-            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
-            setTimeout(() => {
-                hero.classList.add('frenetic-chaos');
-            }, 3000);
-
-            // FASE 3: Transizione fluida alla scacchiera grande reale
-            setTimeout(() => {
-                hero.classList.add('hide-qr-completely');
-                hero.classList.add('hide-all-svg-layers');
-                hero.classList.add('assemble-board');
-            }, 6500);
-
-            // FASE 4: Claim finale
-            setTimeout(() => {
-                hero.classList.add('display-claim');
-            }, 8800);
-
-            // RESET COMPLETO DEL LOOP
-            setTimeout(() => {
-                hero.classList.remove('display-claim');
-                hero.classList.remove('assemble-board');
-                hero.classList.remove('hide-all-svg-layers');
-                hero.classList.remove('hide-qr-completely');
-                hero.classList.remove('frenetic-chaos');
-            }, 13500);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            runStickerSequence();
-            setInterval(runStickerSequence, 14500);
-        });
-
-        // Funzione scorrimento carosello eventi
-        function scrollCarousel(distance) {
-            const track = document.getElementById('carouselTrack');
-            track.scrollBy({ left: distance, behavior: 'smooth' });
-        }
+    <footer id="contatti">
+        <div class="container footer-grid">
+            <h2>Contatti</h2>
+            <address class="footer-contacts">
+                <div class="footer-link-block">
+                    <span>Sede Ufficiale</span>
+                    <p>Via Giovanni Agnelli, 22<br>63900 Fermo (FM)</p>
+                </div>
+                <div class="footer-link-block">
+                    <span>Telefono Responsabile</span>
+                    <a href="tel:+393392023700">+39 339 2023700</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Email Istruttore/Club</span>
+                    <a href="mailto:istruttoredonati@gmail.com">istruttoredonati@gmail.com</a>
+                </div>
+                <div class="footer-link-block">
+                    <span>Canale Digitale</span>
+                    <a href="https://www.instagram.com/scacchifermo/" target="_blank" rel="noopener noreferrer">@scacchifermo</a>
+                </div>
+            </address>
+        </div>
+    </footer>
     </script>
 </body>
 </html>
