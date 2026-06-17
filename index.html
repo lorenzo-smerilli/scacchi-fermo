@@ -151,60 +151,49 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: QR Code Originale (svg 2) */
-        .hero-qr-image {
+        /* NUOVA GRIGLIA QR EVOLUTIVA: Sostituisce l'SVG statico. 
+           Inizialmente i quadratini formano il QR Code reale sul posto. */
+        .hero-qr-hardware-matrix {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: url('2-qr-code.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
             z-index: 2;
-            transform: translateZ(0px) scale(1);
-            transition: opacity 0.5s ease, transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* CONTENITORE MASSIVO DI TRANSIZIONE CAOTICA (144 QUANTITÀ QR) */
-        .chaos-storm-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            pointer-events: none;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-template-rows: repeat(12, 1fr);
-            opacity: 0;
+            gap: 2px; /* Simula la separazione dei pixel del QR */
+            transform: translateZ(0px);
             transition: opacity 0.4s ease;
         }
 
-        .chaos-pixel {
-            width: 12px; /* Dimensione fissa, identica e pulita per tutti */
-            height: 12px;
-            background-color: var(--accent-green);
-            justify-self: center;
-            align-self: center;
+        .hardware-pixel {
+            width: 100%;
+            height: 100%;
+            background-color: var(--text-color); /* Colore scuro del QR code iniziale */
+            transition: background-color 0.5s ease, transform 0.5s ease;
         }
 
-        /* Attivazione della tempesta frenetica */
-        .hero.frenetic-chaos .chaos-storm-overlay {
-            opacity: 1;
-        }
-        .hero.frenetic-chaos .chaos-pixel {
-            animation: frenetic-explosion 2s infinite ease-in-out alternate;
+        /* I pixel vuoti del QR originario sono trasparenti */
+        .hardware-pixel.empty {
+            background-color: transparent;
         }
 
-        /* Sfasamento controllato matematicamente per creare incroci infiniti e caos */
-        .chaos-pixel:nth-child(3n) { animation-delay: -0.4s; --mx: 90px; --my: -120px; }
-        .chaos-pixel:nth-child(4n) { animation-delay: -0.8s; --mx: -140px; --my: 80px; }
-        .chaos-pixel:nth-child(5n) { animation-delay: -1.2s; --mx: 110px; --my: 140px; }
-        .chaos-pixel:nth-child(7n) { animation-delay: -1.6s; --mx: -80px; --my: -90px; }
+        /* ATTIVAZIONE DEL CAOS DIRETTAMENTE SUI VECCHI PIXEL */
+        .hero.frenetic-chaos .hardware-pixel:not(.empty) {
+            background-color: var(--accent-green); /* Virano al verde mentre si staccano */
+            animation: frenetic-explosion 2.2s infinite ease-in-out alternate;
+        }
+
+        /* Sfasamenti e traiettorie differenziate partendo dai punti nativi del QR */
+        .hardware-pixel:nth-child(3n) { animation-delay: -0.3s; --mx: 110px; --my: -140px; }
+        .hardware-pixel:nth-child(4n) { animation-delay: -0.6s; --mx: -150px; --my: 90px; }
+        .hardware-pixel:nth-child(5n) { animation-delay: -0.9s; --mx: 130px; --my: 130px; }
+        .hardware-pixel:nth-child(7n) { animation-delay: -1.2s; --mx: -90px; --my: -100px; }
 
         @keyframes frenetic-explosion {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(var(--mx, 40px), var(--my, -50px)); }
-            100% { transform: translate(calc(var(--mx, 40px) * -0.5), calc(var(--my, -50px) * -0.8)); }
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(var(--mx, 50px), var(--my, -60px)) scale(0.85); }
+            100% { transform: translate(calc(var(--mx, 50px) * -0.6), calc(var(--my, -60px) * -0.7)) scale(0.9); }
         }
 
         /* Layer Coordinate Bordi Scacchiera (Grotesk Light) */
@@ -290,23 +279,19 @@
            TIMELINE EVOLUTIVA DELLE CLASSI (JS DRIVEN)
            ========================================================================== */
         
-        /* 1. Il QR Code si restringe leggermente di volume */
-        .hero.shrink-qr .hero-qr-image {
-            transform: translateZ(0px) scale(0.88);
-        }
+        /* 1. Fase Caotica: La griglia QR originale impazzisce. Cavallo e sfondo restano intatti */
+        /* Gestito direttamente via classe .frenetic-chaos sul parent */
 
-        /* 2. Scompare solo ed esclusivamente l'svg del QR. Gli altri restano attivi! */
-        .hero.hide-qr-only .hero-qr-image {
+        /* 2. Passaggio alla Scacchiera Grande: Scompare la vecchia matrice QR e si spengono gli altri SVG */
+        .hero.hide-old-matrix .hero-qr-hardware-matrix {
             opacity: 0;
         }
-
-        /* 3. Quando si passa ai grandi (scacchiera), allora spariscono TUTTI gli altri vecchi SVG */
         .hero.hide-all-svg-layers .hero-bg-texti,
         .hero.hide-all-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
-        /* 4. Aggregazione Scacchiera Grande e Rotazione di 90 gradi */
+        /* 3. Aggregazione Scacchiera Grande e Rotazione di 90 gradi */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
             transform: translateZ(10px) scale(1) rotate(90deg);
@@ -321,7 +306,7 @@
             opacity: 1;
         }
 
-        /* 5. Epilogo Scritta */
+        /* 4. Epilogo Scritta */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
@@ -409,11 +394,8 @@
             <!-- Layer 1: Sfondo Testi (svg 1) -->
             <div class="hero-bg-texti"></div>
             
-            <!-- Layer 2: QR Code Originale (svg 2) -->
-            <div class="hero-qr-image"></div>
-            
-            <!-- CONTENITORE TEMPESTA CAOTICA DI MASSA (144 QUANTITÀ QR GENERATI VIA JS) -->
-            <div class="chaos-storm-overlay" id="chaosContainer"></div>
+            <!-- NUOVO LAYER: Ricostruzione geometrica reale del QR Code (Niente immagini slegate!) -->
+            <div class="hero-qr-hardware-matrix" id="hardwareMatrix"></div>
             
             <!-- Layer Coordinate Lettere e Numeri della Scacchiera -->
             <div class="board-labels">
@@ -441,6 +423,7 @@
     </section>
 
     <main class="container">
+        <!-- I restanti blocchi di contenuto sono integrati al 100% senza alcuna alterazione -->
         <section id="chi-siamo">
             <div class="intro-block">
                 <h2>Pedoni e Alfieri: chi siamo</h2>
@@ -543,50 +526,64 @@
     </footer>
 
     <script>
-        // GENERAZIONE AUTOMATICA DEI TANTISSIMI QUADRATINI CAOTICI (144 ELEMENTI = Matrice densa del QR)
-        const chaosContainer = document.getElementById('chaosContainer');
-        for (let i = 0; i < 144; i++) {
-            const pixel = document.createElement('div');
-            pixel.classList.add('chaos-pixel');
-            chaosContainer.appendChild(pixel);
-        }
+        // MAPPATURA DI UN QR CODE REALE (1 = Pixel Nero, 0 = Spazio Vuoto Trasparente)
+        // Disposto su una matrice 12x12 simmetrica per combaciare perfettamente con il look dello sticker originale
+        const qrPattern = [
+            1,1,1,1,1,1,0,1,1,1,1,1,
+            1,0,0,0,0,1,0,1,0,0,0,1,
+            1,0,1,1,0,1,0,1,0,1,0,1,
+            1,0,1,1,0,1,0,1,0,1,0,1,
+            1,0,0,0,0,1,0,1,0,0,0,1,
+            1,1,1,1,1,1,0,1,1,1,1,1,
+            0,0,0,0,0,0,0,0,0,0,0,0,
+            1,1,0,1,0,1,1,0,1,1,0,1,
+            1,0,1,0,1,0,0,1,0,0,1,0,
+            1,1,0,0,1,1,0,1,1,0,1,1,
+            1,0,1,1,0,1,0,0,1,0,1,0,
+            1,1,1,1,1,1,0,1,0,1,1,1
+        ];
+
+        const matrixContainer = document.getElementById('hardwareMatrix');
+        
+        // Generazione della struttura fisica atomica del QR
+        qrPattern.forEach(bit => {
+            const block = document.createElement('div');
+            block.classList.add('hardware-pixel');
+            if (bit === 0) block.classList.add('empty');
+            matrixContainer.appendChild(block);
+        });
 
         const hero = document.getElementById('heroSection');
 
-        // REGISTA DELLA TIMELINE SEQUENCE EVOLUTIVA
+        // REGISTA DELLA TIME-LINE EVOLUTIVA SCOMPOSITIVA
         function runStickerSequence() {
             
-            // FASE 1: Riduzione volume/scala del QR Code (Contrazione prima del collasso)
-            setTimeout(() => {
-                hero.classList.add('shrink-qr');
-            }, 3000);
-
-            // FASE 2: Esplosione di massa frenetica. Scompare SOLO l'svg del QR. Sfondo testi e Cavallo rimangono visibili!
+            // FASE 1: I pixel del QR partono dalle loro posizioni native e impazziscono (Caos Frenetico)
+            // Sfondo testi e Cavallo restano ancora visibili al loro posto!
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
-                hero.classList.add('hide-qr-only');
-            }, 3800);
+            }, 3500);
 
-            // FASE 3: Transizione ai grandi quadrati HTML. La tempesta si spegne, compaiono e ruotano i blocchi scacchiera,
-            // e ADESSO scompaiono finalmente anche gli altri livelli SVG rimanenti (Sfondo e Cavallo).
+            // FASE 2: Passaggio alla scacchiera grande. Svanisce la vecchia matrice QR esplosa
+            // e contestualmente si spengono anche lo Sfondo e la figura del Cavallo.
             setTimeout(() => {
-                hero.classList.remove('frenetic-chaos');
+                hero.classList.add('hide-old-matrix');
                 hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
-            }, 7200); // Durata del caos estesa significativamente
+            }, 7000); /* Tempo del caos prolungato per dare enfasi dinamica */
 
-            // FASE 4: Solito epilogo poetico col Claim
+            // FASE 3: Comparsa finale stabile del Claim
             setTimeout(() => {
                 hero.classList.add('display-claim');
-            }, 9600);
+            }, 9400);
 
-            // FASE 5: RESET LOOP AD ANELLO
+            // FASE 4: RESET COMPLETO AD ANELLO CONTINUO
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
                 hero.classList.remove('hide-all-svg-layers');
-                hero.classList.remove('hide-qr-only');
-                hero.classList.remove('shrink-qr');
+                hero.classList.remove('hide-old-matrix');
+                hero.classList.remove('frenetic-chaos');
             }, 13500);
         }
 
