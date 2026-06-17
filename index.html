@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* RESET & VARIABILI PRESI DIRETTAMENTE DA INDEX2.HTML */
+        /* RESET & VARIABILI */
         * {
             margin: 0;
             padding: 0;
@@ -31,401 +31,297 @@
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
             overflow-x: hidden;
-            line-height: 1.4;
+        }
+
+        h1, h2, h3, .quote-text {
+            font-family: 'EB Garamond', serif;
+            font-weight: 500;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.7;
         }
 
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* HEADER EDITORIALE NATIVO */
-        .editorial-header {
-            width: 100%;
-            border-bottom: 2px solid var(--text-color);
-            background-color: var(--bg-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        section {
+            padding: 80px 0;
         }
 
-        .nav-wrapper {
+        /* HEADER & CONFIGURAZIONE LOGO */
+        header {
+            padding: 24px 0;
+            background: transparent;
+        }
+
+        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 90px;
         }
 
-        .brand-block {
+        .logo-block {
             display: flex;
             align-items: center;
-            gap: 16px;
-            text-decoration: none;
-            color: var(--text-color);
+            gap: 14px;
         }
 
-        .brand-logo {
-            height: 48px;
-            width: auto;
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            display: block;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            filter: grayscale(100%) contrast(1.1); 
         }
 
-        .brand-text {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-weight: 900;
-            font-size: 1.8rem;
+        .logo-block:hover .logo-icon {
+            filter: none;
+            opacity: 1;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
             line-height: 1;
         }
 
-        .editorial-nav ul {
+        nav ul {
             display: flex;
             list-style: none;
-            gap: 40px;
+            gap: 32px;
         }
 
-        .editorial-nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 1.05rem;
+        nav ul a {
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: opacity 0.2s;
+            font-weight: 700;
+            letter-spacing: 0.2px;
         }
 
-        .editorial-nav a:hover {
-            opacity: 0.6;
-        }
-
-        /* INTEGRAZIONE IFRAME SCACCHIERA (PROPORZIONATO E SQUARE-FRIENDLY) */
-        .hero-iframe-container {
+        /* NUOVA HERO AGGIORNATA PER IFRAME ANIMAZIONE */
+        .hero {
+            position: relative;
             width: 100%;
+            height: 75vh;
+            min-height: 550px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background-color: var(--bg-color);
-            padding: 40px 0;
-        }
-
-        .hero-iframe {
-            width: 100%;
-            max-width: 600px;
-            height: 600px;
-            border: none;
+            justify-content: center;
+            background-color: #FAFAFA;
             overflow: hidden;
         }
 
-        @media (max-width: 640px) {
-            .hero-iframe {
-                height: 90vw;
-            }
+        .hero-iframe-container {
+            width: 100%;
+            max-width: 550px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        /* STRUTTURA CONTENUTI DA INDEX2.HTML */
+        .hero-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            overflow: hidden;
+            display: block;
+        }
+
+        /* INTRO BLOCKS */
         .intro-block {
-            padding: 100px 0 60px 0;
-            max-width: 760px;
+            max-width: 800px;
+            margin-bottom: 60px;
         }
 
         .intro-block h2 {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: -1.5px;
-            margin-bottom: 24px;
-            line-height: 0.95;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            line-height: 1.1;
         }
 
         .intro-block p {
-            font-size: 1.35rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
-            font-weight: 400;
         }
 
-        /* PRESS LAYOUT */
+        /* CHI SIAMO & STAMPA */
         .press-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 48px;
-            margin-bottom: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
         }
 
         .press-item {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            border: 2px solid var(--text-color);
-            background: #ffffff;
-        }
-
-        @media (max-width: 768px) {
-            .press-item {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .press-img-container {
-            width: 100%;
-            height: 100%;
-            min-height: 380px;
-            background-color: #eee;
-            overflow: hidden;
-            border-right: 2px solid var(--text-color);
-        }
-
-        @media (max-width: 768px) {
-            .press-img-container {
-                border-right: none;
-                border-bottom: 2px solid var(--text-color);
-            }
-        }
-
-        .press-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .press-text-box {
-            padding: 48px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .press-text-box span {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-dark-muted);
-            margin-bottom: 16px;
-        }
-
-        .press-text-box h3 {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            line-height: 1.05;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-        }
-
-        .press-text-box p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 32px;
-        }
-
-        .read-more {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .read-more:hover {
-            opacity: 0.7;
-        }
-
-        /* RASSEGNA MANIFESTI (CAROSELLO) */
-        .archive-strip {
-            background-color: var(--bg-archive-warm);
-            border-top: 2px solid var(--text-color);
-            border-bottom: 2px solid var(--text-color);
-            padding: 100px 0;
-        }
-
-        .carousel-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            margin-top: 48px;
-        }
-
-        .carousel-track {
-            display: flex;
-            gap: 24px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-        }
-
-        .carousel-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        .manifesto-card {
-            flex: 0 0 310px;
-            border: 2px solid var(--text-color);
-            background: #ffffff;
-            padding: 16px;
-        }
-
-        .manifesto-img-box {
-            width: 100%;
-            height: 380px;
-            background-color: #eee;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-
-        .manifesto-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .manifesto-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .manifesto-card span {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .carousel-nav {
-            display: flex;
-            gap: 12px;
-            margin-top: 32px;
-        }
-
-        .carousel-btn {
-            background: #ffffff;
-            border: 2px solid var(--text-color);
-            width: 48px;
-            height: 48px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
             align-items: center;
-            justify-content: center;
         }
 
-        .carousel-btn:hover {
-            background: var(--text-color);
-            color: #ffffff;
-        }
+        .press-item.reverse { direction: rtl; }
+        .press-item.reverse .press-text-box { direction: ltr; }
 
-        /* NETWORK & SPONSOR SECTION */
+        .press-img-container { width: 100%; height: 380px; overflow: hidden; }
+        .press-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: filter 0.3s ease; }
+        .press-item:hover .press-img { filter: grayscale(0%) contrast(1); }
+
+        .press-text-box span { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dark-muted); display: block; margin-bottom: 12px; }
+        .press-text-box h3 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px; }
+        .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
+        .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
+
+        /* BIG QUOTE - CONTROPUNTO UMANISTA */
+        .quote-section { 
+            text-align: center; 
+            padding: 100px 0; 
+            background-color: var(--bg-archive-warm);
+            border-top: 1px solid var(--border-gray);
+            border-bottom: 1px solid var(--border-gray);
+            margin: 40px 0;
+        }
+        .quote-text { font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; line-height: 1.2; color: var(--text-color); }
+
+        /* CAROSELLO MANIFESTI */
+        .carousel-wrapper { position: relative; width: 100%; }
+        .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
+        .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
+        .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: all 0.3s ease; }
+        .manifesto-card:hover .manifesto-img { filter: grayscale(0%) contrast(1); }
+        .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.2; }
+        .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
+        .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s ease; }
+        .carousel-btn:hover { background-color: var(--text-color); color: var(--bg-color); }
+
+        /* NETWORK & SPONSOR */
         .network-section {
-            padding: 100px 0;
+            border-top: 1px solid var(--border-gray);
+            padding-top: 80px;
+            margin-top: 40px;
         }
 
         .network-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 80px;
-        }
-
-        @media (max-width: 768px) {
-            .network-grid {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
+            grid-template-columns: 3fr 2fr;
+            gap: 64px;
         }
 
         .network-block h4, .sponsor-block h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
+            font-family: 'Montserrat Condensed', sans-serif;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-dark-muted);
             margin-bottom: 32px;
         }
 
         .logos-row {
             display: flex;
             align-items: center;
-            gap: 48px;
             flex-wrap: wrap;
+            gap: 48px;
+        }
+
+        .logo-link {
+            display: inline-block;
         }
 
         .logo-link img {
-            height: 44px;
+            height: 48px; 
             width: auto;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.5);
+            transition: all 0.3s ease;
         }
 
-        /* FOOTER CONTATTI */
-        footer {
-            background-color: var(--bg-card-dark);
-            color: #ffffff;
-            border-top: 2px solid var(--text-color);
-            padding: 100px 0;
+        .logo-link:hover img {
+            filter: grayscale(0%) opacity(1);
         }
 
-        .footer-grid h2 {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            font-weight: 900;
-            margin-bottom: 60px;
-            letter-spacing: -1px;
+        .sponsor-block {
+            border-left: 1px solid var(--border-gray);
+            padding-left: 64px;
         }
 
-        .footer-contacts {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            font-style: normal;
-        }
+        /* FOOTER */
+        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .footer-grid h2 { font-size: 3rem; font-style: italic; }
+        .footer-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; align-items: flex-start; }
+        .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.5px; }
+        .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; line-height: 1.2; }
+        .footer-link-block a:hover { color: var(--accent-green); opacity: 1; }
 
+        /* RESPONSIVE & GEO-SYMMETRY MOBILE */
         @media (max-width: 992px) {
-            .footer-contacts {
-                grid-template-columns: 1fr 1fr;
+            .network-grid { grid-template-columns: 1fr; gap: 48px; }
+            .sponsor-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border-gray); padding-top: 48px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+            
+            header .container {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
             }
-        }
 
-        @media (max-width: 576px) {
-            .footer-contacts {
-                grid-template-columns: 1fr;
+            .logo-block {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
             }
-        }
 
-        .footer-link-block span {
-            display: block;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: var(--text-dark-muted);
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-link-block p, .footer-link-block a {
-            font-size: 1.1rem;
-            color: #E5E5E5;
-            text-decoration: none;
-            line-height: 1.4;
-        }
-
-        .footer-link-block a:hover {
-            color: var(--accent-green);
+            .hero { height: auto; min-height: auto; padding: 40px 0; }
+            .hero-iframe-container { max-width: 320px; padding: 0; }
+            .press-item { grid-template-columns: 1fr; gap: 24px; }
+            .press-item.reverse { direction: ltr; }
+            .press-img-container { height: 260px; }
+            .manifesto-card { flex: 0 0 260px; }
+            .manifesto-img-box { height: 390px; }
+            .logos-row { gap: 32px; }
+            .logo-link img { height: 40px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="editorial-header">
-        <div class="container nav-wrapper">
-            <a href="#" class="brand-block">
-                <img src="logo-scacchi-bicolor.svg" alt="ASD Scacchi Fermo" class="brand-logo">
-                <span class="brand-text">Scacchi Fermo</span>
-            </a>
-            <nav class="editorial-nav">
+    <header>
+        <div class="container">
+            <div class="logo-block">
+                <img src="logo-scacchi-bicolor.svg" alt="ASD Scacchi Fermo" class="logo-icon">
+                <div class="logo-text">Scacchi Fermo</div>
+            </div>
+            <nav>
                 <ul>
                     <li><a href="#chi-siamo">Chi Siamo</a></li>
                     <li><a href="#eventi">Eventi</a></li>
@@ -435,15 +331,16 @@
         </div>
     </header>
 
-    <section class="hero-iframe-container">
-        <iframe src="animazione.html" class="hero-iframe" scrolling="no"></iframe>
+    <section class="hero">
+        <div class="hero-iframe-container">
+            <iframe src="animazione.html" scrolling="no"></iframe>
+        </div>
     </section>
-
     <main class="container">
         
         <section id="chi-siamo">
             <div class="intro-block">
-                <h2>Pedoni e Alfieri:<br>chi siamo</h2>
+                <h2>Pedoni e Alfieri: chi siamo</h2>
                 <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
             </div>
 
@@ -453,86 +350,118 @@
                         <img src="https://www.cronachefermane.it/wp-content/uploads/2026/04/295f968f-d307-4156-b6f0-1e5edcd8d44b.jpg" alt="Trofeo Scacchi Scuola" class="press-img">
                     </div>
                     <div class="press-text-box">
-                        <span>Cronache Fermane &middot; 19 Aprile 2026</span>
+                        <span>Cronache Fermane · 19 Aprile 2026</span>
                         <h3>Gli studenti del Fermano brillano al Trofeo Scacchi Scuola</h3>
                         <p>Resoconto dei grandi risultati conquistati e delle menti giovani del nostro distretto che si sono distinte nel circuito dei campionati studenteschi scolastici.</p>
                         <a href="https://www.cronachefermane.it/2026/04/19/gli-studenti-del-fermano-brillano-al-trofeo-scacchi-scuola/753790/" target="_blank" rel="noopener noreferrer" class="read-more">Leggi l'articolo originale &rarr;</a>
                     </div>
                 </div>
+
+                <div class="press-item reverse">
+                    <div class="press-img-container">
+                        <img src="https://images.unsplash.com/photo-1604948501466-4e9c339b9c24?auto=format&fit=crop&w=1200&q=80" alt="Attività e scatti agonistici" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Instagram · Archivio Agonismo</span>
+                        <h3>Cronache dai campionati a squadre</h3>
+                        <p>Segui i resoconti visivi e i passaggi di turno delle nostre formazioni nei campionati italiani e regionali direttamente sul canale social dedicato.</p>
+                        <a href="https://www.instagram.com/p/DWa43-QDW9p/?img_index=1" target="_blank" rel="noopener noreferrer" class="read-more">Apri il post di riferimento &rarr;</a>
+                    </div>
+                </div>
             </div>
         </section>
 
-    </main>
+        <section class="quote-section">
+            <a href="sotto_pagina_reportage.html" style="text-decoration: none;">
+                <div class="quote-text" style="color: var(--accent-green); transition: opacity 0.2s ease;">
+                    “Fermo, eppur si muove”
+                </div>
+            </a>
+        </section>
 
-    <section id="eventi" class="archive-strip">
-        <div class="container">
-            <div class="intro-block" style="padding: 0;">
-                <h2>Manifesti & Appuntamenti</h2>
-                <p>La nostra rassegna di eventi culturali, mostre e competizioni attive sul territorio.</p>
+        <section id="eventi">
+            <div class="intro-block">
+                <h2>I nostri appuntamenti</h2>
+                <p>I bandi e le locandine reali delle competizioni e delle manifestations storiche e correnti coordinate sul nostro territorio.</p>
             </div>
 
             <div class="carousel-wrapper">
                 <div class="carousel-track" id="carouselTrack">
-                    <div class="manifesto-card">
+                    
+                    <article class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Torneo d'Autunno 2026" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="Bando Fermo d'Estate" class="manifesto-img">
                         </div>
-                        <h3>Torneo d'Autunno 2026</h3>
-                        <span>Ottobre 2026 &middot; Open Internazionale</span>
-                    </div>
-                    <div class="manifesto-card">
+                        <h3>I Torneo FIDE "Fermo d'Estate"</h3>
+                        <span>01 — 06 Agosto 2026</span>
+                    </article>
+
+                    <article class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Scacchi in Piazza" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=600&q=80" alt="Torneo Giovanile Qualificazioni" class="manifesto-img">
                         </div>
-                        <h3>Scacchi in Piazza</h3>
-                        <span>Luglio 2026 &middot; Rassegna Estiva</span>
-                    </div>
-                    <div class="manifesto-card">
+                        <h3>Torneo di Qualificazione C.I.G. U18</h3>
+                        <span>Fasi regionali ufficiali</span>
+                    </article>
+
+                    <article class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Campionato Giovanile" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano Scuola" class="manifesto-img">
                         </div>
-                        <h3>Campionato Giovanile</h3>
-                        <span>Maggio 2026 &middot; Under 18</span>
-                    </div>
-                    <div class="manifesto-card">
+                        <h3>Trofeo Scacchi Scuola</h3>
+                        <span>Fasi selettive istituti</span>
+                    </article>
+
+                    <article class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Seminario Tattico" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1528819622765-d6bbf0379933?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano a Squadre" class="manifesto-img">
                         </div>
-                        <h3>Seminario Tattico</h3>
-                        <span>Novembre 2026 &middot; Masterclass</span>
-                    </div>
+                        <h3>Campionato Italiano a Squadre CIS</h3>
+                        <span>Raggruppamenti Club Marchigiani</span>
+                    </article>
+
                 </div>
 
                 <div class="carousel-nav">
-                    <button class="carousel-btn" onclick="scrollCarousel(-334)">&larr;</button>
-                    <button class="carousel-btn" onclick="scrollCarousel(334)">&rarr;</button>
+                    <button class="carousel-btn" onclick="scrollCarousel(-334)" aria-label="Precedente">&larr;</button>
+                    <button class="carousel-btn" onclick="scrollCarousel(334)" aria-label="Successivo">&rarr;</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <main class="container">
         <section class="network-section">
             <div class="network-grid">
                 
                 <div class="network-block">
-                    <h4>Patrocini & Istituzioni</h4>
+                    <h4>Collegamenti Utili</h4>
                     <div class="logos-row">
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Federazione_Scacchistica_Italiana_Logo.svg" alt="FSI"></a>
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/it/c/cd/Logo_CONI_2014.svg" alt="CONI"></a>
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Logo_Comune_di_Fermo.svg" alt="Comune Fermo" style="height: 60px;"></a>
+                        <a href="https://www.federscacchi.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FSI - Federazione Scacchistica Italiana">
+                            <img src="logo-fsi.svg" alt="Federazione Scacchistica Italiana">
+                        </a>
+                        <a href="https://www.fide.com/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FIDE - International Chess Federation">
+                            <img src="logo-fide.svg" alt="FIDE">
+                        </a>
+                        <a href="https://www.marchesport.milone.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="Comitato Regionale Marche Scacchi">
+                            <img src="logo-comitato-marche.svg" alt="Comitato Regionale Marche">
+                        </a>
                     </div>
                 </div>
 
                 <div class="sponsor-block">
-                    <h4>Sostenitori Locali & Partner</h4>
-                    <div class="logos-row" style="gap: 24px;">
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">Si ringraziano la Cassa di Risparmio di Fermo, il nostro Pub partner e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
+                    <h4>Sponsor & Partner</h4>
+                    <div class="logos-row">
+                        <div class="logo-link" title="Sponsor Principale">
+                            <img src="logo-sponsor-uno.svg" alt="Sponsor Ufficiale 1">
+                        </div>
+                        <div class="logo-link" title="Partner Tecnico / Locale">
+                            <img src="logo-sponsor-due.svg" alt="Sponsor Ufficiale 2">
+                        </div>
                     </div>
                 </div>
 
             </div>
         </section>
+
     </main>
 
     <footer id="contatti">
@@ -562,9 +491,7 @@
     <script>
         function scrollCarousel(distance) {
             const track = document.getElementById('carouselTrack');
-            if (track) {
-                track.scrollBy({ left: distance, behavior: 'smooth' });
-            }
+            track.scrollBy({ left: distance, behavior: 'smooth' });
         }
     </script>
 
