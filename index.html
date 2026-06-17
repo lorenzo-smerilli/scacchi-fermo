@@ -86,10 +86,10 @@
             transition: opacity 0.5s ease;
         }
 
-        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 AD ALTA DENSITÀ (MOMENTO 0) */
+        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
         .hero-qr-html-grid {
             position: absolute;
-            width: 71%; /* Perfettamente centrato sulla cornice dello sticker */
+            width: 71%; 
             height: 71%;
             top: 14.5%;
             left: 14.5%;
@@ -98,37 +98,64 @@
             grid-template-columns: repeat(21, 1fr);
             grid-template-rows: repeat(21, 1fr);
             transform: translateZ(0px);
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         /* Singolo quadratino del QR code originale */
         .q-dot {
             background-color: var(--accent-green);
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
         }
         .q-dot.e {
-            background-color: transparent; /* Spazio vuoto */
+            background-color: transparent; 
         }
 
-        /* FASE 2: DISTANZA RIDOTTA DRASTICAMENTE (Sganciamento minimo, max 6px di allontanamento) */
-        .hero.frenetic-chaos .q-dot:not(.e) {
-            animation: micro-distantiate 1.8s infinite ease-in-out alternate;
+        /* ==========================================================
+           NUOVA FASE 2: SCOMPOSIZIONE GUIDA VERSO LA SCACCHIERA
+           ========================================================== */
+        
+        /* I 3 grandi occhielli d'angolo (identificabili visivamente nelle prime e ultime righe della matrice) 
+           e alcuni blocchi strutturali rimangono completamente fermi per dare stabilità */
+        .hero.frenetic-chaos .q-dot:nth-child(-n+7),
+        .hero.frenetic-chaos .q-dot:nth-child(21n+1),
+        .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
+            transform: translate(0, 0) scale(1) !important;
+            animation: none !important;
         }
 
-        /* Direzioni di allontanamento calcolate per non far collassare i quadrati verso lo zero */
-        .q-dot:nth-child(3n) { --dx: 5px; --dy: -4px; animation-delay: -0.2s; }
-        .q-dot:nth-child(4n) { --dx: -6px; --dy: 3px; animation-delay: -0.4s; }
-        .q-dot:nth-child(5n) { --dx: 4px; --dy: 5px; animation-delay: -0.6s; }
-        .q-dot:nth-child(7n) { --dx: -5px; --dy: -5px; animation-delay: -0.8s; }
+        /* Solo i quadratini in posizione alternata (pari/dispari incrociati) si muovono,
+           suggerendo la disposizione modulare della scacchiera */
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(2n) {
+            animation: suggest-chessboard-pari 2s infinite ease-in-out alternate;
+            background-color: #006b35; /* Variazione minima di tono per dare profondità */
+        }
 
-        @keyframes micro-distantiate {
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(3n+1) {
+            animation: suggest-chessboard-dispari 2s infinite ease-in-out alternate;
+        }
+
+        /* I quadratini rimasti che non partecipano alla scomposizione iniziano a sfumare leggermente */
+        .hero.frenetic-chaos .q-dot:not(.e):nth-child(5n) {
+            opacity: 0.4;
+            transform: scale(0.85);
+        }
+
+        /* Animazioni direzionali che simulano l'allineamento alternato della scacchiera */
+        @keyframes suggest-chessboard-pari {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(var(--dx, 4px), var(--dy, -4px)); }
+            100% { transform: translate(6px, -6px) scale(1.1); }
         }
 
+        @keyframes suggest-chessboard-dispari {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-6px, 6px) scale(0.9); }
+        }
+
+        /* Dissolvenza totale programmata per il subentro del layer successivo */
         .hero.hide-qr-completely .hero-qr-html-grid {
             opacity: 0;
             pointer-events: none;
+            transform: scale(0.92) translateZ(-10px);
         }
 
         /* Layer Coordinate Lettere/Numeri */
@@ -174,7 +201,7 @@
             grid-template-rows: repeat(8, 1fr);
             opacity: 0;
             transform: translateZ(10px) scale(0.92);
-            transition: opacity 0.4s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .qr-block {
@@ -287,12 +314,12 @@
         function runStickerSequence() {
             // Momento 0: Il QR code HTML è perfettamente unito, denso, solido ed originale.
 
-            // FASE 2: I singoli div si muovono pochissimo (micro-allontanamento controllato di massimo 5-6px)
+            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
             }, 3000);
 
-            // FASE 3: Transizione fluida alla scacchiera grande
+            // FASE 3: Transizione fluida alla scacchiera grande reale
             setTimeout(() => {
                 hero.classList.add('hide-qr-completely');
                 hero.classList.add('hide-all-svg-layers');
