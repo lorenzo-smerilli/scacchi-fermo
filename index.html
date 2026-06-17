@@ -151,7 +151,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: QR Code Originale (svg 2) con transizione di scala aggiuntiva */
+        /* Layer 2: QR Code Originale (svg 2) */
         .hero-qr-image {
             position: absolute;
             width: 100%;
@@ -162,100 +162,50 @@
             background-position: center;
             z-index: 2;
             transform: translateZ(0px) scale(1);
-            transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: opacity 0.5s ease, transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* LAYER DI TEMPESTA CAOTICA: Micro-quadratini identici e impazziti */
+        /* CONTENITORE MASSIVO DI TRANSIZIONE CAOTICA (144 QUANTITÀ QR) */
         .chaos-storm-overlay {
             position: absolute;
             width: 100%;
             height: 100%;
             z-index: 3;
             pointer-events: none;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
         .chaos-pixel {
-            position: absolute;
-            width: 16px; /* Tutti della stessa identica dimensione pulita */
-            height: 16px;
+            width: 12px; /* Dimensione fissa, identica e pulita per tutti */
+            height: 12px;
             background-color: var(--accent-green);
-            top: 50%;
-            left: 50%;
+            justify-self: center;
+            align-self: center;
         }
 
-        /* Animazioni frenetiche asimmetriche con incroci e unioni apparenti */
-        .hero.frenetic-chaos .chaos-storm-overlay { opacity: 1; }
-        
-        .hero.frenetic-chaos .pixel-1 { animation: chaos-mov-1 1.8s infinite linear; }
-        .hero.frenetic-chaos .pixel-2 { animation: chaos-mov-2 1.5s infinite linear; }
-        .hero.frenetic-chaos .pixel-3 { animation: chaos-mov-3 1.9s infinite linear; }
-        .hero.frenetic-chaos .pixel-4 { animation: chaos-mov-4 1.6s infinite linear; }
-        .hero.frenetic-chaos .pixel-5 { animation: chaos-mov-5 1.7s infinite linear; }
-        .hero.frenetic-chaos .pixel-6 { animation: chaos-mov-6 1.4s infinite linear; }
-
-        @keyframes chaos-mov-1 {
-            0% { transform: translate(-30px, -40px); }
-            30% { transform: translate(120px, 60px); } /* Movimento ampio e frenetico */
-            65% { transform: translate(-80px, 90px); }
-            100% { transform: translate(-30px, -40px); }
+        /* Attivazione della tempesta frenetica */
+        .hero.frenetic-chaos .chaos-storm-overlay {
+            opacity: 1;
         }
-        @keyframes chaos-mov-2 {
-            0% { transform: translate(60px, 80px); }
-            25% { transform: translate(-110px, -90px); }
-            70% { transform: translate(40px, -130px); }
-            100% { transform: translate(60px, 80px); }
-        }
-        @keyframes chaos-mov-3 {
-            0% { transform: translate(-120px, 10px); }
-            40% { transform: translate(90px, -100px); }
-            75% { transform: translate(-10px, -10px); } /* Si avvicina temporaneamente al centro */
-            100% { transform: translate(-120px, 10px); }
-        }
-        @keyframes chaos-mov-4 {
-            0% { transform: translate(80px, -60px); }
-            35% { transform: translate(-90px, 110px); }
-            70% { transform: translate(130px, 20px); }
-            100% { transform: translate(80px, -60px); }
-        }
-        @keyframes chaos-mov-5 {
-            0% { transform: translate(-10px, 120px); }
-            50% { transform: translate(10px, -140px); }
-            80% { transform: translate(-100px, -50px); }
-            100% { transform: translate(-10px, 120px); }
-        }
-        @keyframes chaos-mov-6 {
-            0% { transform: translate(110px, -120px); }
-            30% { transform: translate(-130px, 30px); }
-            60% { transform: translate(0px, 70px); }
-            100% { transform: translate(110px, -120px); }
+        .hero.frenetic-chaos .chaos-pixel {
+            animation: frenetic-explosion 2s infinite ease-in-out alternate;
         }
 
-        /* Layer 3: Matrice Quadrati Grandi della Scacchiera Finale */
-        .hero-qr-animated {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 4;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            gap: 0;
-            transform: translateZ(10px) scale(0.9);
-            opacity: 0;
-            transition: opacity 0.4s ease, transform 2.2s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+        /* Sfasamento controllato matematicamente per creare incroci infiniti e caos */
+        .chaos-pixel:nth-child(3n) { animation-delay: -0.4s; --mx: 90px; --my: -120px; }
+        .chaos-pixel:nth-child(4n) { animation-delay: -0.8s; --mx: -140px; --my: 80px; }
+        .chaos-pixel:nth-child(5n) { animation-delay: -1.2s; --mx: 110px; --my: 140px; }
+        .chaos-pixel:nth-child(7n) { animation-delay: -1.6s; --mx: -80px; --my: -90px; }
 
-        .qr-block {
-            width: 100%;
-            height: 100%;
-            background-color: var(--accent-green);
-            transform: scale(0); /* Nascosti durante la tempesta */
-            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+        @keyframes frenetic-explosion {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(var(--mx, 40px), var(--my, -50px)); }
+            100% { transform: translate(calc(var(--mx, 40px) * -0.5), calc(var(--my, -50px) * -0.8)); }
         }
-
-        .qr-block.empty { opacity: 1; }
 
         /* Layer Coordinate Bordi Scacchiera (Grotesk Light) */
         .board-labels {
@@ -292,7 +242,32 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Epilogo: Il Claim con Bagliore */
+        /* Layer 5: Matrice Grandi Quadrati HTML Scacchiera */
+        .hero-qr-animated {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 0;
+            transform: translateZ(10px) scale(0.9);
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .qr-block {
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent-green);
+            transform: scale(0);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+
+        .qr-block.empty { opacity: 1; }
+
+        /* Epilogo: Il Claim */
         .hero-claim-final {
             position: absolute;
             z-index: 6;
@@ -312,22 +287,26 @@
 
 
         /* ==========================================================================
-           TIMELINE DELLE CLASSI DRIVEN BY JS
+           TIMELINE EVOLUTIVA DELLE CLASSI (JS DRIVEN)
            ========================================================================== */
         
-        /* 1. Il QR Code si restringe di volume */
+        /* 1. Il QR Code si restringe leggermente di volume */
         .hero.shrink-qr .hero-qr-image {
-            transform: translateZ(0px) scale(0.85);
+            transform: translateZ(0px) scale(0.88);
         }
 
-        /* 2. Scompaiono i vecchi layer di sfondo e cavallo lasciando spazio al caos puro */
-        .hero.hide-svg-layers .hero-bg-texti,
-        .hero.hide-svg-layers .hero-qr-image,
-        .hero.hide-svg-layers .hero-cavallo {
+        /* 2. Scompare solo ed esclusivamente l'svg del QR. Gli altri restano attivi! */
+        .hero.hide-qr-only .hero-qr-image {
             opacity: 0;
         }
 
-        /* 3. Aggregazione: La griglia grande compare, si compatta e compie la rotazione di 90° */
+        /* 3. Quando si passa ai grandi (scacchiera), allora spariscono TUTTI gli altri vecchi SVG */
+        .hero.hide-all-svg-layers .hero-bg-texti,
+        .hero.hide-all-svg-layers .hero-cavallo {
+            opacity: 0;
+        }
+
+        /* 4. Aggregazione Scacchiera Grande e Rotazione di 90 gradi */
         .hero.assemble-board .hero-qr-animated {
             opacity: 1;
             transform: translateZ(10px) scale(1) rotate(90deg);
@@ -336,13 +315,13 @@
             transform: scale(1);
         }
         .hero.assemble-board .qr-block.empty {
-            opacity: 0; /* Scompare l'elemento interno lasciando la casella bianca del sito */
+            opacity: 0; 
         }
         .hero.assemble-board .board-labels {
             opacity: 1;
         }
 
-        /* 4. Stato finale del Claim */
+        /* 5. Epilogo Scritta */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
@@ -354,8 +333,7 @@
             transition: opacity 1s ease;
         }
 
-
-        /* RESTO DEL SITO SORGENTE INTEGRALE */
+        /* TRATTI SORGENTI SITO COMPLETO */
         .intro-block { max-width: 800px; margin-bottom: 60px; }
         .intro-block h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; line-height: 1.1; }
         .intro-block p { font-size: 1.2rem; color: var(--text-muted); }
@@ -428,24 +406,22 @@
     <section class="hero" id="heroSection">
         <div class="hero-sticker-wrapper" id="parallaxBox">
             
+            <!-- Layer 1: Sfondo Testi (svg 1) -->
             <div class="hero-bg-texti"></div>
             
+            <!-- Layer 2: QR Code Originale (svg 2) -->
             <div class="hero-qr-image"></div>
             
-            <div class="chaos-storm-overlay">
-                <div class="chaos-pixel pixel-1"></div>
-                <div class="chaos-pixel pixel-2"></div>
-                <div class="chaos-pixel pixel-3"></div>
-                <div class="chaos-pixel pixel-4"></div>
-                <div class="chaos-pixel pixel-5"></div>
-                <div class="chaos-pixel pixel-6"></div>
-            </div>
+            <!-- CONTENITORE TEMPESTA CAOTICA DI MASSA (144 QUANTITÀ QR GENERATI VIA JS) -->
+            <div class="chaos-storm-overlay" id="chaosContainer"></div>
             
+            <!-- Layer Coordinate Lettere e Numeri della Scacchiera -->
             <div class="board-labels">
                 <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
                 <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
             </div>
 
+            <!-- Layer 5: Matrice Grandi Quadrati HTML Scacchiera (Configurazione FIDE) -->
             <div class="hero-qr-animated">
                 <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
@@ -457,6 +433,7 @@
                 <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
             </div>
 
+            <!-- Layer 4: Grafica Cavallo (svg 3) -->
             <div class="hero-cavallo"></div>
         </div>
 
@@ -566,47 +543,56 @@
     </footer>
 
     <script>
+        // GENERAZIONE AUTOMATICA DEI TANTISSIMI QUADRATINI CAOTICI (144 ELEMENTI = Matrice densa del QR)
+        const chaosContainer = document.getElementById('chaosContainer');
+        for (let i = 0; i < 144; i++) {
+            const pixel = document.createElement('div');
+            pixel.classList.add('chaos-pixel');
+            chaosContainer.appendChild(pixel);
+        }
+
         const hero = document.getElementById('heroSection');
 
-        // REGISTA DELLA TIME SEQUENCE FLUIDA E CAOTICA
+        // REGISTA DELLA TIMELINE SEQUENCE EVOLUTIVA
         function runStickerSequence() {
-            // Stato Iniziale: Solo i 3 livelli SVG visibili in modalità oscillazione naturale.
-
-            // STEP 1: Il QR Code riduce leggermente il suo volume visivo (contrazione)
+            
+            // FASE 1: Riduzione volume/scala del QR Code (Contrazione prima del collasso)
             setTimeout(() => {
                 hero.classList.add('shrink-qr');
-            }, 3200);
+            }, 3000);
 
-            // STEP 2: Parte la pioggia di pixel caotici e contemporaneamente i vecchi layer sfumano
+            // FASE 2: Esplosione di massa frenetica. Scompare SOLO l'svg del QR. Sfondo testi e Cavallo rimangono visibili!
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
-                hero.classList.add('hide-svg-layers');
-            }, 3900);
+                hero.classList.add('hide-qr-only');
+            }, 3800);
 
-            // STEP 3: Fase di transizione estesa (caos attivo). Successivamente la pioggia finisce, 
-            // e i quadrati si aggregano ruotando a 90° formando la scacchiera FIDE ufficiale.
+            // FASE 3: Transizione ai grandi quadrati HTML. La tempesta si spegne, compaiono e ruotano i blocchi scacchiera,
+            // e ADESSO scompaiono finalmente anche gli altri livelli SVG rimanenti (Sfondo e Cavallo).
             setTimeout(() => {
                 hero.classList.remove('frenetic-chaos');
+                hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
-            }, 6400); /* Allungata la permanenza del caos frenetico */
+            }, 7200); // Durata del caos estesa significativamente
 
-            // STEP 4: Apparizione stabile del Claim finale
+            // FASE 4: Solito epilogo poetico col Claim
             setTimeout(() => {
                 hero.classList.add('display-claim');
-            }, 8800);
+            }, 9600);
 
-            // STEP 5: RESET LOOP COMPLETO
+            // FASE 5: RESET LOOP AD ANELLO
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
-                hero.classList.remove('hide-svg-layers');
+                hero.classList.remove('hide-all-svg-layers');
+                hero.classList.remove('hide-qr-only');
                 hero.classList.remove('shrink-qr');
-            }, 12500);
+            }, 13500);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             runStickerSequence();
-            setInterval(runStickerSequence, 13500); // Sincronizzazione millimetrica del loop totale
+            setInterval(runStickerSequence, 14500);
         });
 
         // Gestione carosello manifesti
