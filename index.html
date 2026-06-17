@@ -11,7 +11,7 @@
 
     <style>
         /* ==========================================================
-           1. RESET GENERALE E VARIABILI DI STILE
+           1. RESET E VARIABILI DI STRUTTURA LIMPIDI
            ========================================================== */
         * {
             margin: 0;
@@ -22,10 +22,8 @@
         :root {
             --bg-color: #FAFAFA;
             --text-color: #111111;
-            --accent-green: #008744;  
-            --bright-green: #00E676;  
+            --accent-green: #00E676;
             --bg-card-dark: #222524;
-            --bg-archive-warm: #FDFBF7;
             --border-gray: #E5E5E5;
             --text-muted: #646866;
             --text-dark-muted: #777777;
@@ -47,7 +45,7 @@
         }
 
         /* ==========================================================
-           2. HEADER & NAVIGAZIONE EDITORIALE
+           2. HEADER E NAVIGAZIONE
            ========================================================== */
         .editorial-header {
             width: 100%;
@@ -108,159 +106,37 @@
         }
 
         /* ==========================================================
-           3. HERO STICKER SCENE (CORE ANIMAZIONE 3D & SCACCHIERA)
+           3. STRUTTURA IFRAME PER L'ANIMAZIONE ESTERNA
            ========================================================== */
-        .hero-sticker-scene {
+        .hero-animation-container {
             width: 100%;
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background-color: var(--bg-color);
-            position: relative;
-            padding: 80px 0;
             border-bottom: 1px solid var(--text-color);
-        }
-
-        .hero-layout {
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            position: relative;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .hero-iframe {
             width: 100%;
+            max-width: 600px; /* Layout quadrato controllato e centrato */
+            height: 600px;
+            border: none;
+            overflow: hidden;
         }
 
-        .sticker-wrapper {
-            width: 320px;
-            height: 320px;
-            position: relative;
-            perspective: 1200px;
-            transform-style: preserve-3d;
-            transition: all 1s ease-in-out;
-        }
-
-        /* LAYER 1: GRIGLIA QR CODE */
-        .qr-grid-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            background: #fff;
-            padding: 10px;
-            border: 4px solid #111;
-            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #111;
-            backface-visibility: hidden;
-            z-index: 2;
-            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform: translateZ(1px);
-        }
-
-        .qr-box {
-            transition: all 0.8s ease-in-out;
-        }
-        .qr-box.black { background-color: #111; }
-        .qr-box.white { background-color: #fff; }
-
-        /* LAYER 2: SCACCHIERA TRIDIMENSIONALE */
-        .chess-3d-board {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #111;
-            border: 12px solid #222;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            transform: rotateX(60px) rotateZ(-45deg) translateZ(-200px);
-            opacity: 0;
-            backface-visibility: hidden;
-            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 1;
-        }
-
-        .inner-3d-grid {
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-        }
-
-        .cell { width: 100%; height: 100%; }
-        .inner-3d-grid div:nth-child(16n+1), .inner-3d-grid div:nth-child(16n+3),
-        .inner-3d-grid div:nth-child(16n+5), .inner-3d-grid div:nth-child(16n+7),
-        .inner-3d-grid div:nth-child(16n+10), .inner-3d-grid div:nth-child(16n+12),
-        .inner-3d-grid div:nth-child(16n+14), .inner-3d-grid div:nth-child(16n+16) {
-            background-color: #f0d9b5;
-        }
-        .inner-3d-grid div:nth-child(16n+2), .inner-3d-grid div:nth-child(16n+4),
-        .inner-3d-grid div:nth-child(16n+6), .inner-3d-grid div:nth-child(16n+8),
-        .inner-3d-grid div:nth-child(16n+9), .inner-3d-grid div:nth-child(16n+11),
-        .inner-3d-grid div:nth-child(16n+13), .inner-3d-grid div:nth-child(16n+15) {
-            background-color: #b58863;
-        }
-
-        .board-notation-top {
-            position: absolute;
-            top: -24px; left: 0; width: 100%;
-            display: flex; justify-content: space-around;
-            color: #aaa; font-family: monospace; font-size: 11px; text-transform: uppercase;
-        }
-
-        .board-notation-left {
-            position: absolute;
-            top: 0; left: -18px; height: 100%;
-            display: flex; flex-direction: column; justify-content: space-around;
-            color: #aaa; font-family: monospace; font-size: 11px;
-        }
-
-        /* CLAIM FINALE DELL'ANIMAZIONE */
-        .hero-claim-final {
-            margin-top: 50px;
-            font-family: 'EB Garamond', serif;
-            font-style: italic;
-            font-size: 3.2rem;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
-            color: var(--text-color);
-        }
-
-        /* STATI CORE DELLO SEQUENCE IN JAVASCRIPT */
-        .hero-sticker-scene.frenetic-chaos .qr-box:nth-child(odd) {
-            transform: scale(0.4) rotate(45deg) translate3d(20px, -30px, 50px);
-            opacity: 0.6;
-            background-color: var(--bright-green);
-        }
-        .hero-sticker-scene.frenetic-chaos .qr-box:nth-child(even) {
-            transform: scale(0.6) rotate(-35deg) translate3d(-15px, 40px, -40px);
-            opacity: 0.4;
-        }
-
-        .hero-sticker-scene.hide-qr-completely .qr-grid-layer {
-            opacity: 0;
-            transform: scale(0.2) rotate(180deg);
-            pointer-events: none;
-        }
-
-        .hero-sticker-scene.assemble-board .chess-3d-board {
-            opacity: 1;
-            transform: rotateX(58deg) rotateZ(-32deg) translateZ(0);
-        }
-
-        .hero-sticker-scene.display-claim .hero-claim-final {
-            opacity: 1;
-            transform: translateY(0);
+        @media (max-width: 640px) {
+            .hero-iframe {
+                height: 90vw; /* Si adatta perfettamente sui telefoni */
+            }
         }
 
         /* ==========================================================
-           4. SEZIONI CONTENUTO (CHI SIAMO, GIORNALE, CAROSELLO)
+           4. SEZIONI INFORMATIVE E LAYOUT EDITORIALE
            ========================================================== */
         .intro-block {
-            padding: 80px 0 40px 0;
+            padding: 60px 0 30px 0;
             max-width: 760px;
         }
 
@@ -279,7 +155,7 @@
             color: var(--text-muted);
         }
 
-        /* PRESS / IMPAGINAZIONE GIORNALE REALE */
+        /* Sezione Articolo Rassegna Stampa */
         .press-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -301,8 +177,7 @@
         .press-img-container {
             width: 100%;
             height: 100%;
-            min-height: 300px;
-            background-color: #eee;
+            min-height: 320px;
             overflow: hidden;
             border-right: 1px solid var(--text-color);
         }
@@ -362,12 +237,12 @@
             opacity: 0.7;
         }
 
-        /* SEZIONE CITAZIONE */
+        /* Sezione Citazione */
         .quote-section {
             width: 100%;
             border-top: 1px solid var(--text-color);
             border-bottom: 1px solid var(--text-color);
-            padding: 60px 0;
+            padding: 50px 0;
             background-color: var(--bg-color);
             margin: 40px 0;
         }
@@ -380,7 +255,7 @@
             color: var(--text-color);
         }
 
-        /* CAROSELLO MANIFESTI */
+        /* Carosello Manifesti */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -411,7 +286,6 @@
         .manifesto-img-box {
             width: 100%;
             height: 380px;
-            background-color: #eee;
             margin-bottom: 16px;
             overflow: hidden;
         }
@@ -457,7 +331,7 @@
             color: #fff;
         }
 
-        /* NETWORK / SPONSOR */
+        /* Sezione Sponsor/Enti */
         .network-section {
             border-top: 1px solid var(--text-color);
             padding: 60px 0;
@@ -502,7 +376,7 @@
         }
 
         /* ==========================================================
-           5. FOOTER CONTATTI REALI
+           5. FOOTER CHIUSURA CONTATTI
            ========================================================== */
         footer {
             background-color: var(--bg-card-dark);
@@ -551,7 +425,7 @@
         }
 
         .footer-link-block a:hover {
-            color: var(--bright-green);
+            color: var(--accent-green);
         }
     </style>
 </head>
@@ -573,41 +447,8 @@
         </div>
     </header>
 
-    <section id="heroSection" class="hero-sticker-scene">
-        <div class="container hero-layout">
-            
-            <div class="sticker-wrapper">
-                
-                <div class="qr-grid-layer">
-                    <div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div>
-                    <div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div>
-                </div>
-
-                <div class="chess-3d-board">
-                    <div class="board-notation-top">abcdefgh</div>
-                    <div class="board-notation-left">87654321</div>
-                    <div class="inner-3d-grid">
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="hero-claim-final">“Fermo, eppur si muove”</div>
-        </div>
+    <section class="hero-animation-container">
+        <iframe src="animazione.html" class="hero-iframe" scrolling="no"></iframe>
     </section>
 
     <main class="container">
@@ -615,7 +456,7 @@
         <section id="chi-siamo">
             <div class="intro-block">
                 <h2>Pedoni e Alfieri: chi siamo</h2>
-                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territory fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
+                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
             </div>
 
             <div class="press-layout">
@@ -651,28 +492,28 @@
                 <div class="carousel-track" id="carouselTrack">
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Torneo d'Autunno" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Torneo d'Autunno">
                         </div>
                         <h3>Torneo d'Autunno 2026</h3>
                         <span>Ottobre 2026 &middot; Open Internazionale</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Scacchi in Piazza" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Scacchi in Piazza">
                         </div>
                         <h3>Scacchi in Piazza</h3>
                         <span>Luglio 2026 &middot; Rassegna Estiva</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Campionato Giovanile" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Campionato Giovanile">
                         </div>
                         <h3>Campionato Giovanile</h3>
                         <span>Maggio 2026 &middot; Under 18</span>
                     </div>
                     <div class="manifesto-card">
                         <div class="manifesto-img-box">
-                            <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Seminario Tattico" class="manifesto-img">
+                            <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Seminario Tattico">
                         </div>
                         <h3>Seminario Tattico</h3>
                         <span>Novembre 2026 &middot; Masterclass</span>
@@ -732,42 +573,6 @@
     </footer>
 
     <script>
-        const hero = document.getElementById('heroSection');
-
-        function runStickerSequence() {
-            if (!hero) return;
-
-            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
-            setTimeout(() => {
-                hero.classList.add('frenetic-chaos');
-            }, 3000);
-
-            // FASE 3: Transizione fluida alla scacchiera grande reale
-            setTimeout(() => {
-                hero.classList.add('hide-qr-completely');
-                hero.classList.add('assemble-board');
-            }, 6500);
-
-            // FASE 4: Claim finale
-            setTimeout(() => {
-                hero.classList.add('display-claim');
-            }, 8800);
-
-            // RESET COMPLETO DEL LOOP
-            setTimeout(() => {
-                hero.classList.remove('display-claim');
-                hero.classList.remove('assemble-board');
-                hero.classList.remove('hide-qr-completely');
-                hero.classList.remove('frenetic-chaos');
-            }, 13500);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            runStickerSequence();
-            setInterval(runStickerSequence, 14500);
-        });
-
-        // Funzione scorrimento carosello eventi
         function scrollCarousel(distance) {
             const track = document.getElementById('carouselTrack');
             if (track) {
