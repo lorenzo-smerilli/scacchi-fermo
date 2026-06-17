@@ -3,306 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASD Scacchi Fermo</title>
+    <title>Solo Animazione - Scacchi Fermo</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Montserrat+Condensed:wght@700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 
     <style>
+        /* ==========================================================
+           RESET COMPLETO E ISOLATO PER L'IFRAME
+           ========================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-color: #FAFAFA;
-            --text-color: #111111;
-            --accent-green: #008744;
-            --bg-archive-warm: #FDFBF7;
-            --border-gray: #E5E5E5;
-            --text-muted: #646866;
-            --text-dark-muted: #777777;
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-        }
-
-        h2 {
-            font-family: 'EB Garamond', serif;
-            font-weight: 500;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        section {
-            padding: 80px 0;
-        }
-
-        /* HERO & CONTENITORE 3D */
-        .hero {
-            position: relative;
-            height: 75vh;
-            min-height: 580px;
+            background-color: #FAFAFA;
+            font-family: sans-serif;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1200px;
+            width: 100vw;
+            height: 100vh;
         }
 
-        .hero-sticker-wrapper {
+        /* CONTENITORE DELLA SCENA SQUARE */
+        .hero-sticker-scene {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            width: 360px;
-            height: 360px;
+        }
+
+        .sticker-wrapper {
+            width: 320px;
+            height: 320px;
+            position: relative;
+            perspective: 1200px;
             transform-style: preserve-3d;
-            animation: automatic-parallax 7s infinite ease-in-out alternate;
+            transition: all 1s ease-in-out;
         }
 
-        @keyframes automatic-parallax {
-            0% { transform: rotateY(-6deg) rotateX(-4deg); }
-            100% { transform: rotateY(6deg) rotateX(4deg); }
-        }
-
-        /* Layer 1: Sfondo Testi */
-        .hero-bg-texti {
+        /* LAYER 1: GRIGLIA QR CODE */
+        .qr-grid-layer {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('1-sfondo-testi.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: 1;
-            transform: translateZ(-15px);
-            transition: opacity 0.5s ease;
-        }
-
-        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
-        .hero-qr-html-grid {
-            position: absolute;
-            width: 71%; 
-            height: 71%;
-            top: 14.5%;
-            left: 14.5%;
-            z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(21, 1fr);
-            grid-template-rows: repeat(21, 1fr);
-            transform: translateZ(0px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* Singolo quadratino del QR code originale */
-        .q-dot {
-            background-color: var(--accent-green);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
-        }
-        .q-dot.e {
-            background-color: transparent; 
-        }
-
-        /* ==========================================================
-           NUOVA FASE 2: SCOMPOSIZIONE GUIDA VERSO LA SCACCHIERA
-           ========================================================== */
-        
-        /* I 3 grandi occhielli d'angolo (identificabili visivamente nelle prime e ultime righe della matrice) 
-           e alcuni blocchi strutturali rimangono completamente fermi per dare stabilità */
-        .hero.frenetic-chaos .q-dot:nth-child(-n+7),
-        .hero.frenetic-chaos .q-dot:nth-child(21n+1),
-        .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
-            transform: translate(0, 0) scale(1) !important;
-            animation: none !important;
-        }
-
-        /* Solo i quadratini in posizione alternata (pari/dispari incrociati) si muovono,
-           suggerendo la disposizione modulare della scacchiera */
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(2n) {
-            animation: suggest-chessboard-pari 2s infinite ease-in-out alternate;
-            background-color: #006b35; /* Variazione minima di tono per dare profondità */
-        }
-
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(3n+1) {
-            animation: suggest-chessboard-dispari 2s infinite ease-in-out alternate;
-        }
-
-        /* I quadratini rimasti che non partecipano alla scomposizione iniziano a sfumare leggermente */
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(5n) {
-            opacity: 0.4;
-            transform: scale(0.85);
-        }
-
-        /* Animazioni direzionali che simulano l'allineamento alternato della scacchiera */
-        @keyframes suggest-chessboard-pari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(6px, -6px) scale(1.1); }
-        }
-
-        @keyframes suggest-chessboard-dispari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-6px, 6px) scale(0.9); }
-        }
-
-        /* Dissolvenza totale programmata per il subentro del layer successivo */
-        .hero.hide-qr-completely .hero-qr-html-grid {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.92) translateZ(-10px);
-        }
-
-        /* Layer Coordinate Lettere/Numeri */
-        .board-labels {
-            position: absolute;
-            width: 106%;
-            height: 106%;
-            top: -3%;
-            left: -3%;
-            z-index: 3;
-            pointer-events: none;
-            opacity: 0;
-            font-size: 0.75rem;
-            color: var(--text-dark-muted);
-            transition: opacity 0.6s ease;
-        }
-        .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
-        .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
-
-        /* Layer 4: Grafica Cavallo */
-        .hero-cavallo {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('3-cavallo.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: 5;
-            transform: translateZ(25px);
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-
-        /* Layer 5: Matrice Grandi Quadrati Scacchiera */
-        .hero-qr-animated {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 4;
+            top: 0; left: 0; width: 100%; height: 100%;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            opacity: 0;
-            transform: translateZ(10px) scale(0.92);
-            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #fff;
+            padding: 10px;
+            border: 4px solid #111;
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #111;
+            backface-visibility: hidden;
+            z-index: 2;
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateZ(1px);
         }
 
-        .qr-block {
+        .qr-box {
+            transition: all 0.8s ease-in-out;
+        }
+        .qr-box.black { background-color: #111; }
+        .qr-box.white { background-color: #fff; }
+
+        /* LAYER 2: SCACCHIERA TRIDIMENSIONALE */
+        .chess-3d-board {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #111;
+            border: 12px solid #222;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            transform: rotateX(60deg) rotateZ(-45deg) translateZ(-200px);
+            opacity: 0;
+            backface-visibility: hidden;
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 1;
+        }
+
+        .inner-3d-grid {
             width: 100%;
             height: 100%;
-            background-color: var(--accent-green);
-            transform: scale(0);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .qr-block.empty { opacity: 0; }
-
-        .hero.hide-all-svg-layers .hero-bg-texti,
-        .hero.hide-all-svg-layers .hero-cavallo {
-            opacity: 0;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
         }
 
-        .hero.assemble-board .hero-qr-animated {
-            opacity: 1;
-            transform: translateZ(10px) scale(1) rotate(90deg);
+        .cell { width: 100%; height: 100%; }
+        .inner-3d-grid div:nth-child(16n+1), .inner-3d-grid div:nth-child(16n+3),
+        .inner-3d-grid div:nth-child(16n+5), .inner-3d-grid div:nth-child(16n+7),
+        .inner-3d-grid div:nth-child(16n+10), .inner-3d-grid div:nth-child(16n+12),
+        .inner-3d-grid div:nth-child(16n+14), .inner-3d-grid div:nth-child(16n+16) {
+            background-color: #f0d9b5;
         }
-        .hero.assemble-board .qr-block { transform: scale(1); }
-        .hero.assemble-board .board-labels { opacity: 1; }
+        .inner-3d-grid div:nth-child(16n+2), .inner-3d-grid div:nth-child(16n+4),
+        .inner-3d-grid div:nth-child(16n+6), .inner-3d-grid div:nth-child(16n+8),
+        .inner-3d-grid div:nth-child(16n+9), .inner-3d-grid div:nth-child(16n+11),
+        .inner-3d-grid div:nth-child(16n+13), .inner-3d-grid div:nth-child(16n+15) {
+            background-color: #b58863;
+        }
 
-        /* Il Claim Finale */
+        .board-notation-top {
+            position: absolute;
+            top: -24px; left: 0; width: 100%;
+            display: flex; justify-content: space-around;
+            color: #aaa; font-family: monospace; font-size: 11px; text-transform: uppercase;
+        }
+
+        .board-notation-left {
+            position: absolute;
+            top: 0; left: -18px; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-around;
+            color: #aaa; font-family: monospace; font-size: 11px;
+        }
+
+        /* CLAIM FINALE SOTTO L'ANIMAZIONE */
         .hero-claim-final {
             position: absolute;
-            z-index: 6;
-            color: var(--text-color);
+            bottom: 20px;
             font-family: 'EB Garamond', serif;
             font-style: italic;
-            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            font-size: 2.5rem;
+            font-weight: 500;
             text-align: center;
-            width: 100%;
+            line-height: 1.1;
+            letter-spacing: -1px;
             opacity: 0;
-            transform: scale(0.96);
-            text-shadow: 0 0 20px #FFF;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+            color: #111111;
+        }
+
+        /* LOGICA DI ANIMAZIONE INNNESTATA */
+        .hero-sticker-scene.frenetic-chaos .qr-box:nth-child(odd) {
+            transform: scale(0.4) rotate(45deg) translate3d(20px, -30px, 50px);
+            opacity: 0.6;
+            background-color: #00E676;
+        }
+        .hero-sticker-scene.frenetic-chaos .qr-box:nth-child(even) {
+            transform: scale(0.6) rotate(-35deg) translate3d(-15px, 40px, -40px);
+            opacity: 0.4;
+        }
+
+        .hero-sticker-scene.hide-qr-completely .qr-grid-layer {
+            opacity: 0;
+            transform: scale(0.2) rotate(180deg);
             pointer-events: none;
         }
 
-        .hero.display-claim .hero-claim-final {
+        .hero-sticker-scene.assemble-board .chess-3d-board {
             opacity: 1;
-            transform: scale(1);
+            transform: rotateX(58deg) rotateZ(-32deg) translateZ(0);
         }
-        .hero.display-claim .hero-qr-animated,
-        .hero.display-claim .board-labels { opacity: 0.12; }
 
-        @media (max-width: 768px) {
-            .hero-sticker-wrapper { width: 290px; height: 290px; }
-            .board-labels { display: none; }
+        .hero-sticker-scene.display-claim .hero-claim-final {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <section class="hero" id="heroSection">
-        <div class="hero-sticker-wrapper">
+    <section id="heroSection" class="hero-sticker-scene">
+        
+        <div class="sticker-wrapper">
             
-            <div class="hero-bg-texti"></div>
-            
-            <div class="hero-qr-html-grid">
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-            </div>
-            
-            <div class="board-labels">
-                <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
-                <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+            <div class="qr-grid-layer">
+                <div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div>
+                <div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div>
             </div>
 
-            <div class="hero-qr-animated">
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+            <div class="chess-3d-board">
+                <div class="board-notation-top">abcdefgh</div>
+                <div class="board-notation-left">87654321</div>
+                <div class="inner-3d-grid">
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                    <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                </div>
             </div>
 
-            <div class="hero-cavallo"></div>
         </div>
 
         <div class="hero-claim-final">“Fermo, eppur si muove”</div>
@@ -312,30 +209,28 @@
         const hero = document.getElementById('heroSection');
 
         function runStickerSequence() {
-            // Momento 0: Il QR code HTML è perfettamente unito, denso, solido ed originale.
+            if (!hero) return;
 
-            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
+            // FASE 2: Scomposizione (dopo 3s)
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
             }, 3000);
 
-            // FASE 3: Transizione fluida alla scacchiera grande reale
+            // FASE 3: Scacchiera (dopo 6.5s)
             setTimeout(() => {
                 hero.classList.add('hide-qr-completely');
-                hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
             }, 6500);
 
-            // FASE 4: Claim finale
+            // FASE 4: Testo (dopo 8.8s)
             setTimeout(() => {
                 hero.classList.add('display-claim');
             }, 8800);
 
-            // RESET COMPLETO DEL LOOP
+            // RESET (dopo 13.5s)
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
-                hero.classList.remove('hide-all-svg-layers');
                 hero.classList.remove('hide-qr-completely');
                 hero.classList.remove('frenetic-chaos');
             }, 13500);
