@@ -51,51 +51,51 @@
 
         /* HEADER - IDENTICO ALLA INDEX */
         header {
-            padding: 24px 0;
-            background: transparent;
-        }
+    padding: 46px 0; /* Aumenta lo spazio sopra e sotto per dare aria a tutta la riga */
+    background: transparent;
+}
 
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .logo-block {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.logo-block {
+    display: flex;
+    align-items: center; /* Forza l'allineamento verticale perfetto al centro tra icona e testo */
+    gap: 16px; /* Aumenta lo spazio orizzontale tra icona e testo */
+}
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            display: block;
-            object-fit: contain;
-        }
+.logo-icon {
+    width: 44px;  /* Ingrandito (era 32px) e bilanciato esattamente con l'altezza del testo */
+    height: 44px; /* Ingrandito (era 32px) e bilanciato esattamente con l'altezza del testo */
+    display: block;
+    object-fit: contain;
+}
 
-        .logo-text {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.8px;
-            font-size: 1.4rem;
-            line-height: 1;
-        }
+.logo-text {
+    font-family: 'Montserrat Condensed', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px; /* Ammorbidito leggermente per compensare la dimensione maggiore */
+    font-size: 1.75rem;    /* Ingrandito notevolmente (era 1.4rem) per abbinarsi all'icona */
+    line-height: 44px;     /* Forziamo la stessa identica altezza in pixel dell'icona SVG */
+}
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-        }
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 36px; /* Più spazio tra le voci di menu desktop */
+}
 
-        nav ul a {
-            font-family: 'Montserrat Condensed', sans-serif;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-        }
+nav ul a {
+    font-family: 'Montserrat Condensed', sans-serif;
+    font-size: 1.05rem; /* Ingrandito leggermente (era 0.9rem) per coordinarsi al nuovo logo */
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
 
         /* STRUTTURA ARTICOLO */
         .article-layout {
