@@ -10,9 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================================
-           RESET COMPLETO E ISOLATO PER L'IFRAME
-           ========================================================== */
+        /* RESET ISOLATO PER L'IFRAME */
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +19,6 @@
 
         body {
             background-color: #FAFAFA;
-            font-family: sans-serif;
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -30,7 +27,9 @@
             height: 100vh;
         }
 
-        /* CONTENITORE DELLA SCENA SQUARE */
+        /* ----------------------------------------------------------
+           STRUTTURA E STILI ORIGINALI DA ANIMAZ-SOLO.HTML
+           ---------------------------------------------------------- */
         .hero-sticker-scene {
             width: 100%;
             height: 100%;
@@ -73,7 +72,52 @@
         .qr-box.black { background-color: #111; }
         .qr-box.white { background-color: #fff; }
 
-        /* LAYER 2: SCACCHIERA TRIDIMENSIONALE */
+        /* LAYER 2: MATRICE DI CUBETTI TRIDIMENSIONALI ORIGINALI */
+        .svg-cubes-matrix-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            transform-style: preserve-3d;
+            z-index: 3;
+            pointer-events: none;
+            padding: 10px;
+        }
+
+        .cube-container {
+            width: 100%;
+            height: 100%;
+            perspective: 400px;
+            transform-style: preserve-3d;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: translateZ(-15px);
+            opacity: 0;
+            transition: all 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 0.5px solid rgba(17,17,17,0.15);
+        }
+
+        /* Orientamento facce cubi nativo */
+        .face.front  { transform: rotateY(0deg) translateZ(15px); }
+        .face.back   { transform: rotateY(180deg) translateZ(15px); }
+        .face.left   { transform: rotateY(-90deg) translateZ(15px); }
+        .face.right  { transform: rotateY(90deg) translateZ(15px); }
+        .face.top    { transform: rotateX(90deg) translateZ(15px); }
+        .face.bottom { transform: rotateX(-90deg) translateZ(15px); }
+
+        /* LAYER 3: SCACCHIERA REALE GRANDE TRIDIMENSIONALE */
         .chess-3d-board {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -123,7 +167,7 @@
             color: #aaa; font-family: monospace; font-size: 11px;
         }
 
-        /* CLAIM FINALE SOTTO L'ANIMAZIONE */
+        /* CLAIM FINALE "EPPUR SI MUOVE" */
         .hero-claim-final {
             position: absolute;
             bottom: 20px;
@@ -140,7 +184,9 @@
             color: #111111;
         }
 
-        /* LOGICA DI ANIMAZIONE INNNESTATA */
+        /* ----------------------------------------------------------
+           CLASSI DINAMICHE DEI TRIGGER DI ANIMAZIONE NATIVI
+           ---------------------------------------------------------- */
         .hero-sticker-scene.frenetic-chaos .qr-box:nth-child(odd) {
             transform: scale(0.4) rotate(45deg) translate3d(20px, -30px, 50px);
             opacity: 0.6;
@@ -151,10 +197,20 @@
             opacity: 0.4;
         }
 
+        .hero-sticker-scene.frenetic-chaos .cube {
+            opacity: 1;
+            transform: translateZ(0) rotateX(135deg) rotateY(45deg);
+        }
+
         .hero-sticker-scene.hide-qr-completely .qr-grid-layer {
             opacity: 0;
             transform: scale(0.2) rotate(180deg);
-            pointer-events: none;
+        }
+
+        .hero-sticker-scene.hide-all-svg-layers .svg-cubes-matrix-layer {
+            opacity: 0;
+            transform: scale(0.5) translateZ(-300px);
+            transition: all 1s ease-in;
         }
 
         .hero-sticker-scene.assemble-board .chess-3d-board {
@@ -171,7 +227,6 @@
 <body>
 
     <section id="heroSection" class="hero-sticker-scene">
-        
         <div class="sticker-wrapper">
             
             <div class="qr-grid-layer">
@@ -184,6 +239,8 @@
                 <div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box black"></div><div class="qr-box white"></div>
                 <div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div><div class="qr-box white"></div>
             </div>
+
+            <div class="svg-cubes-matrix-layer" id="cubesMatrix"></div>
 
             <div class="chess-3d-board">
                 <div class="board-notation-top">abcdefgh</div>
@@ -206,31 +263,58 @@
     </section>
 
     <script>
+        const matrixContainer = document.getElementById('cubesMatrix');
+        
+        // Rigenerazione esatta della matrice di tasselli 3D
+        for (let i = 0; i < 64; i++) {
+            const container = document.createElement('div');
+            container.className = 'cube-container';
+            
+            const row = Math.floor(i / 8);
+            const col = i % 8;
+            const isBlack = (row + col) % 2 === 1;
+            const primaryColor = isBlack ? '#b58863' : '#f0d9b5';
+            
+            container.innerHTML = `
+                <div class="cube" style="transition-delay: ${i * 12}ms">
+                    <div class="face front"  style="background: ${primaryColor}"></div>
+                    <div class="face back"   style="background: #222"></div>
+                    <div class="face left"   style="background: #333"></div>
+                    <div class="face right"  style="background: #444"></div>
+                    <div class="face top"    style="background: #555"></div>
+                    <div class="face bottom" style="background: #111"></div>
+                </div>
+            `;
+            matrixContainer.appendChild(container);
+        }
+
         const hero = document.getElementById('heroSection');
 
         function runStickerSequence() {
             if (!hero) return;
 
-            // FASE 2: Scomposizione (dopo 3s)
+            // FASE 2: Scomposizione controllata (3s)
             setTimeout(() => {
                 hero.classList.add('frenetic-chaos');
             }, 3000);
 
-            // FASE 3: Scacchiera (dopo 6.5s)
+            // FASE 3: Chiusura QR e comparsa Scacchiera (6.5s)
             setTimeout(() => {
                 hero.classList.add('hide-qr-completely');
+                hero.classList.add('hide-all-svg-layers');
                 hero.classList.add('assemble-board');
             }, 6500);
 
-            // FASE 4: Testo (dopo 8.8s)
+            // FASE 4: Claim (8.8s)
             setTimeout(() => {
                 hero.classList.add('display-claim');
             }, 8800);
 
-            // RESET (dopo 13.5s)
+            // RESET COMPLETO (13.5s)
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
+                hero.classList.remove('hide-all-svg-layers');
                 hero.classList.remove('hide-qr-completely');
                 hero.classList.remove('frenetic-chaos');
             }, 13500);
