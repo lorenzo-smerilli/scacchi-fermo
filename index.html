@@ -20,8 +20,8 @@
         :root {
             --bg-color: #FAFAFA;
             --text-color: #111111;
-            --accent-green: #008744; /* Verde istituzionale QR coordinato */
-            --bright-green: #00E676; /* Verde acido per interazioni ed elementi cyber */
+            --accent-green: #008744; /* Verde istituzionale coordinato al QR */
+            --bright-green: #00E676; /* Verde acido per interazioni ed elementi attivi */
             
             /* Sfumature Tecnologiche & Toni d'Archivio */
             --bg-card-dark: #222524;
@@ -120,20 +120,20 @@
             letter-spacing: 0.2px;
         }
 
-        /* NUOVA HERO SECTION ARCHITETTONICA CON SCACCHIERA INTERATTIVA E QR CODE */
+        /* NUOVA HERO SEZIONATA CON SCACCHIERA INTERATTIVA INTEGRATA */
         .hero-split-section {
-            padding: 40px 0 80px 0;
+            padding: 40px 0 60px 0;
             background-color: var(--bg-color);
         }
 
         .hero-split-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: 64px;
             align-items: center;
         }
 
-        /* Colonna Testo / Legenda */
+        /* Colonna Sinistra: Claim e Legenda Attività */
         .hero-left-content {
             display: flex;
             flex-direction: column;
@@ -141,10 +141,11 @@
         }
 
         .hero-title-area h1 {
-            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-size: clamp(3rem, 5vw, 4.8rem);
             line-height: 1.1;
             margin-bottom: 16px;
             color: var(--text-color);
+            letter-spacing: -1px;
         }
 
         .hero-title-area h1 span {
@@ -152,13 +153,7 @@
             color: var(--accent-green);
         }
 
-        .hero-description {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 520px;
-        }
-
-        /* Scatola Legenda Strutturata */
+        /* Scatola Legenda Attività Club */
         .interactive-legend {
             background-color: var(--bg-archive-warm);
             border: 1px solid var(--border-gray);
@@ -172,7 +167,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dark-muted);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -190,7 +185,7 @@
         .legend-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
             list-style: none;
         }
 
@@ -199,6 +194,7 @@
             grid-template-columns: auto 1fr;
             gap: 16px;
             align-items: start;
+            cursor: pointer;
         }
 
         .legend-marker {
@@ -213,32 +209,37 @@
             align-items: center;
             justify-content: center;
             border-radius: 2px;
+            transition: background-color 0.2s ease;
+        }
+
+        .legend-item:hover .legend-marker {
+            background-color: var(--accent-green);
         }
 
         .legend-text strong {
             display: block;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             color: var(--text-color);
             margin-bottom: 2px;
         }
 
         .legend-text p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
             line-height: 1.4;
         }
 
-        /* Colonna Destra: Scacchiera e QR Code */
+        /* Colonna Destra: Scacchiera Geometrica con QR Code */
         .board-wrapper {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 440px;
             margin: 0 auto;
             aspect-ratio: 1 / 1;
             background-color: var(--text-color);
             padding: 4px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
 
         .chess-grid-bg {
@@ -249,7 +250,6 @@
             height: 100%;
         }
 
-        /* Quadranti Alternati */
         .cell {
             width: 100%;
             height: 100%;
@@ -258,33 +258,32 @@
         .cell.light { background-color: #FFFFFF; }
         .cell.dark { background-color: #E5E5E5; }
 
-        /* Contenitore QR Code Sovrapposto al Centro */
+        /* QR Code Sovrapposto al Centro (copre 6x6 caselle interne per perfetto allineamento) */
         .qr-overlay-container {
             position: absolute;
-            top: 12.5%;  /* Esattamente dalla seconda alla settima riga */
-            left: 12.5%; /* Esattamente dalla colonna B alla colonna G */
+            top: 12.5%;  
+            left: 12.5%; 
             width: 75%;
             height: 75%;
             background-color: #FFFFFF;
             padding: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
         }
 
-        /* Il tuo SVG nativo con logo coordinato */
         .qr-svg-embed {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
 
-        /* Effetti Interattivi JavaScript Trigger */
-        .cell.highlight-1 { background-color: rgba(0, 135, 68, 0.2) !important; }
-        .cell.highlight-2 { background-color: rgba(0, 230, 118, 0.25) !important; }
-        .cell.highlight-3 { background-color: rgba(17, 17, 17, 0.15) !important; }
+        /* Classi JavaScript di Evidenziazione sulla Scacchiera */
+        .cell.highlight-1 { background-color: rgba(0, 135, 68, 0.25) !important; }
+        .cell.highlight-2 { background-color: rgba(0, 230, 118, 0.3) !important; }
+        .cell.highlight-3 { background-color: rgba(17, 17, 17, 0.2) !important; }
 
         /* INTRO BLOCKS */
         .intro-block {
@@ -329,7 +328,7 @@
         .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
         .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
 
-        /* BIG QUOTE - CONTROPUNTO UMANISTA */
+        /* BIG QUOTE */
         .quote-section { 
             text-align: center; 
             padding: 100px 0; 
@@ -413,9 +412,9 @@
         .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; line-height: 1.2; }
         .footer-link-block a:hover { color: var(--bright-green); opacity: 1; }
 
-        /* RESPONSIVE & GEO-SYMMETRY MOBILE */
+        /* RESPONSIVE */
         @media (max-width: 992px) {
-            .hero-split-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-split-grid { grid-template-columns: 1fr; gap: 48px; }
             .network-grid { grid-template-columns: 1fr; gap: 48px; }
             .sponsor-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border-gray); padding-top: 48px; }
         }
@@ -473,32 +472,31 @@
             
             <div class="hero-left-content">
                 <div class="hero-title-area">
-                    <h1>Un'interazione <span>quadrata</span></h1>
-                    <p class="hero-description">Inquadra il codice per sincronizzare i tuoi dispositivi o naviga la legenda interattiva per scoprire i dettagli tecnici.</p>
+                    <h1>Una mossa per il <span>futuro</span></h1>
                 </div>
 
                 <div class="interactive-legend">
-                    <div class="legend-title">Guida all'interazione tecnica</div>
+                    <div class="legend-title">Le attività della nostra associazione</div>
                     <ul class="legend-list">
                         <li class="legend-item" onmouseenter="highlightCells(1)" onmouseleave="clearCells()">
                             <div class="legend-marker">1</div>
                             <div class="legend-text">
-                                <strong>Struttura Perimetrale FSI</strong>
-                                <p>Passa il mouse qui per isolare i moduli di ancoraggio esterni, tarati sui regolamenti digitali della Federazione.</p>
+                                <strong>Scuola & Settore Giovanile</strong>
+                                <p>Corsi didattici negli istituti del Fermano per sviluppare logica, concentrazione e fair play fin da piccoli.</p>
                             </div>
                         </li>
                         <li class="legend-item" onmouseenter="highlightCells(2)" onmouseleave="clearCells()">
                             <div class="legend-marker">2</div>
                             <div class="legend-text">
-                                <strong>Matrice di Allineamento</strong>
-                                <p>Passa il mouse qui per tracciare le coordinate centrali. Sincronizza l'ottica e stabilizza la scansione mobile.</p>
+                                <strong>Agonismo & Campionati FFS</strong>
+                                <p>Allenamenti mirati e partecipazione attiva ai campionati regionali e nazionali italiani a squadre.</p>
                             </div>
                         </li>
                         <li class="legend-item" onmouseenter="highlightCells(3)" onmouseleave="clearCells()">
                             <div class="legend-marker">3</div>
                             <div class="legend-text">
-                                <strong>Bordi di Contrasto Geometrico</strong>
-                                <p>Passa il mouse qui per evidenziare le linee di demarcazione che separano la scacchiera analogica dai dati digitali.</p>
+                                <strong>Tornei Federali ed Eventi Estivi</strong>
+                                <p>Organizzazione sul territorio di competizioni ufficiali omologate FIDE e manifestazioni storiche locali.</p>
                             </div>
                         </li>
                     </ul>
@@ -509,12 +507,13 @@
                 <div class="chess-grid-bg" id="chessBoard">
                     </div>
                 <div class="qr-overlay-container">
-                    <img src="2-qr-code-da-lettura.txt" alt="QR Code di Connessione Tecnica" class="qr-svg-embed">
+                    <img src="2-qr-code-da-lettura.txt" alt="QR Code ASD Scacchi Fermo" class="qr-svg-embed">
                 </div>
             </div>
 
         </div>
     </section>
+
     <main class="container">
         
         <section id="chi-siamo">
@@ -668,26 +667,24 @@
     </footer>
 
     <script>
-        // Inizializzazione Logica e Rendering Scacchiera Sottostante
+        // Logica di rendering dinamico delle celle della scacchiera
         const chessBoard = document.getElementById('chessBoard');
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 const cell = document.createElement('div');
                 cell.classList.add('cell');
-                // Alternanza dei colori classici delle caselle
                 if ((row + col) % 2 === 0) {
                     cell.classList.add('light');
                 } else {
                     cell.classList.add('dark');
                 }
-                // Assegna indici di riga e colonna come attributi utili alle funzioni di tracciamento
                 cell.dataset.row = row;
                 cell.dataset.col = col;
                 chessBoard.appendChild(cell);
             }
         }
 
-        // Funzioni per gestire gli highlight della scacchiera al passaggio sulla legenda
+        // Funzione per animare le caselle della scacchiera al passaggio del mouse sulla legenda
         function highlightCells(type) {
             clearCells();
             const cells = document.querySelectorAll('.cell');
@@ -697,17 +694,17 @@
                 const c = parseInt(cell.dataset.col);
                 
                 if (type === 1) {
-                    // Evidenzia perimetro esterno (Cornice esteriore del tabellone)
+                    // Scuola/Giovanili: Illumina il perimetro esterno (la cornice del vivaio)
                     if (r === 0 || r === 7 || c === 0 || c === 7) {
                         cell.classList.add('highlight-1');
                     }
                 } else if (type === 2) {
-                    // Evidenzia area centrale (Sotto il QR code)
+                    // Agonismo: Illumina il centro strategico della scacchiera (sotto il QR)
                     if (r >= 2 && r <= 5 && c >= 2 && c <= 5) {
                         cell.classList.add('highlight-2');
                     }
                 } else if (type === 3) {
-                    // Evidenzia linee simmetriche e bande diagonali selettive
+                    // Tornei/Eventi: Illumina le diagonali geometriche di attacco e movimento
                     if (r === c || (r + c) === 7) {
                         cell.classList.add('highlight-3');
                     }
@@ -722,7 +719,7 @@
             });
         }
 
-        // Funzione scorrimento carosello eventi
+        // Script carosello eventi
         function scrollCarousel(distance) {
             const track = document.getElementById('carouselTrack');
             track.scrollBy({ left: distance, behavior: 'smooth' });
