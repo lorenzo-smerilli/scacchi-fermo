@@ -570,10 +570,10 @@
             </div>
 
             <div class="hero-claim-final">“Fermo, eppur si muove”</div>
-        </div>
+       </div>
     </section>
 
-<section id="chi-siamo" class="story-section">
+    <section id="chi-siamo" class="story-section">
         <div class="container story-layout">
             
             <div class="story-col-manifesto">
@@ -585,10 +585,10 @@
 
             <div class="story-col-text">
                 <p class="story-lead">
-                    L'Associazione Dilettantistica Scacchi Fermo nasce per ridefinire lo spazio del circolo scacchistico tradicional. Non più solo un luogo di silenzio rigoroso, ma un hub dinamico dove la strategia si fonde con la cultura urbana, l'arte della comunicazione visiva e la convivialità.
+                    L'Associazione Dilettantistica Scacchi Fermo nasce per ridefinire lo spazio del circolo scacchistico tradizionale. Non più solo un luogo di silenzio rigoroso, ma un hub dinamico dove la strategia si fonde con la cultura urbana, l'arte della comunicazione visiva e la convivialità.
                 </p>
                 <p class="story-body">
-                    Fondata da istruttori qualificati e appassionati, l'associazione trasforma la scacchiera in uno strumento di connessione sociale. Collaboriamo attivamente con realtà del territorio — come club, pub e spazi espositivi — per portare il gioco fuori dai contesti ordinari, organizzando serate underground, tornei lampo a tempo di musica e workshop dedicati all'analisi psicologica e geometrica del gioco.
+                    Fondata da istruttori qualificati e appassionati, l'associazione trasforma la scacchiera in uno strumento di connessione sociale. Collaboriamo activamente con realtà del territorio — come club, pub e spazi espositivi — per portare il gioco fuori dai contesti ordinari, organizzando serate underground, tornei lampo a tempo di musica e workshop dedicati all'analisi psicologica e geometrica del gioco.
                 </p>
                 <div class="story-meta">
                     <div class="meta-item">
@@ -606,14 +606,6 @@
     </section>
 
     <section class="quote-section">
-        <div class="container">
-            <blockquote class="quote-text">
-                "I pedoni sono l'anima degli scacchi."
-            </blockquote>
-        </div>
-    </section>
-
-<section class="quote-section">
         <div class="container">
             <blockquote class="quote-text">
                 "I pedoni sono l'anima degli scacchi."
@@ -708,6 +700,53 @@
             </address>
         </div>
     </footer>
+
+    <script>
+        // Cerchiamo l'elemento Hero controllando sia l'ID che il tag semantico se l'ID fallisse
+        let hero = document.getElementById('heroSection') || document.querySelector('.hero-sticker-scene');
+
+        function runStickerSequence() {
+            if (!hero) return; // Evita errori bloccanti in console
+
+            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
+            setTimeout(() => {
+                hero.classList.add('frenetic-chaos');
+            }, 3000);
+
+            // FASE 3: Transizione fluida alla scacchiera grande reale
+            setTimeout(() => {
+                hero.classList.add('hide-qr-completely');
+                hero.classList.add('hide-all-svg-layers');
+                hero.classList.add('assemble-board');
+            }, 6500);
+
+            // FASE 4: Claim finale
+            setTimeout(() => {
+                hero.classList.add('display-claim');
+            }, 8800);
+
+            // RESET COMPLETO DEL LOOP
+            setTimeout(() => {
+                hero.classList.remove('display-claim');
+                hero.classList.remove('assemble-board');
+                hero.classList.remove('hide-all-svg-layers');
+                hero.classList.remove('hide-qr-completely');
+                hero.classList.remove('frenetic-chaos');
+            }, 13500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            runStickerSequence();
+            setInterval(runStickerSequence, 14500);
+        });
+
+        // Funzione scorrimento carosello eventi
+        function scrollCarousel(distance) {
+            const track = document.getElementById('carouselTrack');
+            if (track) {
+                track.scrollBy({ left: distance, behavior: 'smooth' });
+            }
+        }
     </script>
 </body>
 </html>
