@@ -396,7 +396,7 @@
             color: var(--text-muted);
         }
 
-        /* CHI SIAMO & STAMPA */
+                /* CHI SIAMO & STAMPA */
         .press-layout {
             display: flex;
             flex-direction: column;
@@ -422,7 +422,7 @@
         .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
         .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; }
 
-        /* BIG QUOTE */
+        /* BIG QUOTE - CONTROPUNTO UMANISTA */
         .quote-section { 
             text-align: center; 
             padding: 100px 0; 
@@ -437,14 +437,12 @@
         .carousel-wrapper { position: relative; width: 100%; }
         .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
         .carousel-track::-webkit-scrollbar { display: none; }
-        
         .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
         .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
         .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: all 0.3s ease; }
         .manifesto-card:hover .manifesto-img { filter: grayscale(0%) contrast(1); }
         .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.2; }
         .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
-
         .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
         .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s ease; }
         .carousel-btn:hover { background-color: var(--text-color); color: var(--bg-color); }
@@ -478,22 +476,61 @@
             gap: 48px;
         }
 
-        .logo-link { display: inline-block; }
-        .logo-link img { height: 48px; width: auto; object-fit: contain; filter: grayscale(100%) opacity(0.5); transition: all 0.3s ease; }
-        .logo-link:hover img { filter: grayscale(0%) opacity(1); }
+        .logo-link {
+            display: inline-block;
+        }
 
-        .sponsor-block { border-left: 1px solid var(--border-gray); padding-left: 64px; }
+        .logo-link img {
+            height: 48px; 
+            width: auto;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.5);
+            transition: all 0.3s ease;
+        }
 
-        /* RESPONSIVE */
+        .logo-link:hover img {
+            filter: grayscale(0%) opacity(1);
+        }
+
+        .sponsor-block {
+            border-left: 1px solid var(--border-gray);
+            padding-left: 64px;
+        }
+
+        /* FOOTER */
+        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .footer-grid h2 { font-size: 3rem; font-style: italic; }
+        .footer-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; align-items: flex-start; }
+        .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.5px; }
+        .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; line-height: 1.2; }
+        .footer-link-block a:hover { color: var(--accent-green); opacity: 1; }
+
+        /* RESPONSIVE & GEO-SYMMETRY MOBILE */
         @media (max-width: 992px) {
             .network-grid { grid-template-columns: 1fr; gap: 48px; }
             .sponsor-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border-gray); padding-top: 48px; }
         }
 
         @media (max-width: 768px) {
-            nav { display: none; } 
-            header .container { display: flex; width: 100%; justify-content: space-between; align-items: center; }
-            .logo-block { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 0; }
+            nav { display: none; }
+            
+            /* Griglia dell'header forzata al bilanciamento dei margini */
+            header .container {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo-block {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+            }
+
             .press-item { grid-template-columns: 1fr; gap: 24px; }
             .press-item.reverse { direction: ltr; }
             .press-img-container { height: 260px; }
@@ -501,6 +538,8 @@
             .manifesto-img-box { height: 390px; }
             .logos-row { gap: 32px; }
             .logo-link img { height: 40px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-contacts { grid-template-columns: 1fr; gap: 32px; }
         }
     </style>
 </head>
@@ -522,160 +561,140 @@
         </div>
     </header>
 
-    <section class="hero" id="heroSection">
-        <div class="hero-sticker-wrapper">
-            
-            <div class="hero-bg-texti"></div>
-            
-            <div class="hero-qr-html-grid">
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div>
-                <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot e"></div><div class="q-dot e"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
-            </div>
-
-            <div class="board-labels">
-                <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
-                <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
-            </div>
-
-            <div class="hero-cavallo"></div>
-
-            <div class="hero-qr-animated">
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-            </div>
-
-            <div class="hero-claim-final">“Fermo, eppur si muove”</div>
-       </div>
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-noise"></div>
+        <div class="hero-overlay"></div>
+        <h1>Una mossa per il futuro</h1>
     </section>
 
-    <section id="chi-siamo" class="story-section">
-        <div class="container story-layout">
-            
-            <div class="story-col-manifesto">
-                <div class="sticky-manifesto-title">
-                    <span class="section-badge">La Nostra Filosofia</span>
-                    <h2 class="editorial-title">Un gioco antico, un'attitudine contemporanea.</h2>
-                </div>
+    <main class="container">
+        
+        <section id="chi-siamo">
+            <div class="intro-block">
+                <h2>Pedoni e Alfieri: chi siamo</h2>
+                <p>L'ASD Scacchi Fermo promuove e diffonde l'alto valore educativo e la cultura degli scacchi sul territorio fermano, coordinando attività giovanili, scolastiche e agonistiche con dedizione assoluta.</p>
             </div>
 
-            <div class="story-col-text">
-                <p class="story-lead">
-                    L'Associazione Dilettantistica Scacchi Fermo nasce per ridefinire lo spazio del circolo scacchistico tradizionale. Non più solo un luogo di silenzio rigoroso, ma un hub dinamico dove la strategia si fonde con la cultura urbana, l'arte della comunicazione visiva e la convivialità.
-                </p>
-                <p class="story-body">
-                    Fondata da istruttori qualificati e appassionati, l'associazione trasforma la scacchiera in uno strumento di connessione sociale. Collaboriamo activamente con realtà del territorio — come club, pub e spazi espositivi — per portare il gioco fuori dai contesti ordinari, organizzando serate underground, tornei lampo a tempo di musica e workshop dedicati all'analisi psicologica e geometrica del gioco.
-                </p>
-                <div class="story-meta">
-                    <div class="meta-item">
-                        <strong>Fermo (FM)</strong>
-                        <span>Marche, Italia</span>
+            <div class="press-layout">
+                <div class="press-item">
+                    <div class="press-img-container">
+                        <img src="https://www.cronachefermane.it/wp-content/uploads/2026/04/295f968f-d307-4156-b6f0-1e5edcd8d44b.jpg" alt="Trofeo Scacchi Scuola" class="press-img">
                     </div>
-                    <div class="meta-item">
-                        <strong>Istruttori FSI</strong>
-                        <span>Certificati e Attivi</span>
+                    <div class="press-text-box">
+                        <span>Cronache Fermane · 19 Aprile 2026</span>
+                        <h3>Gli studenti del Fermano brillano al Trofeo Scacchi Scuola</h3>
+                        <p>Resoconto dei grandi risultati conquistati e delle menti giovani del nostro distretto che si sono distinte nel circuito dei campionati studenteschi scolastici.</p>
+                        <a href="https://www.cronachefermane.it/2026/04/19/gli-studenti-del-fermano-brillano-al-trofeo-scacchi-scuola/753790/" target="_blank" rel="noopener noreferrer" class="read-more">Leggi l'articolo originale &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="press-item reverse">
+                    <div class="press-img-container">
+                        <img src="https://images.unsplash.com/photo-1604948501466-4e9c339b9c24?auto=format&fit=crop&w=1200&q=80" alt="Attività e scatti agonistici" class="press-img">
+                    </div>
+                    <div class="press-text-box">
+                        <span>Instagram · Archivio Agonismo</span>
+                        <h3>Cronache dai campionati a squadre</h3>
+                        <p>Segui i resoconti visivi e i passaggi di turno delle nostre formazioni nei campionati italiani e regionali direttamente sul canale social dedicato.</p>
+                        <a href="https://www.instagram.com/p/DWa43-QDW9p/?img_index=1" target="_blank" rel="noopener noreferrer" class="read-more">Apri il post di riferimento &rarr;</a>
                     </div>
                 </div>
             </div>
+        </section>
 
-        </div>
-    </section>
+<section class="quote-section">
+            <a href="sotto_pagina_reportage.html" style="text-decoration: none;">
+                <div class="quote-text" style="color: var(--accent-green); transition: opacity 0.2s ease;">
+                    “Fermo, eppur si muove”
+                </div>
+            </a>
+        </section>
 
-    <section class="quote-section">
-        <div class="container">
-            <blockquote class="quote-text">
-                "Fermo, eppur si muove!"
-            </blockquote>
-        </div>
-    </section>
-
-    <div class="container" id="eventi">
-        <div class="intro-block" style="margin-bottom: 40px;">
-            <h2>Manifesti & Appuntamenti</h2>
-            <p>La nostra rassegna di eventi culturali, mostre e competizioni attive sul territorio.</p>
-        </div>
-
-        <div class="carousel-wrapper">
-            <div class="carousel-track" id="carouselTrack">
-                <div class="manifesto-card">
-                    <div class="manifesto-img-box">
-                        <img src="https://images.unsplash.com/photo-1586165368502-1bad19993888?auto=format&fit=crop&w=500&q=80" alt="Manifesto 1" class="manifesto-img">
-                    </div>
-                    <h3>Torneo d'Autunno 2026</h3>
-                    <span>Ottobre 2026 &middot; Open Internazionale</span>
-                </div>
-                <div class="manifesto-card">
-                    <div class="manifesto-img-box">
-                        <img src="https://images.unsplash.com/photo-1544081044-649da92404e9?auto=format&fit=crop&w=500&q=80" alt="Manifesto 2" class="manifesto-img">
-                    </div>
-                    <h3>Scacchi in Piazza</h3>
-                    <span>Luglio 2026 &middot; Rassegna Estiva</span>
-                </div>
-                <div class="manifesto-card">
-                    <div class="manifesto-img-box">
-                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="Manifesto 3" class="manifesto-img">
-                    </div>
-                    <h3>Campionato Giovanile</h3>
-                    <span>Maggio 2026 &middot; Under 18</span>
-                </div>
-                <div class="manifesto-card">
-                    <div class="manifesto-img-box">
-                        <img src="https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=500&q=80" alt="Manifesto 4" class="manifesto-img">
-                    </div>
-                    <h3>Seminario Tattico</h3>
-                    <span>Novembre 2026 &middot; Masterclass</span>
-                </div>
+        <section id="eventi">
+            <div class="intro-block">
+                <h2>I nostri appuntamenti</h2>
+                <p>I bandi e le locandine reali delle competizioni e delle manifestazioni storiche e correnti coordinate sul nostro territorio.</p>
             </div>
 
-            <div class="carousel-nav">
-                <button class="carousel-btn" onclick="scrollCarousel(-334)">&larr;</button>
-                <button class="carousel-btn" onclick="scrollCarousel(334)">&rarr;</button>
-            </div>
-        </div>
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="carouselTrack">
+                    
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="Bando Fermo d'Estate" class="manifesto-img">
+                        </div>
+                        <h3>I Torneo FIDE "Fermo d'Estate"</h3>
+                        <span>01 — 06 Agosto 2026</span>
+                    </article>
 
-        <div class="network-section">
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=600&q=80" alt="Torneo Giovanile Qualificazioni" class="manifesto-img">
+                        </div>
+                        <h3>Torneo di Qualificazione C.I.G. U18</h3>
+                        <span>Fasi regionali ufficiali</span>
+                    </article>
+
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano Scuola" class="manifesto-img">
+                        </div>
+                        <h3>Trofeo Scacchi Scuola</h3>
+                        <span>Fasi selettive istituti</span>
+                    </article>
+
+                    <article class="manifesto-card">
+                        <div class="manifesto-img-box">
+                            <img src="https://images.unsplash.com/photo-1528819622765-d6bbf0379933?auto=format&fit=crop&w=600&q=80" alt="Campionato Italiano a Squadre" class="manifesto-img">
+                        </div>
+                        <h3>Campionato Italiano a Squadre CIS</h3>
+                        <span>Raggruppamenti Club Marchigiani</span>
+                    </article>
+
+                </div>
+
+                <div class="carousel-nav">
+                    <button class="carousel-btn" onclick="scrollCarousel(-334)" aria-label="Precedente">&larr;</button>
+                    <button class="carousel-btn" onclick="scrollCarousel(334)" aria-label="Successivo">&rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="network-section">
             <div class="network-grid">
+                
                 <div class="network-block">
-                    <h4>Patrocini & Istituzioni</h4>
+                    <h4>Collegamenti Utili</h4>
                     <div class="logos-row">
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Federazione_Scacchistica_Italiana_Logo.svg" alt="FSI"></a>
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/it/c/cd/Logo_CONI_2014.svg" alt="CONI"></a>
-                        <a href="#" class="logo-link"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Logo_Comune_di_Fermo.svg" alt="Comune Fermo" style="height: 60px;"></a>
+                        <a href="https://www.federscacchi.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FSI - Federazione Scacchistica Italiana">
+                            <img src="logo-fsi.svg" alt="Federazione Scacchistica Italiana">
+                        </a>
+                        <a href="https://www.fide.com/" target="_blank" rel="noopener noreferrer" class="logo-link" title="FIDE - International Chess Federation">
+                            <img src="logo-fide.svg" alt="FIDE">
+                        </a>
+                        <a href="https://www.marchesport.milone.it/" target="_blank" rel="noopener noreferrer" class="logo-link" title="Comitato Regionale Marche Scacchi">
+                            <img src="logo-comitato-marche.svg" alt="Comitato Regionale Marche">
+                        </a>
                     </div>
                 </div>
+
                 <div class="sponsor-block">
-                    <h4>Sostenitori Locali & Partner</h4>
-                    <div class="logos-row" style="gap: 24px;">
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">Si ringraziano la Cassa di Risparmio di Fermo, il nostro Pub partner e le realtà artigiane del territorio per il supporto continuo alle attività del circolo.</p>
+                    <h4>Sponsor & Partner</h4>
+                    <div class="logos-row">
+                        <div class="logo-link" title="Sponsor Principale">
+                            <img src="logo-sponsor-uno.svg" alt="Sponsor Ufficiale 1">
+                        </div>
+                        <div class="logo-link" title="Partner Tecnico / Locale">
+                            <img src="logo-sponsor-due.svg" alt="Sponsor Ufficiale 2">
+                        </div>
                     </div>
                 </div>
+
             </div>
-        </div>
-    </div>
+        </section>
+
+    </main>
 
     <footer id="contatti">
         <div class="container footer-grid">
@@ -702,51 +721,11 @@
     </footer>
 
     <script>
-        // Cerchiamo l'elemento Hero controllando sia l'ID che il tag semantico se l'ID fallisse
-        let hero = document.getElementById('heroSection') || document.querySelector('.hero-sticker-scene');
-
-        function runStickerSequence() {
-            if (!hero) return; // Evita errori bloccanti in console
-
-            // FASE 2: Scomposizione alternata controllata (anticipazione scacchiera)
-            setTimeout(() => {
-                hero.classList.add('frenetic-chaos');
-            }, 3000);
-
-            // FASE 3: Transizione fluida alla scacchiera grande reale
-            setTimeout(() => {
-                hero.classList.add('hide-qr-completely');
-                hero.classList.add('hide-all-svg-layers');
-                hero.classList.add('assemble-board');
-            }, 6500);
-
-            // FASE 4: Claim finale
-            setTimeout(() => {
-                hero.classList.add('display-claim');
-            }, 8800);
-
-            // RESET COMPLETO DEL LOOP
-            setTimeout(() => {
-                hero.classList.remove('display-claim');
-                hero.classList.remove('assemble-board');
-                hero.classList.remove('hide-all-svg-layers');
-                hero.classList.remove('hide-qr-completely');
-                hero.classList.remove('frenetic-chaos');
-            }, 13500);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            runStickerSequence();
-            setInterval(runStickerSequence, 14500);
-        });
-
-        // Funzione scorrimento carosello eventi
         function scrollCarousel(distance) {
             const track = document.getElementById('carouselTrack');
-            if (track) {
-                track.scrollBy({ left: distance, behavior: 'smooth' });
-            }
+            track.scrollBy({ left: distance, behavior: 'smooth' });
         }
     </script>
+
 </body>
 </html>
