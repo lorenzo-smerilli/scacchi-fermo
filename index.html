@@ -124,7 +124,6 @@
             perspective: 1200px;
         }
 
-        /* Wrapper 3D con oscillazione automatica fluida slegata dal mouse */
         .hero-sticker-wrapper {
             position: relative;
             width: 360px;
@@ -134,8 +133,8 @@
         }
 
         @keyframes automatic-parallax {
-            0% { transform: rotateY(-7deg) rotateX(-4deg); }
-            100% { transform: rotateY(7deg) rotateX(4deg); }
+            0% { transform: rotateY(-6deg) rotateX(-3deg); }
+            100% { transform: rotateY(6deg) rotateX(3deg); }
         }
 
         /* Layer 1: Sfondo Testi (svg 1) */
@@ -152,7 +151,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Layer 2: QR Code Originale (svg 2) */
+        /* Layer 2: QR Code Originale (svg 2) con transizione di scala aggiuntiva */
         .hero-qr-image {
             position: absolute;
             width: 100%;
@@ -162,11 +161,78 @@
             background-repeat: no-repeat;
             background-position: center;
             z-index: 2;
-            transform: translateZ(0px);
-            transition: opacity 0.6s ease;
+            transform: translateZ(0px) scale(1);
+            transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Layer 3: Matrice Quadrati HTML per Morphing */
+        /* LAYER DI TEMPESTA CAOTICA: Micro-quadratini identici e impazziti */
+        .chaos-storm-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chaos-pixel {
+            position: absolute;
+            width: 16px; /* Tutti della stessa identica dimensione pulita */
+            height: 16px;
+            background-color: var(--accent-green);
+            top: 50%;
+            left: 50%;
+        }
+
+        /* Animazioni frenetiche asimmetriche con incroci e unioni apparenti */
+        .hero.frenetic-chaos .chaos-storm-overlay { opacity: 1; }
+        
+        .hero.frenetic-chaos .pixel-1 { animation: chaos-mov-1 1.8s infinite linear; }
+        .hero.frenetic-chaos .pixel-2 { animation: chaos-mov-2 1.5s infinite linear; }
+        .hero.frenetic-chaos .pixel-3 { animation: chaos-mov-3 1.9s infinite linear; }
+        .hero.frenetic-chaos .pixel-4 { animation: chaos-mov-4 1.6s infinite linear; }
+        .hero.frenetic-chaos .pixel-5 { animation: chaos-mov-5 1.7s infinite linear; }
+        .hero.frenetic-chaos .pixel-6 { animation: chaos-mov-6 1.4s infinite linear; }
+
+        @keyframes chaos-mov-1 {
+            0% { transform: translate(-30px, -40px); }
+            30% { transform: translate(120px, 60px); } /* Movimento ampio e frenetico */
+            65% { transform: translate(-80px, 90px); }
+            100% { transform: translate(-30px, -40px); }
+        }
+        @keyframes chaos-mov-2 {
+            0% { transform: translate(60px, 80px); }
+            25% { transform: translate(-110px, -90px); }
+            70% { transform: translate(40px, -130px); }
+            100% { transform: translate(60px, 80px); }
+        }
+        @keyframes chaos-mov-3 {
+            0% { transform: translate(-120px, 10px); }
+            40% { transform: translate(90px, -100px); }
+            75% { transform: translate(-10px, -10px); } /* Si avvicina temporaneamente al centro */
+            100% { transform: translate(-120px, 10px); }
+        }
+        @keyframes chaos-mov-4 {
+            0% { transform: translate(80px, -60px); }
+            35% { transform: translate(-90px, 110px); }
+            70% { transform: translate(130px, 20px); }
+            100% { transform: translate(80px, -60px); }
+        }
+        @keyframes chaos-mov-5 {
+            0% { transform: translate(-10px, 120px); }
+            50% { transform: translate(10px, -140px); }
+            80% { transform: translate(-100px, -50px); }
+            100% { transform: translate(-10px, 120px); }
+        }
+        @keyframes chaos-mov-6 {
+            0% { transform: translate(110px, -120px); }
+            30% { transform: translate(-130px, 30px); }
+            60% { transform: translate(0px, 70px); }
+            100% { transform: translate(110px, -120px); }
+        }
+
+        /* Layer 3: Matrice Quadrati Grandi della Scacchiera Finale */
         .hero-qr-animated {
             position: absolute;
             width: 100%;
@@ -176,24 +242,18 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             gap: 0;
-            transform: translateZ(10px);
+            transform: translateZ(10px) scale(0.9);
             opacity: 0;
-            transition: opacity 0.4s ease, transform 2.2s cubic-bezier(0.76, 0, 0.24, 1);
+            transition: opacity 0.4s ease, transform 2.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .qr-block {
             width: 100%;
             height: 100%;
             background-color: var(--accent-green);
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-            transform-origin: center;
+            transform: scale(0); /* Nascosti durante la tempesta */
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
         }
-
-        /* STATO INIZIALE SUGGESTIVO: Frammentazione in quadratini piccoli asimmetrici */
-        .qr-block:nth-child(odd) { transform: translate(25px, -30px) scale(0.3); }
-        .qr-block:nth-child(3n) { transform: translate(-40px, 20px) scale(0.4); }
-        .qr-block:nth-child(5n) { transform: translate(15px, 35px) scale(0.25); }
-        .qr-block:nth-child(7n) { transform: translate(-25px, -25px) scale(0.35); }
 
         .qr-block.empty { opacity: 1; }
 
@@ -211,10 +271,9 @@
             font-weight: 300;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.8s ease 1.4s;
+            transition: opacity 0.8s ease 1.2s;
         }
 
-        /* Allineamento coordinate per il punto di vista del Bianco */
         .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
         .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
 
@@ -233,7 +292,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* Epilogo: Il Claim con Glow Soft Neutro */
+        /* Epilogo: Il Claim con Bagliore */
         .hero-claim-final {
             position: absolute;
             z-index: 6;
@@ -251,31 +310,39 @@
             pointer-events: none;
         }
 
-        /* STAGES DI ANIMAZIONE */
-        .hero.show-html-squares .hero-qr-animated {
-            opacity: 1;
+
+        /* ==========================================================================
+           TIMELINE DELLE CLASSI DRIVEN BY JS
+           ========================================================================== */
+        
+        /* 1. Il QR Code si restringe di volume */
+        .hero.shrink-qr .hero-qr-image {
+            transform: translateZ(0px) scale(0.85);
         }
 
+        /* 2. Scompaiono i vecchi layer di sfondo e cavallo lasciando spazio al caos puro */
         .hero.hide-svg-layers .hero-bg-texti,
         .hero.hide-svg-layers .hero-qr-image,
         .hero.hide-svg-layers .hero-cavallo {
             opacity: 0;
         }
 
-        /* Unione e rotazione a 90° per l'orientamento regolamentare della scacchiera */
+        /* 3. Aggregazione: La griglia grande compare, si compatta e compie la rotazione di 90° */
         .hero.assemble-board .hero-qr-animated {
-            transform: translateZ(10px) rotate(90deg);
+            opacity: 1;
+            transform: translateZ(10px) scale(1) rotate(90deg);
         }
         .hero.assemble-board .qr-block {
-            transform: translate(0, 0) scale(1) !important;
+            transform: scale(1);
         }
         .hero.assemble-board .qr-block.empty {
-            opacity: 0; 
+            opacity: 0; /* Scompare l'elemento interno lasciando la casella bianca del sito */
         }
         .hero.assemble-board .board-labels {
             opacity: 1;
         }
 
+        /* 4. Stato finale del Claim */
         .hero.display-claim .hero-claim-final {
             opacity: 1;
             transform: scale(1);
@@ -287,251 +354,47 @@
             transition: opacity 1s ease;
         }
 
-        /* INTRO BLOCKS */
-        .intro-block {
-            max-width: 800px;
-            margin-bottom: 60px;
-        }
 
-        .intro-block h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 20px;
-            line-height: 1.1;
-        }
+        /* RESTO DEL SITO SORGENTE INTEGRALE */
+        .intro-block { max-width: 800px; margin-bottom: 60px; }
+        .intro-block h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; line-height: 1.1; }
+        .intro-block p { font-size: 1.2rem; color: var(--text-muted); }
+        .press-layout { display: flex; flex-direction: column; gap: 80px; }
+        .press-item { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+        .press-item.reverse { direction: rtl; }
+        .press-item.reverse .press-text-box { direction: ltr; }
+        .press-img-container { width: 100%; height: 380px; overflow: hidden; background-color: #f0f0f0; }
+        .press-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .press-item:hover .press-img { filter: grayscale(0%) contrast(1); }
+        .press-text-box span { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dark-muted); display: block; margin-bottom: 12px; }
+        .press-text-box h3 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px; }
+        .press-text-box p { color: var(--text-muted); margin-bottom: 20px; }
+        .read-more { font-weight: 600; font-size: 0.95rem; display: inline-block; position: relative; }
+        .read-more::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 1px; background-color: var(--text-color); transform: scaleX(0); transform-origin: right; transition: transform 0.3s ease; }
+        .read-more:hover::after { transform: scaleX(1); transform-origin: left; }
 
-        .intro-block p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
+        .quote-section { text-align: center; padding: 100px 0; background-color: var(--bg-archive-warm); border-top: 1px solid var(--border-gray); border-bottom: 1px solid var(--border-gray); margin: 40px 0; }
+        .quote-text { font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; line-height: 1.2; color: var(--text-color); max-width: 1000px; margin: 0 auto; }
 
-        /* LAYOUT STAMPA */
-        .press-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 80px;
-        }
+        .carousel-wrapper { position: relative; width: 100%; }
+        .carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 20px; scrollbar-width: none; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .manifesto-card { flex: 0 0 310px; display: flex; flex-direction: column; }
+        .manifesto-img-box { width: 100%; height: 460px; background-color: var(--text-color); overflow: hidden; margin-bottom: 16px; }
+        .manifesto-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.1); transition: all 0.4s ease; }
+        .manifesto-card:hover .manifesto-img { filter: grayscale(0%) contrast(1); transform: scale(1.02); }
+        .manifesto-card h3 { font-size: 1.35rem; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; line-height: 1.2; }
+        .manifesto-card span { font-size: 0.9rem; color: var(--text-muted); }
+        .carousel-nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .carousel-btn { background: none; border: 1px solid var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s ease; }
+        .carousel-btn:hover { background-color: var(--text-color); color: var(--bg-color); }
 
-        .press-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
-
-        .press-item.reverse {
-            direction: rtl;
-        }
-
-        .press-item.reverse .press-text-box {
-            direction: ltr;
-        }
-
-        .press-img-container {
-            width: 100%;
-            height: 380px;
-            overflow: hidden;
-            background-color: #f0f0f0;
-        }
-
-        .press-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%) contrast(1.2);
-            transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .press-item:hover .press-img {
-            filter: grayscale(0%) contrast(1);
-        }
-
-        .press-text-box span {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dark-muted);
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .press-text-box h3 {
-            font-size: 2.2rem;
-            line-height: 1.2;
-            margin-bottom: 16px;
-        }
-
-        .press-text-box p {
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .read-more {
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: inline-block;
-            position: relative;
-        }
-
-        .read-more::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: var(--text-color);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-        }
-
-        .read-more:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        /* BIG QUOTE SECTION */
-        .quote-section {
-            text-align: center;
-            padding: 100px 0;
-            background-color: var(--bg-archive-warm);
-            border-top: 1px solid var(--border-gray);
-            border-bottom: 1px solid var(--border-gray);
-            margin: 40px 0;
-        }
-
-        .quote-text {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-style: italic;
-            line-height: 1.2;
-            color: var(--text-color);
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* CAROSELLO MANIFESTI */
-        .carousel-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .carousel-track {
-            display: flex;
-            gap: 24px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding-bottom: 20px;
-            scrollbar-width: none;
-        }
-
-        .carousel-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        .manifesto-card {
-            flex: 0 0 310px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .manifesto-img-box {
-            width: 100%;
-            height: 460px;
-            background-color: var(--text-color);
-            overflow: hidden;
-            margin-bottom: 16px;
-        }
-
-        .manifesto-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%) contrast(1.1);
-            transition: all 0.4s ease;
-        }
-
-        .manifesto-card:hover .manifesto-img {
-            filter: grayscale(0%) contrast(1);
-            transform: scale(1.02);
-        }
-
-        .manifesto-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 4px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-
-        .manifesto-card span {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .carousel-nav {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            justify-content: flex-end;
-        }
-
-        .carousel-btn {
-            background: none;
-            border: 1px solid var(--text-color);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.2s ease;
-        }
-
-        .carousel-btn:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-        }
-
-        /* FOOTER REALE INTEGRALE */
-        footer {
-            background: var(--text-color);
-            color: var(--bg-color);
-            padding: 80px 0;
-            margin-top: 80px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-        }
-
-        .footer-grid h2 {
-            font-size: 3rem;
-            font-style: italic;
-        }
-
-        .footer-contacts {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px 24px;
-        }
-
-        .footer-link-block span {
-            display: block;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .footer-link-block a, .footer-link-block p {
-            color: var(--bg-color);
-            font-size: 1.4rem;
-            font-weight: 500;
-        }
+        footer { background: var(--text-color); color: var(--bg-color); padding: 80px 0; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .footer-grid h2 { font-size: 3rem; font-style: italic; }
+        .footer-contacts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+        .footer-link-block span { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+        .footer-link-block a, .footer-link-block p { color: var(--bg-color); font-size: 1.4rem; font-weight: 500; }
 
         @media (max-width: 768px) {
             nav { display: none; }
@@ -568,6 +431,15 @@
             <div class="hero-bg-texti"></div>
             
             <div class="hero-qr-image"></div>
+            
+            <div class="chaos-storm-overlay">
+                <div class="chaos-pixel pixel-1"></div>
+                <div class="chaos-pixel pixel-2"></div>
+                <div class="chaos-pixel pixel-3"></div>
+                <div class="chaos-pixel pixel-4"></div>
+                <div class="chaos-pixel pixel-5"></div>
+                <div class="chaos-pixel pixel-6"></div>
+            </div>
             
             <div class="board-labels">
                 <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
@@ -696,38 +568,45 @@
     <script>
         const hero = document.getElementById('heroSection');
 
-        // REGISTA DELLA TIME SEQUENCE (LOOP GEOMETRICO CONTINUO)
+        // REGISTA DELLA TIME SEQUENCE FLUIDA E CAOTICA
         function runStickerSequence() {
-            // Stato Iniziale: Solo i 3 livelli SVG visibili con oscillazione 3D per 3.5 secondi.
+            // Stato Iniziale: Solo i 3 livelli SVG visibili in modalità oscillazione naturale.
 
-            // 1. I quadrati HTML compaiono in modalità frammentata (quadratini piccoli fluttuanti) suggerendo la scomposizione del QR
+            // STEP 1: Il QR Code riduce leggermente il suo volume visivo (contrazione)
             setTimeout(() => {
-                hero.classList.add('show-html-squares');
-            }, 3500);
+                hero.classList.add('shrink-qr');
+            }, 3200);
 
-            // 2. I vecchi livelli SVG si spengono, e i quadrati si aggregano ruotando a 90° verso la scacchiera regolamentare
+            // STEP 2: Parte la pioggia di pixel caotici e contemporaneamente i vecchi layer sfumano
             setTimeout(() => {
+                hero.classList.add('frenetic-chaos');
                 hero.classList.add('hide-svg-layers');
-                hero.classList.add('assemble-board');
-            }, 4100);
+            }, 3900);
 
-            // 3. Apparizione finale e stabile del Claim col suo glow chiaro morbido
+            // STEP 3: Fase di transizione estesa (caos attivo). Successivamente la pioggia finisce, 
+            // e i quadrati si aggregano ruotando a 90° formando la scacchiera FIDE ufficiale.
+            setTimeout(() => {
+                hero.classList.remove('frenetic-chaos');
+                hero.classList.add('assemble-board');
+            }, 6400); /* Allungata la permanenza del caos frenetico */
+
+            // STEP 4: Apparizione stabile del Claim finale
             setTimeout(() => {
                 hero.classList.add('display-claim');
-            }, 6400);
+            }, 8800);
 
-            // 4. RESET "STICKER": Ritorno istantaneo e secco allo stato iniziale ad anello
+            // STEP 5: RESET LOOP COMPLETO
             setTimeout(() => {
                 hero.classList.remove('display-claim');
                 hero.classList.remove('assemble-board');
                 hero.classList.remove('hide-svg-layers');
-                hero.classList.remove('show-html-squares');
-            }, 10000);
+                hero.classList.remove('shrink-qr');
+            }, 12500);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             runStickerSequence();
-            setInterval(runStickerSequence, 11000); // Sincronizzazione perfetta del timer complessivo
+            setInterval(runStickerSequence, 13500); // Sincronizzazione millimetrica del loop totale
         });
 
         // Gestione carosello manifesti
