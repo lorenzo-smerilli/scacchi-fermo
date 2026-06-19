@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animazione ASD Scacchi Fermo</title>
+    <title>Animazione ASD Scacchi Fermo - Tasselli a Scorrimento</title>
     
     <style>
         * {
@@ -30,7 +30,7 @@
             width: 100vw;
         }
 
-        /* CONTENITORE 3D OTTIMIZZATO PER IFRAME */
+        /* CONTENITORE 3D */
         .hero {
             position: relative;
             width: 100%;
@@ -65,68 +65,50 @@
             background-position: center;
             z-index: 1;
             transform: translateZ(-15px);
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease;
         }
 
-        /* Layer 2: IL QR CODE HTML - MATRICE 21x21 */
+        /* Layer 2: QR CODE 21x21 (I Tasselli) */
         .hero-qr-html-grid {
             position: absolute;
             width: 71%; 
             height: 71%;
             top: 14.5%;
             left: 14.5%;
-            z-index: 2;
+            z-index: 3;
             display: grid;
             grid-template-columns: repeat(21, 1fr);
             grid-template-rows: repeat(21, 1fr);
             transform: translateZ(0px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.4s ease;
         }
 
         .q-dot {
             background-color: var(--accent-green);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            border-radius: 1px;
+            transform: translate(0, 0) scale(0.9);
+            /* La transizione base per il setup */
+            transition: transform 0s, opacity 0.5s ease;
         }
+        
         .q-dot.e {
             background-color: transparent; 
         }
 
-        /* FASE 2: SCOMPOSIZIONE GUIDA VERSO LA SCACCHIERA */
-        .hero.frenetic-chaos .q-dot:nth-child(-n+7),
-        .hero.frenetic-chaos .q-dot:nth-child(21n+1),
-        .hero.frenetic-chaos .q-dot:nth-child(21n+7) {
-            transform: translate(0, 0) scale(1) !important;
-            animation: none !important;
+        /* FASE 1: TASSELLI A SCORRIMENTO (Puzzle) */
+        /* I quadratini si muovono verso le coordinate --dx e --dy calcolate in JS */
+        .hero.slide-puzzle .q-dot:not(.e) {
+            transform: translate(calc(var(--dx) * 100%), calc(var(--dy) * 100%)) scale(2.65);
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1) var(--delay), 
+                        border-radius 0.8s ease var(--delay);
+            border-radius: 0;
+            z-index: 10;
         }
 
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(2n) {
-            animation: suggest-chessboard-pari 2s infinite ease-in-out alternate;
-            background-color: #006b35; 
-        }
-
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(3n+1) {
-            animation: suggest-chessboard-dispari 2s infinite ease-in-out alternate;
-        }
-
-        .hero.frenetic-chaos .q-dot:not(.e):nth-child(5n) {
-            opacity: 0.4;
-            transform: scale(0.85);
-        }
-
-        @keyframes suggest-chessboard-pari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(6px, -6px) scale(1.1); }
-        }
-
-        @keyframes suggest-chessboard-dispari {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-6px, 6px) scale(0.9); }
-        }
-
-        .hero.hide-qr-completely .hero-qr-html-grid {
+        /* I quadratini "vuoti" scompaiono subito per pulire l'area */
+        .hero.slide-puzzle .q-dot.e {
             opacity: 0;
-            pointer-events: none;
-            transform: scale(0.92) translateZ(-10px);
+            transform: scale(0);
         }
 
         /* Layer Coordinate Lettere/Numeri */
@@ -136,12 +118,13 @@
             height: 106%;
             top: -3%;
             left: -3%;
-            z-index: 3;
+            z-index: 2;
             pointer-events: none;
             opacity: 0;
             font-size: 0.75rem;
             color: var(--text-dark-muted);
-            transition: opacity 0.6s ease;
+            transition: opacity 1s ease;
+            transform: translateZ(10px);
         }
         .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
         .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
@@ -158,72 +141,99 @@
             z-index: 5;
             transform: translateZ(25px);
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease;
         }
 
-        /* Layer 5: Matrice Grandi Quadrati Scacchiera */
+        /* Layer 5: SCACCHIERA REALE 8x8 (Appare quando i tasselli si sono uniti) */
         .hero-qr-animated {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 71%; 
+            height: 71%; 
+            top: 14.5%;
+            left: 14.5%;
             z-index: 4;
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            opacity: 0;
-            transform: translateZ(10px) scale(0.92);
-            transition: opacity 0.5s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; 
+            transform: translateZ(0px); 
+            transition: opacity 0.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .qr-block {
-            width: 100%;
-            height: 100%;
-            background-color: var(--accent-green);
-            transform: scale(0);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .qr-block.empty { opacity: 0; }
+        .sq { width: 100%; height: 100%; }
+        .sq.d { background-color: var(--accent-green); }
+        .sq.l { background-color: transparent; transition: background-color 1s ease; } /* Le case chiare nascono trasparenti */
 
-        .hero.hide-all-svg-layers .hero-bg-texti,
-        .hero.hide-all-svg-layers .hero-cavallo {
-            opacity: 0;
+        /* FASE 2: SWAP (I tasselli spariscono, la vera scacchiera prende il loro posto) */
+        .hero.swap-board .hero-qr-html-grid { opacity: 0; }
+        .hero.swap-board .hero-qr-animated { opacity: 1; }
+        
+        /* FASE 3: RIVELAZIONE E CLAIM FINALE */
+        .hero.reveal-claim .hero-bg-texti,
+        .hero.reveal-claim .hero-cavallo {
+            opacity: 0; /* Nascondiamo gli SVG di contorno per pulizia */
+        }
+        
+        .hero.reveal-claim .sq.l {
+            background-color: rgba(0, 0, 0, 0.04); /* Le case chiare della scacchiera diventano visibili */
         }
 
-        .hero.assemble-board .hero-qr-animated {
-            opacity: 1;
-            transform: translateZ(10px) scale(1) rotate(90deg);
+        .hero.reveal-claim .hero-qr-animated {
+            transform: translateZ(15px) scale(1.33); /* La scacchiera si solleva */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Diamo spessore */
         }
-        .hero.assemble-board .qr-block { transform: scale(1); }
-        .hero.assemble-board .board-labels { opacity: 1; }
+        
+        .hero.reveal-claim .board-labels { opacity: 1; }
 
-        /* Il Claim Finale */
         .hero-claim-final {
-            position: absolute;
-            z-index: 6;
-            color: var(--text-color);
-            font-family: Georgia, serif;
-            font-style: italic;
-            font-size: clamp(2rem, 4.5vw, 3.5rem);
-            text-align: center;
-            width: 100%;
-            opacity: 0;
-            transform: scale(0.96);
-            text-shadow: 0 0 20px #FFF;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            pointer-events: none;
-        }
+    position: absolute;
+    z-index: 99; /* Portiamolo sopra a qualsiasi altro livello */
+    color: var(--text-color);
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: bold;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    text-align: center;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(0.96) translateZ(40px); /* Centrato verticalmente */
+    opacity: 0;
+    visibility: hidden; /* Evita che blocchi i click quando è invisibile */
+    transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
 
-        .hero.display-claim .hero-claim-final {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .hero.display-claim .hero-qr-animated,
-        .hero.display-claim .board-labels { opacity: 0.12; }
+/* LA CLASSE CHE ATTIVA IL CLAIM (Assicurati che corrisponda a quella usata in JS) */
+.hero.reveal-claim .hero-claim-final {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1) translateZ(50px);
+}
 
-        @media (max-width: 768px) {
-            .hero-sticker-wrapper { width: 280px; height: 280px; }
-            .board-labels { display: none; }
-        }
+/* IL BAGLIORE REALE */
+.hero-claim-final::before {
+    content: "“Fermo, eppur si muove”";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #FAFAFA; /* Stesso colore dello sfondo */
+    
+    /* Ombre pesatissime sovrapposte per simulare il neon/glow intenso */
+    text-shadow: 
+        0 0 8px #FAFAFA, 
+        0 0 15px #FAFAFA, 
+        0 0 25px #FAFAFA, 
+        0 0 40px #FAFAFA,
+        0 0 60px #FAFAFA,
+        0 0 80px #FAFAFA;
+        
+    z-index: -1; /* Dietro al testo nero */
+    pointer-events: none;
+}
     </style>
 </head>
 <body>
@@ -263,14 +273,14 @@
             </div>
 
             <div class="hero-qr-animated">
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
-                <div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div>
-                <div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div><div class="qr-block empty"></div><div class="qr-block"></div>
+                <div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div>
+                <div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div>
+                <div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div>
+                <div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div>
+                <div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div>
+                <div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div>
+                <div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div>
+                <div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div><div class="sq d"></div><div class="sq l"></div>
             </div>
 
             <div class="hero-cavallo"></div>
@@ -281,32 +291,79 @@
 
     <script>
         const hero = document.getElementById('heroSection');
+        
+        // --- LOGICA DI CALCOLO DEI TASSELLI (eseguita una volta al caricamento) ---
+        function calculatePuzzlePaths() {
+            const dots = document.querySelectorAll('.q-dot');
+            const darkCenters = [];
+            const sq = 21 / 8; // Dimensione in unità griglia di una singola casa (2.625)
+            
+            // 1. Calcolo il centro esatto delle 32 case SCURE della scacchiera
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if ((r + c) % 2 !== 0) { // Pattern tipico (a1 scuro)
+                        darkCenters.push({
+                            x: c * sq + (sq / 2),
+                            y: r * sq + (sq / 2)
+                        });
+                    }
+                }
+            }
+
+            // 2. Assegno a ogni singolo quadratino QR la sua destinazione più vicina
+            dots.forEach((dot, index) => {
+                const cx = (index % 21) + 0.5; // coordinata X attuale
+                const cy = Math.floor(index / 21) + 0.5; // coordinata Y attuale
+                
+                let nearest = darkCenters;
+                let minDist = Infinity;
+                
+                darkCenters.forEach(dc => {
+                    const dist = Math.pow(dc.x - cx, 2) + Math.pow(dc.y - cy, 2);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        nearest = dc;
+                    }
+                });
+                
+                // Distanza da percorrere (iniettata in CSS)
+                const dx = nearest.x - cx;
+                const dy = nearest.y - cy;
+                
+                dot.style.setProperty('--dx', dx);
+                dot.style.setProperty('--dy', dy);
+                
+                // Aggiungiamo un ritardo casuale da 0s a 0.8s per l'effetto "disordinato" che si riordina
+                dot.style.setProperty('--delay', (Math.random() * 0.8) + 's');
+            });
+        }
 
         function runStickerSequence() {
-            // Fase 2: Scomposizione controllata
+            // Fase 1: I quadratini calcolano il percorso e scivolano verso i centri delle case scure
             setTimeout(() => {
-                hero.classList.add('frenetic-chaos');
+                hero.classList.add('slide-puzzle');
             }, 3000);
 
-            // Fase 3: Transizione alla scacchiera reale
+            // Fase 2: Swap invisibile (i tasselli perfetti spariscono, la vera scacchiera appare)
             setTimeout(() => {
-                hero.classList.add('hide-qr-completely', 'hide-all-svg-layers', 'assemble-board');
-            }, 6500);
+                hero.classList.add('swap-board');
+            }, 5500);
 
-            // Fase 4: Appare il claim
+            // Fase 3: Rivela claim, colora le case chiare e ruota la scacchiera completata
             setTimeout(() => {
-                hero.classList.add('display-claim');
-            }, 8800);
+                hero.classList.add('reveal-claim');
+            }, 6000);
 
-            // Reset loop
+            // Reset del ciclo
             setTimeout(() => {
-                hero.classList.remove('display-claim', 'assemble-board', 'hide-all-svg-layers', 'hide-qr-completely', 'frenetic-chaos');
-            }, 13500);
+                hero.classList.remove('reveal-claim', 'swap-board', 'slide-puzzle');
+            }, 12000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            calculatePuzzlePaths();
             runStickerSequence();
-            setInterval(runStickerSequence, 14500);
+            setInterval(runStickerSequence, 13000);
         });
     </script>
 </body>
