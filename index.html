@@ -119,34 +119,48 @@
             letter-spacing: 0.5px;
         }
 
-        /* NUOVA HERO AGGIORNATA PER IFRAME ANIMAZIONE */
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 75vh;
-            min-height: 550px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #FAFAFA;
-            overflow: hidden;
-        }
+/* NUOVA HERO AGGIORNATA PER IFRAME ANIMAZIONE */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FAFAFA;
+    overflow: hidden;
+}
 
-        .hero-iframe-container {
-            width: 100%;
-            max-width: 550px;
-            aspect-ratio: 1 / 1;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.hero-iframe-container {
+    width: 100%;
+    max-width: 550px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    padding: 20px; /* Pad normale per desktop */
+}
 
-        .hero-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            overflow: hidden;
-            display: block;
-        }
+.hero-iframe-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow: hidden;
+    display: block;
+}
+
+/* === OTTIMIZZAZIONE SPECIFICA PER MOBILE === */
+@media (max-width: 768px) {
+    .hero {
+        min-height: auto; /* Rimuove il vincolo dei 550px che allunga lo spazio verticalmente */
+        height: auto;     /* Lascia che l'altezza si adatti al quadrato dell'iframe */
+        padding: 10px 0;  /* Un minimo di respiro sopra e sotto */
+    }
+    
+    .hero-iframe-container {
+        padding: 5px;    /* Riduce quasi a zero la cornice interna laterale */
+        max-width: 92%;  /* Permette all'animazione di espandersi quasi a tutto schermo */
+    }
+}
 
         /* INTRO BLOCKS */
         .intro-block {
