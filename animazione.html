@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animazione ASD Scacchi Fermo - Tasselli a Scorrimento</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --text-color: #111111;
+        --accent-green: #008744;
+        --text-dark-muted: #777777;
+    }
+
+    body {
+        background-color: #FAFAFA;
+        color: var(--text-color);
+        font-family: system-ui, -apple-system, sans-serif;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .hero {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1200px;
+    }
+
+    .hero-sticker-wrapper {
+        position: relative;
+        width: 360px;
+        height: 360px;
+        transform-style: preserve-3d;
+        animation: automatic-parallax 7s infinite ease-in-out alternate;
+    }
+
+    @keyframes automatic-parallax {
+        0% { transform: rotateY(-6deg) rotateX(-4deg); }
+        100% { transform: rotateY(6deg) rotateX(4deg); }
+    }
+
+    .hero-bg-texti {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url('1-sfondo-testi.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+        transform: translateZ(-15px);
+        transition: opacity 0.8s ease;
+    }
+
+    .hero-qr-html-grid {
+        position: absolute;
+        width: 71%; 
+        height: 71%;
+        top: 14.5%;
+        left: 14.5%;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: repeat(21, 1fr);
+        grid-template-rows: repeat(21, 1fr);
+        transform: translateZ(0px);
+        transition: opacity 0.4s ease;
+    }
+
+    .q-dot {
+        background-color: var(--accent-green);
+        border-radius: 1px;
+        transform: translate(0, 0) scale(0.9);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Aggiungi un'ombra leggera */
+        transition: opacity 0.5s ease-in-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s;
+    }
+
+    .q-dot.e {
+        background-color: transparent; 
+        opacity: 0;
+    }
+
+    .hero.slide-puzzle .q-dot:not(.e) {
+        transform: translate(calc(var(--dx) * 100%), calc(var(--dy) * 100%)) scale(2.65);
+        transition: opacity 0.4s ease-in-out, transform 1.2s cubic-bezier(0.25, 1, 0.5, 1) var(--delay), border-radius 0.8s ease var(--delay);
+    }
+
+    .hero.slide-puzzle .q-dot.e {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    .board-labels {
+        position: absolute;
+        width: 106%;
+        height: 106%;
+        top: -3%;
+        left: -3%;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        font-size: 0.75rem;
+        color: var(--text-dark-muted);
+        transition: opacity 1s ease;
+        transform: translateZ(10px);
+    }
+
+    .board-labels .letters { position: absolute; bottom: -18px; left: 0; width: 100%; display: flex; justify-content: space-around; padding: 0 4%; }
+    .board-labels .numbers { position: absolute; left: -18px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 4% 0; }
+
+    .hero-cavallo {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url('3-cavallo.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 5;
+        transform: translateZ(25px);
+        pointer-events: none;
+        transition: opacity 0.8s ease;
+    }
+
+    .hero-qr-animated {
+        position: absolute;
+        width: 71%; 
+        height: 71%; 
+        top: 14.5%;
+        left: 14.5%;
+        z-index: 4;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        opacity: 0; 
+        transform: translateZ(0px); 
+        transition: opacity 0.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sq { width: 100%; height: 100%; }
+    .sq.d { background-color: var(--accent-green); }
+    .sq.l { background-color: rgba(0, 0, 0, 0.04); transition: background-color 1s ease; }
+
+    .hero.swap-board .hero-qr-html-grid {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .hero.swap-board .hero-qr-animated {
+        opacity: 1;
+        transform: translateZ(0px);
+        transition: opacity 1s ease-in-out, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero.reveal-claim .hero-bg-texti,
+    .hero.reveal-claim .hero-cavallo {
+        opacity: 0;
+    }
+    
+    .hero.reveal-claim .sq.l {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .hero.reveal-claim .hero-qr-animated {
+        transform: translateZ(15px) scale(1.33);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Aggiungi un'ombra più intensa */
+    }
+
+    .hero.reveal-claim .board-labels { opacity: 1; }
+
+    .hero-claim-final {
+        position: absolute;
+        z-index: 99;
+        color: var(--text-color);
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-weight: bold;
+        font-size: clamp(2rem, 4.5vw, 3.5rem);
+        text-align: center;
+        width: 100%;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%) scale(0.96) translateZ(40px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.5s;
+    }
+
+    .hero.reveal-claim .hero-claim-final {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1) translateZ(50px);
+        text-shadow: 
+            0 0 8px #FAFAFA, 
+            0 0 15px #FAFAFA, 
+            0 0 25px #FAFAFA, 
+            0 0 40px #FAFAFA,
+            0 0 60px #FAFAFA,
+            0 0 80px #FAFAFA;
+    }
+</style>
+</head>
+
+<body>
+<section class="hero" id="heroSection">
+    <div class="hero-sticker-wrapper">
+        <div class="hero-bg-texti"></div>
+        
+        <div class="hero-qr-html-grid">
+            <!-- Inserire qui i q-dot -->
+        </div>
+        
+        <div class="board-labels">
+            <div class="letters"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+            <div class="numbers"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        </div>
+
+        <div class="hero-qr-animated">
+            <!-- Inserire qui i sq -->
+        </div>
+
+        <div class="hero-cavallo"></div>
+    </div>
+
+    <div class="hero-claim-final">“Fermo, eppur si muove”</div>
+</section>
+
+<script>
+    const hero = document.getElementById('heroSection');
+
+    function calculatePuzzlePaths() {
+        const dots = document.querySelectorAll('.q-dot');
+        const darkCenters = [];
+        const sq = 21 / 8;
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                if ((r + c) % 2 !== 0) {
+                    darkCenters.push({
+                        x: c * sq + (sq / 2),
+                        y: r * sq + (sq / 2)
+                    });
+                }
+            }
+        }
+
+        dots.forEach((dot, index) => {
+            const cx = (index % 21) + 0.5;
+            const cy = Math.floor(index / 21) + 0.5;
+
+            let nearest = darkCenters[0];
+            let minDist = Infinity;
+
+            darkCenters.forEach(dc => {
+                const dist = Math.pow(dc.x - cx, 2) + Math.pow(dc.y - cy, 2);
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearest = dc;
+                }
+            });
+
+            dot.style.setProperty('--dx', nearest.x - cx);
+            dot.style.setProperty('--dy', nearest.y - cy);
+            dot.style.setProperty('--delay', (Math.random() * 0.8) + 's');
+        });
+    }
+
+    function runStickerSequence() {
+        setTimeout(() => {
+            hero.classList.add('slide-puzzle');
+        }, 3000);
+
+        setTimeout(() => {
+            hero.classList.add('swap-board');
+        }, 5500);
+
+        setTimeout(() => {
+            hero.classList.add('reveal-claim');
+        }, 6000);
+
+        setTimeout(() => {
+            hero.classList.remove('reveal-claim', 'swap-board', 'slide-puzzle');
+        }, 12000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        calculatePuzzlePaths();
+        runStickerSequence();
+        setInterval(runStickerSequence, 13000);
+    });
+</script>
+</body>
+</html>
